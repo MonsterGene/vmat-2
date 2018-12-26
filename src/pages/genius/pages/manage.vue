@@ -30,7 +30,7 @@
         </v-flex>
       </v-layout>
       <v-divider></v-divider>
-      <h3><v-icon>menu</v-icon>Engine Manipulation:</h3>
+      <!-- <h3><v-icon>menu</v-icon>Engine Manipulation:</h3>
       <v-layout row>
           <v-btn large
             color="primary"
@@ -45,7 +45,7 @@
             Stop Engine
           </v-btn>
       </v-layout>
-      <v-divider></v-divider>
+      <v-divider></v-divider> -->
       <h3><v-icon>menu</v-icon>Script Manipulation:</h3>
       <v-layout row>
           <v-btn large
