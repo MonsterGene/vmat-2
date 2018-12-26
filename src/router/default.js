@@ -14,7 +14,7 @@ export default [
     name: 'Root',
     redirect: {
       // name: 'Login'
-      path: '/tipbu-6streams'
+      path: '/genius'
     }
   },
   {
