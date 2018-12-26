@@ -19,7 +19,7 @@
                   name="serialnumber"
                   label="Serial Number"
                   value=""
-                  v-model="model.sernum"
+                  v-model="sernum"
                   color="primary"
                   class="input-group--focused"
                 ></v-text-field>
@@ -56,11 +56,13 @@
 import VWidget from '@/components/VWidget';
 import { getBasic } from '../api/basic';
 import DataTable from '../components/DataTable';
+import store from '../store';
 
 export default {
   components: {
     VWidget,
     DataTable,
+    store,
   },
   data () {
     return {
@@ -70,26 +72,34 @@ export default {
       alert_color: 'warning',
       alert_message: 'it is error',
       dataSource: [],
-      model: {
-        sernum: '',
-      },
+      sernum: '',
     };
   },
   computed: {
+    sernum1 () {
+      return store.state.sernum;
+    }
   },
   watch: {
-  },  
+    sernum1 () {
+      this.sernum = this.sernum1;
+      this.getTestData();
+    }
+  },
   created () {
     const params = this.$route.query;
     if (params.sernum) {
-      this.model.sernum = params.sernum;
+      this.sernum = params.sernum;
+    }
+    this.sernum = store.state.sernum;
+    if (this.sernum) {
       this.getTestData();
     }
   },  
   methods: {
     getTestData () {
       this.loading = true;
-      getBasic(this.model.sernum)
+      getBasic(this.sernum)
         .then(response => {
           // console.log(response.data);
           this.alert = true;

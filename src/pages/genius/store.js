@@ -18,7 +18,6 @@ export default new Vuex.Store({
       message: '',
       reconnectError: false,
     },
-    testLog: {},
   },
   mutations: {
     [SOCKET_ONOPEN] (state, event) {

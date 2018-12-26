@@ -10,16 +10,16 @@
     </v-toolbar-title>
       <v-text-field
         flat
+        clearable
         solo-inverted
         prepend-icon="search"
         label="Search"
         class="hidden-sm-and-down"
+        v-on:keyup.enter="onEnter"
+        v-model="userInput"
         >
       </v-text-field>
       <v-spacer></v-spacer>     
-      <!-- <v-btn icon href="http://10.132.45.143/f1331865/FII_FG_BEACON_VMAT_WEB" target="_blank">
-        <v-icon>fa fa-github</v-icon>
-      </v-btn> -->
       <v-btn icon @click="handleFullScreen()">
         <v-icon>fullscreen</v-icon>
       </v-btn>
@@ -56,10 +56,12 @@
 <script>
 import NotificationList from '@/components/widgets/list/NotificationList';
 import Util from '@/util';
+import store from '../pages/vision/store';
 export default {
   name: 'app-toolbar',
   components: {
-    NotificationList
+    NotificationList,
+    store,
   },
   data: () => ({
     items: [
@@ -88,6 +90,7 @@ export default {
         }
       }
     ],
+    userInput: '',
   }),
   computed: {
     toolbarColor () {
@@ -100,7 +103,13 @@ export default {
     },
     handleFullScreen () {
       Util.toggleFullScreen();
-    }
+    },
+    onEnter () {
+      // window.location.href = '#/vision/basic/?sernum=' + this.userInput;
+      this.$router.push('/vision/basic');
+      store.commit('changeSernum', this.userInput);
+      // this.userInput = '';
+    },
   }
 };
 </script>
