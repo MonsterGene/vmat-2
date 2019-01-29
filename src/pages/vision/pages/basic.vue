@@ -29,7 +29,7 @@
                   color="primary"
                   :loading="loading"
                   @click.native="loading = true"
-                  @click="getTestData"
+                  @click.exact="getTestData"
                   :disabled="loading"
                 >
                   Search
@@ -37,7 +37,7 @@
                 </v-btn>
               </v-flex>
             </v-layout>
-            <v-flex xl4>
+            <v-flex xl12>
               <data-table
                 id="snfind-table"
                 title="Test Data Details"
