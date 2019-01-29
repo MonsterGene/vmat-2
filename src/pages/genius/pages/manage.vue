@@ -116,10 +116,15 @@
         </v-list>
       <v-divider></v-divider>
 
-      <!-- release notes -->
-      <h3><v-icon>menu</v-icon>Release Notes:</h3>
+      <!-- Training & Relase -->
+      <h3><v-icon>menu</v-icon>Training & Relase:</h3>
       <v-flex>
-          <pre>{{ releaseNotes }}</pre>
+        <v-btn
+          style="padding: 1; min-width: 0;"
+          color="error" 
+          :href="'http://10.132.45.143/robinwu/FII_FG_BEACON_GENIUS'" 
+          target="_blank"
+        >Training Materials & Release Notes</v-btn>
       </v-flex>
 
     </v-flex>
@@ -223,7 +228,6 @@ export default {
       notification: '',
       currentNotification: '',
       history: '',
-      releaseNotes: '',
       // Stop Dialogs
       openDialogs: false,
       titleDialogs: '',
@@ -256,10 +260,6 @@ export default {
     onReceived (data) {
       const payload = JSON.parse(data.data);
       // console.log(payload);
-      const releaseNotes = payload.release_notes;
-      if (releaseNotes) {
-        this.releaseNotes = releaseNotes;
-      }
       const history = payload.history;
       if (history) {
         this.history = history.slice(0, 15);

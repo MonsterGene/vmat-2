@@ -86,7 +86,6 @@ export default {
       commandPromp: false,
       userInput: '',
       logs: '',
-      testLogFalg: false,  // false mean it is first open window, true means it is not first time.
       items: [
         { active: true, title: 'Test Step 1', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
         { active: true, title: 'Test Step 2', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
@@ -97,7 +96,7 @@ export default {
         { title: 'Test Step 7', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
         { title: 'Test Step 8', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
       ],
-      logRows: 22,
+      logRows: 30,
     };
   },
   computed: {
@@ -135,20 +134,14 @@ export default {
     },
   },
   created () {
-    if (this.testLogFalg) {
+    setTimeout(() => {
+      // must add some delay, since wesocket neeeds some time to connect backend.
       this.requestInitLog();
-    }
-    else {
-      setTimeout(() => {
-        // must add some delay, since wesocket neeeds some time to connect backend.
-        this.requestInitLog();
-        this.testLogFalg = true;
-      }, 2000);
-    }
+    }, 2000);
     // dynamically change logs Rows
     const height = document.documentElement.scrollHeight;
     if (height < 700) {
-      this.logRows = 18;
+      this.logRows = 22;
     }
   },
   methods: {
