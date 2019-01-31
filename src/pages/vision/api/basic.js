@@ -6,7 +6,7 @@ function getBasic (sernum) {
   const hostname = window.location.hostname;
   const ipAddress = getIpAddress();
   if (hostname.includes('localhost')) {
-    return axios.post('http://localhost:8000/get-record-by-sernum/', { 'sernum': sernum, 'database': '192.168.75.128' });  // laptop VM
+    return axios.post('http://' + ipAddress + '/get-record-by-sernum/', { 'sernum': sernum, 'database': '192.168.200.214' });  // DEBUG USE
   }
   if (currentUrl.includes('fortinet')) {
     console.log('it is Fortinet');
