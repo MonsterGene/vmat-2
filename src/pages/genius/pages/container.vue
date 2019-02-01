@@ -20,7 +20,7 @@
             </div>
           </v-card-text>
         </v-card>
-        <v-flex pa-0 mt-1 v-for="container of containerList" :key="container.id" v-if="container.status === 'idle'">
+        <v-flex pa-0 mt-1 v-for="container of containerList" :key="container.id" v-show="container.status === 'idle'">
           <container-slot
             v-bind:container="container"
             v-bind:questionContainer="questionContainer"
@@ -39,7 +39,7 @@
             </div>
           </v-card-text>
         </v-card>
-        <v-flex pa-0 mt-1 v-for="container of containerList" :key="container.id" v-if="container.status === 'run'">
+        <v-flex pa-0 mt-1 v-for="container of containerList" :key="container.id" v-show="container.status === 'run'">
           <container-slot
             v-bind:container="container"
             v-bind:questionContainer="questionContainer"
@@ -58,7 +58,7 @@
             </div>
           </v-card-text>
         </v-card>
-        <v-flex pa-0 mt-1 v-for="container of containerList" :key="container.id" v-if="container.status === 'pass'">
+        <v-flex pa-0 mt-1 v-for="container of containerList" :key="container.id" v-show="container.status === 'pass'">
           <container-slot
             v-bind:container="container"
             v-bind:questionContainer="questionContainer"
@@ -77,7 +77,7 @@
             </div>
           </v-card-text>
         </v-card>
-        <v-flex pa-0 mt-1 v-for="container of containerList" :key="container.id" v-if="container.status === 'fail' || container.status === 'stop'">
+        <v-flex pa-0 mt-1 v-for="container of containerList" :key="container.id" v-show="container.status === 'fail' || container.status === 'stop'">
           <container-slot
             v-bind:container="container"
             v-bind:questionContainer="questionContainer"
