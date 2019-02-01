@@ -118,15 +118,13 @@
 
       <!-- Training & Relase -->
       <h3><v-icon>menu</v-icon>Training & Relase:</h3>
-      <v-flex>
-        <v-btn
-          style="padding: 1; min-width: 0;"
-          color="error" 
+      <v-layout row>
+        <v-btn large
+          color="primary" 
           :href="'http://10.132.45.143/robinwu/FII_FG_BEACON_GENIUS'" 
           target="_blank"
         >Training Materials & Release Notes</v-btn>
-      </v-flex>
-
+      </v-layout>
     </v-flex>
 
     <!-- <v-divider vertical></v-divider> -->
