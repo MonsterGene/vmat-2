@@ -98,7 +98,7 @@
         :title="snackTitle"
         :open="openSnack"
       ></notify-snackbar>
-      <v-progress-linear class="ma-0" :value="container.progress" height="4" v-show="container.progress"></v-progress-linear>
+      <v-progress-linear class="ma-0" :value="container.progress" height="4" v-show="container.status !== 'idle' && container.status !== 'pass'"></v-progress-linear>
       </v-card>
     </v-hover>
 </template>
