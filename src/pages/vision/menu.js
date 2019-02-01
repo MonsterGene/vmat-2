@@ -17,15 +17,6 @@ const vision_menu = [
     ]
   },
   {
-    title: 'Fortinet',
-    icon: 'filter_vintage',
-    group: '/fortinet',
-    items: [
-      { path: 'basic', title: 'Basic' },
-      { path: 'advanced', title: 'Advanced' },
-    ]
-  },
-  {
     title: 'Only Office',
     icon: 'filter_vintage',
     target: '_blank',

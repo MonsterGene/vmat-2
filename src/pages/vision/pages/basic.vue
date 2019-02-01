@@ -91,7 +91,9 @@ export default {
     if (params.sernum) {
       this.sernum = params.sernum;
     }
-    this.sernum = store.state.sernum;
+    if (!this.sernum) {
+      this.sernum = store.state.sernum;
+    }
     if (this.sernum) {
       this.getTestData();
     }
