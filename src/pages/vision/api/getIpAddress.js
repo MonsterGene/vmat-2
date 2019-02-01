@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 function getIpAddress () {
   let hostname = window.location.hash.split('=')[1];
   if (!hostname) { 
