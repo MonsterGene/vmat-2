@@ -17,15 +17,6 @@ const vision_menu = [
     ]
   },
   {
-    title: 'Fortinet',
-    icon: 'filter_vintage',
-    group: '/fortinet',
-    items: [
-      { path: 'basic', title: 'Basic' },
-      { path: 'advanced', title: 'Advanced' },
-    ]
-  },
-  {
     title: 'Only Office',
     icon: 'filter_vintage',
     target: '_blank',
@@ -36,6 +27,18 @@ const vision_menu = [
     icon: 'filter_vintage',
     target: '_blank',
     href: 'http://10.132.45.143',
+  },
+  {
+    title: 'GAC Pro',
+    icon: 'filter_vintage',
+    target: '_blank',
+    href: 'http://10.132.45.236',
+  },
+  {
+    title: 'Genius Center',
+    icon: 'filter_vintage',
+    target: '_blank',
+    href: 'http://10.132.46.216',
   },
 ];
 

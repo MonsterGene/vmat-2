@@ -9,7 +9,7 @@
       <v-card-title>
         <v-layout row wrap>
           <v-flex lg10 sm10 pa-2>
-            <span><a :href="'#' + container.url"><h4>{{ container.name }}</h4></a></span>
+            <span><a :href="'#' + container.url"><h4 class="font-weight-light">{{ container.name }}</h4></a></span>
 
             <span class="black--text">{{ container.test_time }}</span><br>
             <div v-show="container.display1">
@@ -98,7 +98,7 @@
         :title="snackTitle"
         :open="openSnack"
       ></notify-snackbar>
-      <v-progress-linear class="ma-0" :value="container.progress" height="4" v-show="container.progress"></v-progress-linear>
+      <v-progress-linear class="ma-0" :value="container.progress" height="4" v-show="container.status !== 'idle' && container.status !== 'pass'"></v-progress-linear>
       </v-card>
     </v-hover>
 </template>
