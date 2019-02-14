@@ -1,12 +1,4 @@
 const vision_menu = [
-  // {
-  //   title: 'Vision',
-  //   icon: 'filter_vintage',
-  //   items: [
-  //     { title: 'Basic', component: '/vision/basic' },
-  //     { title: 'Advanced', component: '/vision/advanced' },
-  //   ]
-  // },
   {
     title: 'Vision',
     icon: 'filter_vintage',
