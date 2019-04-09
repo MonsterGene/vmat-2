@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title style="height: 30px;">
-      <h4><v-icon>menu</v-icon>{{ controller }}</h4>
+      <h4 style="margin-top: -15px;"><v-icon>menu</v-icon>{{ controller }}</h4>
     </v-card-title>
     <v-divider></v-divider>
     
@@ -61,7 +61,7 @@
         v-if="controller !== 'INFO' && controller !== 'SEQ_LOG' && controller !== 'STEP'"
       >CMD</v-btn>
       <v-text-field v-if="commandPromp"
-        label="Type Commands Here."
+        placeholder="Type Commands Here."
         clearable
         v-on:keyup.enter="onEnter"
         v-model="userInput"
@@ -96,7 +96,7 @@ export default {
         { title: 'Test Step 7', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
         { title: 'Test Step 8', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
       ],
-      logRows: 30,
+      logRows: 25,
     };
   },
   computed: {

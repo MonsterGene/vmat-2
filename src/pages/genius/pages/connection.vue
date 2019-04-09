@@ -11,8 +11,7 @@
 
       <v-flex lg12 sm12 pa-1 ma-0>
         <v-card>
-          <v-card-title style="height: 38px;">
-            <v-tooltip right style="margin-left: -25px;">
+            <v-tooltip right>
               <v-btn style="padding: 1; min-width: 0;"
                 :href="backPath"
                 slot="activator"
@@ -21,7 +20,7 @@
               ><v-icon>arrow_back</v-icon></v-btn>
               <span>Back</span>
             </v-tooltip>
-            <v-tooltip right style="margin-left: -10px;">
+            <v-tooltip right style="margin-left: -15px;">
                 <v-btn
                   @click="clickAction(action, container.name)"
                   slot="activator"
@@ -34,10 +33,9 @@
             <v-btn v-for="controller of controllerList" :key="controller"
               flat
               color="error"
-              style="margin-left: -8px; padding: 1; min-width: 0;"
+              style="margin-left: -10px; padding: 1; min-width: 0;"
               @click="openLogWindow(controller)"
             >{{ controller }}</v-btn>
-            </v-card-title>
         </v-card>
       </v-flex>
 
