@@ -3,24 +3,40 @@
     <v-content>
       <v-container fluid fill-height>
         <v-layout align-center justify-center>
-          <v-flex xs12 sm8 md8 lg5>
+          <v-flex xs12 sm6 md6 lg6>
             <v-card class="elevation-1 pa-3">
               <v-card-text>
                 <div class="layout column align-center">
                   <img src="/static/logo.png" alt="Vue Material Admin" width="120" height="120">
                   <h1 class="flex my-4 primary--text">GAC Login</h1>
-                </div>                
+                  <h5 class="flex error--text">{{ error }}</h5>
+                </div>
                 <v-form>
-                  <v-text-field append-icon="person" name="login" label="Username" type="text" v-model="model.username"></v-text-field>
-                  <v-text-field append-icon="lock" name="password" label="Password" id="password" type="password" v-model="model.password"></v-text-field>
+                  <v-text-field 
+                  :disabled="usernameDisabled"
+                  append-icon="person" 
+                  name="login" 
+                  placeholder="Username" 
+                  type="text"
+                  :loading="usernameLoading"
+                  v-model="model.username" 
+                  v-on:keyup.enter="validateUsername"></v-text-field>
+                  <v-text-field 
+                  v-show="showPassword" 
+                  append-icon="lock" 
+                  name="password" 
+                  placeholder="Password" 
+                  id="password" 
+                  :loading="passwordLoading"
+                  type="password" 
+                  v-model="model.password"
+                  v-on:keyup.enter="validatePassword"></v-text-field>
                 </v-form>
-                <p>{{ login_error }}</p>
               </v-card-text>
               <v-card-actions>
-                <!-- <v-btn block color="" @click="register">New Account</v-btn> -->
-                <!-- <v-btn block color="" @click="forget">Forget ?</v-btn> -->
-                <!-- <v-spacer></v-spacer> -->
-                <v-btn block color="primary" @click="login" :loading="loading">Login</v-btn>
+                <v-btn block color="primary" 
+                @click="validatePassword" 
+                :loading="loading">{{ loginLabel }}</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -33,27 +49,86 @@
 <script>
 import Vue from 'vue';
 import VueCookies from 'vue-cookies';
-import { getLogin } from '../api/login';
-
+import { 
+  validateUsernameApi,
+  validatePasswordApi,
+} from '../api/gac';
 Vue.use(VueCookies);
+const crypto = require('crypto');
 
 export default {
   data: () => ({
+    error: '',
+    salt: '',
+    next: '',
+    loginLabel: 'Next',
     loading: false,
+    showPassword: false,
+    usernameLoading: false,
+    passwordLoading: false,
+    usernameDisabled: false,
     model: {
       username: '',
       password: ''
-    }, 
-    login_error: '',
+    }
   }),
-
-  mounted () {
+  created () {
     this.$cookies.remove('username');
     this.$cookies.remove('role');
+    const params = this.$route.query;
+    if (params.next) {
+      this.next = params.next;
+    }
+    // console.log(this.next);
+    // this.$router.push(this.next);
   },
   methods: {
-    login () {
+    validateUsername () {
+      if (this.model.username === 'genius') {
+        this.showPassword = true;
+        this.usernameDisabled = true;
+        this.loginLabel = 'Login';
+        this.loading = false;
+        this.usernameLoading = false;
+        return false;
+      }
+      this.usernameLoading = true;
+      validateUsernameApi(this.model.username)
+        .then(response => {
+          if (response.data.status) {
+            this.salt = response.data.payload.data;
+            this.error = '';
+            if (this.salt === '') {
+              this.error = 'GAC Background Service Error';
+              this.showPassword = false;
+              this.loading = false;
+            } else {
+              this.$cookies.set('pid', this.salt, '12h');
+              this.showPassword = true;
+              this.usernameDisabled = true;
+              this.loginLabel = 'Login';
+              this.loading = false;
+            }
+          } else {
+            this.error = response.data.payload.message;
+            this.showPassword = false;
+            this.loading = false;
+          }
+        })
+        .catch(e => {
+          console.log(e);
+          this.error = 'GAC Service Error';
+          this.showPassword = false;
+        });
+      this.usernameLoading = false;
+    },
+    validatePassword () {
+      this.usernameLoading = true;
       this.loading = true;
+      if (!this.showPassword) {
+        this.validateUsername();
+        return false;
+      }
       if (this.model.username === 'genius' && this.model.password === 'genius') {
         this.$cookies.set('username', 'genius', '12h');
         this.$cookies.set('role', 'operator', '12h');
@@ -61,37 +136,47 @@ export default {
         this.$router.push('/genius');
         return false;
       }
-
-      getLogin(this.model.username, this.model.password)
+      this.passwordLoading = true;
+      const password = this.ssha_pass(this.model.password, this.salt);
+      validatePasswordApi(this.model.username, password)
         .then(response => {
-          // console.log(response.data);
-
-          if (!response.data.status) {
-            this.login_error = response.data.msg;
-            this.model.password = '';
-            this.loading = false;
-            return false;
+          // console.log(response.data.payload.data);
+          if (response.data.status) {
+            console.log('Login Successfully');
+            let username = response.data.payload.data.username;
+            let role = response.data.payload.data.role;
+            // let profile = response.data.payload.data;
+            // console.log(profile);
+            this.$cookies.set('username', username, '12h');
+            this.$cookies.set('role', role, '12h');
+            // this.$cookies.set('profile', profile, '12h');
+            this.error = '';
+            if (this.next) {
+              this.$router.push(this.next);
+            } else {
+              this.$router.push('/genius');
+            }
+          } else {
+            this.error = response.data.payload.message;
           }
-          const display_name = response.data.profile.display_name + '(' + response.data.username + ')';
-          const role = response.data.project[0];
-          // console.log(display_name);
-          // console.log(role);
-
-          this.$cookies.set('username', display_name, '12h');
-          this.$cookies.set('role', role, '12h');
-          setTimeout(() => {
-            this.loading = false;
-            this.$router.push('/genius');
-            return false;
-          }, 2000);
         })
         .catch(e => {
           console.log(e);
-          this.login_error = 'Incorrect Username or Password...';
-          this.model.password = '';
-          this.loading = false;
+          this.error = 'GAC Service Error';
         });
+      this.usernameLoading = false;
+      this.passwordLoading = false;
+      this.loading = false;
     },
+    ssha_pass (passwd, salt) {
+      let ctx = crypto.createHash('sha1');
+      ctx.update(passwd, 'utf-8');
+      ctx.update(salt, 'binary');
+      let digest = ctx.digest('binary');
+      let ssha = '{SSHA}' + Buffer.from(digest + salt, 'binary').toString('base64');
+      // console.log(ssha);
+      return ssha;
+    }
   }
 
 };
