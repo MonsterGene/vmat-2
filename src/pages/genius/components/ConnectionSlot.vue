@@ -5,7 +5,7 @@
     </v-card-title>
     <v-divider></v-divider>
     
-    <v-card-text v-if="controller !== 'STEP'">
+    <v-card-text v-if="controller !== 'STEP' && controller !== 'INFO'">
       <textarea :id="controller"
         class="test-log-area"
         :rows="logRows"
@@ -44,6 +44,16 @@
       </v-list>
     </v-card-text>
 
+    <!-- For INFO windows only -->
+    <v-card-text v-if="controller === 'INFO'">
+      <textarea
+        :rows="logRows"
+        class="test-log-area"
+        readonly
+        v-model.lazy="containerInfo"
+      ></textarea>
+    </v-card-text>
+
     <v-divider></v-divider>
     <v-card-actions style="height: 40px;">
       <v-btn
@@ -76,6 +86,7 @@
 
 <script>
 import store from '../store';
+import { getContainerInfo } from '../api/getContainerInfo';
 
 export default {
   components: {
@@ -83,6 +94,7 @@ export default {
   props: ['controller', 'container', 'testLog', 'cleanTestLog'],
   data () {
     return {
+      containerInfo: '',
       commandPromp: false,
       userInput: '',
       logs: '',
@@ -96,7 +108,7 @@ export default {
         { title: 'Test Step 7', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
         { title: 'Test Step 8', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
       ],
-      logRows: 25,
+      logRows: 22,
     };
   },
   computed: {
@@ -107,15 +119,7 @@ export default {
   watch: {
     'testLog': {
       handler: function (newLog) {
-        if (newLog['testLogController'] === 'STEP') {
-          this.logs += 'It is Step Window';
-          console.log(newLog['testLog']);
-        }
-        else if (newLog['testLogController'] === 'INFO') {
-          this.logs += 'It is INFO Window';
-          console.log(newLog['testLog']);
-        }
-        else if (newLog['testLogController'] === this.controller) {
+        if (newLog['testLogController'] === this.controller) {
           const logLength = this.logs.length;
           if (logLength > 4000) {  // Limit test log length
             // console.log(this.controller + ' log length - ' + logLength);
@@ -134,6 +138,11 @@ export default {
     },
   },
   created () {
+    if (this.controller === 'INFO') {
+      // here need to get INFO controller info from backend.
+      this.getInformation();
+      // console.log(this.container);
+    }
     setTimeout(() => {
       // must add some delay, since wesocket neeeds some time to connect backend.
       this.requestInitLog();
@@ -161,7 +170,17 @@ export default {
     },
     JustClick () {
       console.log('Step is clicked.');
-    }
+    },
+    getInformation () {
+      getContainerInfo(this.container)
+        .then(response => {
+          // console.log(response.data);
+          this.containerInfo = response.data.payload.data;
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
   }
 };
 </script>
