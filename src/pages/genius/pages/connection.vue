@@ -163,8 +163,8 @@ export default {
       // container data
       container: {},
       controllerList: [],
-      controllerPool: ['SEQ_LOG', 'UUT'],
-      controllerQty: 2,
+      controllerPool: [],
+      controllerQty: 0,
       // for test log.
       testLog: {},
       cleanTestLog: false,
@@ -207,6 +207,11 @@ export default {
     // console.log('mounted - ' + ws);
     vm.$connect(ws, { format: 'json' });
     this.$options.sockets.onmessage = (data) => this.onReceived(data);
+    setTimeout(() => {
+      // must add some delay, since wesocket neeeds some time to connect backend.
+      this.controllerQty = 3;
+      this.controllerPool = ['INFO', 'SEQ_LOG', 'UUT'];
+    }, 1500);
   },
   destroyed () {
     vm.$disconnect();

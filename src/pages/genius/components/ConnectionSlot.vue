@@ -143,10 +143,7 @@ export default {
       this.getInformation();
       // console.log(this.container);
     }
-    setTimeout(() => {
-      // must add some delay, since wesocket neeeds some time to connect backend.
-      this.requestInitLog();
-    }, 2000);
+    this.requestInitLog();
     // dynamically change logs Rows
     const height = document.documentElement.scrollHeight;
     if (height < 700) {
