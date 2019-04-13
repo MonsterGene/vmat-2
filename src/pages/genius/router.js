@@ -2,7 +2,8 @@ const genius_router = [
   {
     path: '/genius/login',
     meta: {
-      breadcrumb: false,
+      breadcrumb: true,
+      // public: true,
       theme: 'purple'
     },
     name: 'genius/login',

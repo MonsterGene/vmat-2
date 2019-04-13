@@ -56,13 +56,9 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import VueCookies from 'vue-cookies';
 import { getGeniusVersion } from '../api/getGeniusVersion';
 import { getProdVersion } from '../api/getProdVersion';
 import { getServerName } from '../api/getServerName';
-
-Vue.use(VueCookies);
 
 export default {
   components: {

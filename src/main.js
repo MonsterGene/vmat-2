@@ -10,6 +10,7 @@ import VeeValidate from 'vee-validate';
 import colors from 'vuetify/es5/util/colors';
 import Truncate from 'lodash.truncate';
 import store from './store';
+import VueCookies from 'vue-cookies';
 Vue.config.productionTip = false;
 // Helpers
 // Global filters
@@ -35,10 +36,8 @@ Vue.use(Vuetify, {
     }
   }
 });
-// Bootstrap application components
 
-
-
+Vue.use(VueCookies);
 /* eslint-disable no-new */
 window.vm = new Vue({
   el: '#app',

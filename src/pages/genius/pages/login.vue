@@ -47,13 +47,10 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import VueCookies from 'vue-cookies';
 import { 
   validateUsernameApi,
   validatePasswordApi,
 } from '../api/gac';
-Vue.use(VueCookies);
 const crypto = require('crypto');
 
 export default {
@@ -151,11 +148,13 @@ export default {
             this.$cookies.set('role', role, '12h');
             // this.$cookies.set('profile', profile, '12h');
             this.error = '';
-            if (this.next) {
-              this.$router.push(this.next);
-            } else {
-              this.$router.push('/genius');
-            }
+            setTimeout(() => {
+              if (this.next) {
+                this.$router.push(this.next);
+              } else {
+                this.$router.push('/genius');
+              }
+            }, 1500);
           } else {
             this.error = response.data.payload.message;
           }

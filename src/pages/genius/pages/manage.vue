@@ -156,7 +156,6 @@
 
 <script>
 import Vue from 'vue';
-import VueCookies from 'vue-cookies';
 import VueNativeSock from 'vue-native-websocket';
 import ToolBar from '../components/ToolBar';
 import NotifyMarquee from '../components/NotifyMarquee';
@@ -181,7 +180,6 @@ const mutations = {
   SOCKET_RECONNECT,
   SOCKET_RECONNECT_ERROR
 };
-Vue.use(VueCookies);
 
 import { getIpAddress } from '../api/basic';
 import { getGeniusVersion } from '../api/getGeniusVersion';

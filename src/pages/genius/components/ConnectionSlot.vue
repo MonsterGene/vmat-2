@@ -137,13 +137,15 @@ export default {
       this.logs = '';
     },
   },
-  created () {
+  mounted () {
     if (this.controller === 'INFO') {
       // here need to get INFO controller info from backend.
       this.getInformation();
-      // console.log(this.container);
+    } else if (this.controller === 'STEP') {
+      console.log('STEP window is not ready yet.');
+    } else {
+      this.requestInitLog();
     }
-    this.requestInitLog();
     // dynamically change logs Rows
     const height = document.documentElement.scrollHeight;
     if (height < 700) {
