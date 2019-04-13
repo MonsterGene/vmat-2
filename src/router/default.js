@@ -53,16 +53,4 @@ export default [
       `@/pages/Error.vue`
     )
   },
-  {
-    path: '/login',
-    meta: {
-      public: true,
-    },
-    name: 'Login',
-    component: () => import(
-      /* webpackChunkName: "routes" */
-      /* webpackMode: "lazy-once" */
-      `@/pages/Login.vue`
-    )
-  },
 ];
