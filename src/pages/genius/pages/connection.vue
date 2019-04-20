@@ -208,13 +208,13 @@ export default {
     setTimeout(() => {
       // must add some delay, since wesocket neeeds some time to connect backend.
       this.controllerQty = 3;
-      this.controllerPool = ['INFO', 'SEQ_LOG'];
+      this.controllerPool = ['INFO', 'UUT'];
     }, 1000);
     // the reason we have two setTimeout, is sometimes UUT could not get log.
     setTimeout(() => {
       // must add some delay, since wesocket neeeds some time to connect backend.
       // this.controllerQty = 3;
-      this.controllerPool.push('UUT');
+      this.controllerPool.push('SEQ_LOG');
     }, 1500);
   },
   destroyed () {
