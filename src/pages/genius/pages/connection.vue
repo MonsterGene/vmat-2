@@ -211,7 +211,7 @@ export default {
       this.controllerPool.push('INFO');
       this.controllerPool.push('UUT');
       this.controllerPool.push('SEQ_LOG');
-    }, 1000);
+    }, 1500);
     // the reason we have two setTimeout, is sometimes UUT could not get log.
     // setTimeout(() => {
     //   // must add some delay, since wesocket neeeds some time to connect backend.
