@@ -205,19 +205,13 @@ export default {
     // console.log('mounted - ' + ws);
     vm.$connect(ws, { format: 'json' });
     this.$options.sockets.onmessage = (data) => this.onReceived(data);
+    this.controllerQty = 3;
     setTimeout(() => {
       // must add some delay, since wesocket neeeds some time to connect backend.
-      this.controllerQty = 3;
       this.controllerPool.push('INFO');
-      this.controllerPool.push('UUT');
       this.controllerPool.push('SEQ_LOG');
-    }, 1500);
-    // the reason we have two setTimeout, is sometimes UUT could not get log.
-    // setTimeout(() => {
-    //   // must add some delay, since wesocket neeeds some time to connect backend.
-    //   // this.controllerQty = 3;
-    //   this.controllerPool.push('SEQ_LOG');
-    // }, 1500);
+      this.controllerPool.push('UUT');
+    }, 3000);
   },
   destroyed () {
     vm.$disconnect();
@@ -263,7 +257,7 @@ export default {
       // Parse real-time test log
       const controller = content.testLogController;
       if (controller) {
-        // console.log(content);
+        // console.log('length: ' + content['testLog'].length);
         this.testLog = content;
       }
     },

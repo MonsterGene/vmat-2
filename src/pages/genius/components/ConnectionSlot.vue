@@ -120,12 +120,11 @@ export default {
     'testLog': {
       handler: function (newLog) {
         if (newLog['testLogController'] === this.controller) {
-          const logLength = this.logs.length;
-          if (logLength > 4000) {  // Limit test log length
-            // console.log(this.controller + ' log length - ' + logLength);
-            this.logs = this.logs.substring(logLength - 4000, logLength);
-          }
           this.logs += newLog['testLog'];
+          const logLength = this.logs.length;
+          if (logLength > 3000) {  // Limit test log length
+            this.logs = this.logs.substring(logLength - 3000, logLength);
+          }
           // Make sure the scroll is update to date.
           const container = this.$el.querySelector('#' + this.controller);
           container.scrollTop = container.scrollHeight + 10;
