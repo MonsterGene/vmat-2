@@ -18,7 +18,7 @@
           <v-divider></v-divider>
           <span class="black--text">{{ container.display2.split(':')[1] }}</span><br>
           <v-divider></v-divider>
-          <span class="black--text">{{ container.display3.split(':')[1] }}</span>
+          <span class="black--text">{{ display3 }}</span><br>
         </v-flex>
         <v-flex lg2 sm2 pa-2>
           <span class="group pa-0">
@@ -93,7 +93,7 @@
       :title="snackTitle"
       :open="openSnack"
     ></notify-snackbar>
-    <v-progress-linear class="ma-0" :value="container.progress" v-show="container.status !== 'idle' && container.status !== 'pass'" height="4"></v-progress-linear>
+    <v-progress-linear class="ma-0" :value="container.progress" height="4"></v-progress-linear>
     </v-card>
   </v-hover>
 </template>
@@ -117,6 +117,14 @@ export default {
     };
   },
   computed: {
+    display3 () {
+      let display = this.container.display3.split(':')[1];
+      if (display) {
+        return display.substring(0, 22);
+      } else {
+        return '';
+      }
+    },
     questionTitle2 () {
       return this.container.question;
     },
