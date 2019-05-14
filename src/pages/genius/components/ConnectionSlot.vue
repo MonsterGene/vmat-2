@@ -18,10 +18,10 @@
     <!-- For STEP windows only -->
     <v-card-text v-if="controller === 'STEP'">
       <div class="steps-area">
-      <v-layout row wrap >
+      <v-layout row wrap pa-0>
         <v-flex>
         </v-flex>
-        <v-flex lg12 md12 sm12 xs12 pa-0 v-for="(step, index) in steps" :key="step.name">
+        <v-flex lg12 md12 sm12 xs12 pa-0 ma-0 v-for="(step, index) in steps" :key="step.name">
             <v-hover :class="
             step.status === 'running' && 'yellow' || 
             step.status === 'passed' && 'green' ||
@@ -31,12 +31,12 @@
               <v-card
                 slot-scope="{ hover }"
                 :class="`elevation-${hover ? 20 : 1}`"
-                style="height: 95%; margin-top: 0px;"
+                style="height: 95%; margin-top: -10px;"
               >
                 <v-card-text class="">
                   <div class="row mb-0 align-center justify-space-between">
-                    <div class="text-box" style="margin-top: 0px;">
-                      <div class="text-md-center"><h5 class="font-weight-regular">{{ index + 1 }}: {{ step.name }}</h5></div>
+                    <div class="text-box" style="margin-top: -5px;">
+                      <div class="text-md-center" style="margin-top: -8px;"><h5 class="font-weight-regular">{{ index + 1 }}: {{ step.name }}</h5></div>
                     </div>
                 </div>
               </v-card-text>
