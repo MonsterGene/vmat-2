@@ -17,31 +17,34 @@
 
     <!-- For STEP windows only -->
     <v-card-text v-if="controller === 'STEP'">
-      <v-list subheader>
-        <v-list-tile
-          v-for="item in items"
-          :key="item.title"
-          avatar
-          @click="JustClick"
-          style="background: rgb(79,145,58);"
-        >
-          <v-list-tile-avatar>
-            <img :src="item.avatar">
-          </v-list-tile-avatar>
-
-          <v-list-tile-content>
-            <v-list-tile-title v-html="item.title"></v-list-tile-title>
-          </v-list-tile-content>
-
-          <v-list-tile-action>
-            <v-icon :color="item.active ? 'teal' : 'grey'">chat_bubble</v-icon>
-          </v-list-tile-action>
-        </v-list-tile>
-        <v-divider
-          v-if="index + 1 < items.length"
-          :key="index"
-        ></v-divider>
-      </v-list>
+      <div class="steps-area">
+      <v-layout row wrap >
+        <v-flex>
+        </v-flex>
+        <v-flex lg12 md12 sm12 xs12 pa-0 v-for="(step, index) in steps" :key="step.name">
+            <v-hover :class="
+            step.status === 'running' && 'yellow' || 
+            step.status === 'passed' && 'green' ||
+            step.status === 'pending' && 'gray' ||
+            step.status === 'failed' && 'red'
+            ">
+              <v-card
+                slot-scope="{ hover }"
+                :class="`elevation-${hover ? 20 : 1}`"
+                style="height: 95%; margin-top: 0px;"
+              >
+                <v-card-text class="">
+                  <div class="row mb-0 align-center justify-space-between">
+                    <div class="text-box" style="margin-top: 0px;">
+                      <div class="text-md-center"><h5 class="font-weight-regular">{{ index + 1 }}: {{ step.name }}</h5></div>
+                    </div>
+                </div>
+              </v-card-text>
+            </v-card>
+          </v-hover>
+        </v-flex>
+      </v-layout>
+      </div>
     </v-card-text>
 
     <!-- For INFO windows only -->
@@ -91,23 +94,13 @@ import { getContainerInfo } from '../api/getContainerInfo';
 export default {
   components: {
   },
-  props: ['controller', 'container', 'testLog', 'cleanTestLog'],
+  props: ['controller', 'container', 'testLog', 'cleanTestLog', 'steps'],
   data () {
     return {
       containerInfo: '',
       commandPromp: false,
       userInput: '',
       logs: '',
-      items: [
-        { active: true, title: 'Test Step 1', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
-        { active: true, title: 'Test Step 2', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
-        { title: 'Test Step 3', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
-        { title: 'Test Step 4', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
-        { title: 'Test Step 5', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
-        { title: 'Test Step 6', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
-        { title: 'Test Step 7', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
-        { title: 'Test Step 8', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
-      ],
       logRows: 22,
     };
   },
@@ -135,13 +128,16 @@ export default {
     'cleanTestLog' () {
       this.logs = '';
     },
+    // 'steps' () {
+    //   console.log(this.steps);
+    // }
   },
   mounted () {
     if (this.controller === 'INFO') {
       // here need to get INFO controller info from backend.
       this.getInformation();
     } else if (this.controller === 'STEP') {
-      console.log('STEP window is not ready yet.');
+      this.requestSteps();
     } else {
       this.requestInitLog();
     }
@@ -166,8 +162,8 @@ export default {
       // when controller window is open, request initial test log
       this.$emit('requestInitLog', this.controller);
     },
-    JustClick () {
-      console.log('Step is clicked.');
+    requestSteps () {
+      this.$emit('requestSteps', this.controller);
     },
     getInformation () {
       getContainerInfo(this.container)
@@ -178,7 +174,7 @@ export default {
         .catch(e => {
           console.log(e);
         });
-    },
+    }
   }
 };
 </script>
@@ -195,6 +191,25 @@ export default {
   margin-left: -14px;
   padding-left: 5px;
   padding-right: 5px;
+  // overflow-y: scroll; 
+  max-height: 600px;
+  min-height: 600px;
+}
+
+.steps-area {
+  // color: rgb(225, 225, 225);
+  // background-color: black;
+  resize: none;
+  overflow: auto;
+  width: 102%;
+  margin-top: -15px;
+  margin-bottom: -20px;
+  margin-left: -14px;
+  padding-left: 5px;
+  padding-right: 5px;
   overflow-y: scroll; 
+  overflow-x: hidden; 
+  max-height: 600px;
+  min-height: 600px;
 }
 </style>

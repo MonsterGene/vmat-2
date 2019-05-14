@@ -41,11 +41,13 @@
 
       <v-flex :class="'lg' + 12 / controllerQty + ' md6 sm12 xs12'" pa-1 v-for="controller of controllerPool" :key="controller">
         <connection-slot
+          v-bind:steps="steps"
           v-bind:testLog="testLog"
           v-bind:cleanTestLog="cleanTestLog"
           v-bind:controller="controller"
           v-bind:container="container.name"
           @requestInitLog="requestInitLog"
+          @requestSteps="requestSteps"
           @submitUserCommand="submitUserCommand"
         ></connection-slot>
       </v-flex>
@@ -168,6 +170,7 @@ export default {
       cleanTestLog: false,
       // let use could go back to Container Page
       backPath: '',
+      steps: [],  // to show step windows
     };
   },
   computed: {
@@ -210,8 +213,8 @@ export default {
       // must add some delay, since wesocket neeeds some time to connect backend.
       this.controllerPool.push('INFO');
       this.controllerPool.push('SEQ_LOG');
-      this.controllerPool.push('UUT');
-    }, 3000);
+      this.controllerPool.push('STEP');
+    }, 2000);
   },
   destroyed () {
     vm.$disconnect();
@@ -259,6 +262,12 @@ export default {
       if (controller) {
         // console.log('length: ' + content['testLog'].length);
         this.testLog = content;
+      }
+      // Get latest steps sequence
+      const steps = content.steps;
+      if (steps) {
+        this.steps = steps;
+        // console.log(this.steps);
       }
     },
     clickAction (action, container_name) {
@@ -310,6 +319,16 @@ export default {
           'name': this.container.name, 
           'controller': controller,
           'request': 'Test Log'
+        }
+      );
+    },
+    requestSteps (controller) {
+      // {'name': this.container_name, 'controller': this.controller_name, 'request': 'Test Log'}
+      this.$socket.sendObj(
+        { 
+          'name': this.container.name, 
+          'controller': controller,
+          'request': 'Steps'
         }
       );
     },
