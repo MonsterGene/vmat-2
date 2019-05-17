@@ -39,7 +39,7 @@
         </v-card>
       </v-flex>
 
-      <v-flex :class="'lg' + 12 / controllerQty + ' md6 sm12 xs12'" pa-1 v-for="controller of controllerPool" :key="controller">
+      <v-flex :class="'lg' + 12 / controllerQty + ' md12 sm12 xs12'" pa-1 v-for="controller of controllerPool" :key="controller">
         <connection-slot
           v-bind:steps="steps"
           v-bind:testLog="testLog"
