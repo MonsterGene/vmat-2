@@ -195,7 +195,7 @@ export default {
       else { return 'play_arrow' }
     },
   },
-  mounted () {
+  created () {
     this.username = this.$cookies.get('username');
     this.backPath = window.location.hash.split('/').slice(0, 3).join('/');
     // console.log('backpath - ' + this.backPath);
@@ -208,6 +208,8 @@ export default {
     // console.log('mounted - ' + ws);
     vm.$connect(ws, { format: 'json' });
     this.$options.sockets.onmessage = (data) => this.onReceived(data);
+  },
+  mounted () {
     this.controllerQty = 3;
     setTimeout(() => {
       // must add some delay, since wesocket neeeds some time to connect backend.
