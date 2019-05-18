@@ -212,8 +212,8 @@ export default {
     setTimeout(() => {
       // must add some delay, since wesocket neeeds some time to connect backend.
       this.controllerPool.push('INFO');
-      this.controllerPool.push('SEQ_LOG');
       this.controllerPool.push('STEP');
+      this.controllerPool.push('SEQ_LOG');
     }, 2000);
   },
   destroyed () {
