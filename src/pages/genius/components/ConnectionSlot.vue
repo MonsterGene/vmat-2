@@ -36,7 +36,7 @@
                 <v-card-text class="">
                   <div class="row mb-0 align-center justify-space-between">
                     <div class="text-box" style="margin-top: -5px;">
-                      <div class="text-md-center" style="margin-top: -8px;"><h5 class="font-weight-regular">{{ index + 1 }}: {{ step.name }}</h5></div>
+                      <div class="text-md-center" style="margin-top: -8px;"><h5 class="font-weight-regular">{{ index + 1 }}. {{ step.name }}</h5></div>
                     </div>
                 </div>
               </v-card-text>
