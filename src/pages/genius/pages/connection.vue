@@ -214,7 +214,7 @@ export default {
       this.controllerPool.push('INFO');
       this.controllerPool.push('STEP');
       // this.controllerPool.push('SEQ_LOG');
-    }, 2000);
+    }, 1000);
   },
   destroyed () {
     vm.$disconnect();
