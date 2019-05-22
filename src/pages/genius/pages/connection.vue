@@ -209,14 +209,14 @@ export default {
     vm.$connect(ws, { format: 'json' });
     this.$options.sockets.onmessage = (data) => this.onReceived(data);
     this.controllerQty = 1;
-    // setTimeout(() => {
+    setTimeout(() => {
     // must add some delay, since wesocket neeeds some time to connect backend.
     this.controllerPool.push('INFO');
     // this.controllerPool.push('STEP');
     // this.controllerPool.push('UUT');
     // this.controllerPool.push('SEQ_LOG');
 
-    // }, 1000);
+    }, 1000);
   },
   destroyed () {
     vm.$disconnect();
