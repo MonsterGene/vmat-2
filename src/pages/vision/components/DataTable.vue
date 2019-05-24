@@ -34,7 +34,7 @@
                     <td>{{ props.item.mode }}</td>
                     <td>{{ props.item.result }}</td>
                     <td>{{ props.item.test }}</td>
-                    <td>{{ props.item.testtime }}</td>
+                    <td>{{ props.item.tottime }}</td>
                     <td>{{ props.item.machine }}</td>
                     <td>{{ props.item.container }}</td>
                   </tr>
@@ -83,6 +83,9 @@
                               <v-list>Str5: {{ props.item.str5 }}</v-list>
                               <v-list>Str6: {{ props.item.str6 }}</v-list>
                             </v-flex>
+                            <v-flex lg12 sm12 xs12>
+                              <h5><v-icon>contact_phone</v-icon> <a @click="getTestLog(props.item)">Test Log TimeStamp: {{ props.item.testtime }}</a></h5>
+                            </v-flex>
                           </v-layout>
                         </v-container>
                       </v-card-text>
@@ -91,6 +94,23 @@
               </v-data-table>
               <json-to-excel :jsonData="testDataSource"></json-to-excel>
             </v-card-text>
+            <!-- Test Log List dialogs -->
+            <v-layout row justify-center>
+              <v-dialog v-model="openDialogs" persistent max-width="800">
+                <v-card>
+                  <v-card-title class="headline">{{ sernum }}: {{ message }}</v-card-title>
+                  <v-card-text>
+                    <h5 v-for="log of testLogs" :key="log.name">
+                      <a :href="log.url">{{ log.name }} ({{log.size}})</a>
+                    </h5>
+                    </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="green darken-1" flat @click="openDialogs = false">Close</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-layout>
           </v-card>
         </v-flex>             
       </v-layout>
@@ -101,6 +121,7 @@
 <script>
 import VWidget from '@/components/VWidget';
 import JsonToExcel from '../components/JsonToExcel';
+import { getTestLogList } from '../api/getTestLog';
 
 export default {
   components: {
@@ -110,7 +131,10 @@ export default {
   props: ['search', 'title', 'testDataSource'],
   data () {
     return {
-      
+      sernum: '',
+      message: '',
+      openDialogs: false,
+      testLogs: [],
       testData: {
         headers: [
           {
@@ -143,7 +167,7 @@ export default {
           },
           {
             text: 'Test Time',
-            value: 'testtime'
+            value: 'tottime'
           },
           {
             text: 'Machine',
@@ -169,6 +193,33 @@ export default {
   watch: {
   },   
   methods: {
+    getTestLog (data) {
+      const time_stamp = data.testtime;
+      const machine = data.machine;
+      const container = data.container;
+      this.sernum = data.sernum;
+      // console.log(time_stamp);
+      // console.log(machine);
+      // console.log(container);
+      this.testLogs = [];
+      getTestLogList(time_stamp, machine, container)
+        .then(response => {
+          // console.log(response.data);
+          this.openDialogs = true;
+          if (response.data['status']) {
+            this.message = response.data['payload']['message'];
+            this.testLogs = response.data['payload']['data'];
+            // console.log(this.testLogs);
+          }
+          else {
+            this.message = response.data['payload']['message'];
+          }
+        })
+        .catch(e => {
+          console.log(e);
+          this.message = 'Service Error, Please Contact Genius Team.';
+        });
+    }
   }
 };
 </script>
