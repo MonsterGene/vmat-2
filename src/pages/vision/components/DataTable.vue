@@ -19,6 +19,7 @@
             <v-card-text class="pa-0">
               <v-data-table
                 :headers="testData.headers"
+                :pagination.sync="testData.pagination"
                 :search="searchFilter"
                 :items="testDataContent"
                 :rows-per-page-items="[10,25,50,{text:'All','value':-1}]"
@@ -136,6 +137,9 @@ export default {
       openDialogs: false,
       testLogs: [],
       testData: {
+        pagination: {
+          descending: true,
+        },
         headers: [
           {
             text: 'Record Time',
