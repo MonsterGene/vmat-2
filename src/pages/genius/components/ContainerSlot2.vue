@@ -25,6 +25,7 @@
               <v-tooltip left>
                 <v-icon
                   @click="clickAction(action)"
+                  :disabled="actionDisabled"
                   slot="activator"
                   color="primary"
                   dark
@@ -110,6 +111,7 @@ export default {
   props: ['container', 'questionContainer'],
   data () {
     return {
+      actionDisabled: false,
       snackTitle: '',
       openSnack: false,
       // Question
@@ -158,6 +160,7 @@ export default {
       else { return 'Start Test' }
     }, 
     actionIcon () {
+      this.actionDisabled = false;
       if (this.container.status === 'idle') { return 'play_arrow' }
       else if (this.container.status === 'run') { return 'highlight_off' }
       else if (this.container.status === 'stop' || this.container.status === 'fail' || this.container.status === 'pass') { return 'delete_forever' } 
@@ -176,7 +179,11 @@ export default {
         this.openSnack = !this.openSnack;
         return false;
       }
-      // console.log(action);
+      // 20190527, void duplicate start test
+      if (this.container.status === 'idle') {
+        this.actionDisabled = true;
+      }
+      console.log(action);
       this.$emit('clickAction', action, this.container.name);
     },
     reOpenQuestion () {

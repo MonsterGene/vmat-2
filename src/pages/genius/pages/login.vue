@@ -129,11 +129,12 @@ export default {
       if (this.model.username === 'genius' && this.model.password === 'genius') {
         this.$cookies.set('username', 'genius', '12h');
         this.$cookies.set('role', 'operator', '12h');
-        this.loading = false;
+        this.loading = true;
         this.$router.push('/genius');
         return false;
       }
       this.passwordLoading = true;
+      this.loading = true;
       const password = this.ssha_pass(this.model.password, this.salt);
       validatePasswordApi(this.model.username, password)
         .then(response => {
@@ -157,15 +158,16 @@ export default {
             }, 1500);
           } else {
             this.error = response.data.payload.message;
+            this.loading = false;
           }
         })
         .catch(e => {
           console.log(e);
           this.error = 'GAC Service Error';
+          this.loading = false;
         });
       this.usernameLoading = false;
       this.passwordLoading = false;
-      this.loading = false;
     },
     ssha_pass (passwd, salt) {
       let ctx = crypto.createHash('sha1');
