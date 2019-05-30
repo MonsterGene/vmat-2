@@ -4,7 +4,7 @@ function getIpAddress () {
     hostname = window.location.hostname;
   }
   // console.log(hostname);
-  // hostname = '10.167.5.238';
+  // hostname = '10.167.5.253';
   // hostname = '10.167.219.247';
   return hostname + ':8000';
 }

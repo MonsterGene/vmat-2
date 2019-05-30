@@ -14,7 +14,7 @@
 
           <span class="black--text">{{ container.test_time }}</span><br>
           <v-divider></v-divider>
-          <span class="black--text">{{ container.display1.split(':')[1] }}</span><br>
+          <span class="black--text" @click="clickSerialNumber(container.display1)">{{ container.display1.split(':')[1] }}</span><br>
           <v-divider></v-divider>
           <span class="black--text">{{ container.display2.split(':')[1] }}</span><br>
           <v-divider></v-divider>
@@ -102,11 +102,13 @@
 <script>
 import AskQuestion from './AskQuestion';
 import NotifySnackbar from './NotifySnackbar';
+import store from '../../vision/store';
 
 export default {
   components: {
     AskQuestion,
     NotifySnackbar,
+    store,
   },
   props: ['container', 'questionContainer'],
   data () {
@@ -200,6 +202,14 @@ export default {
       this.$emit('answerQuestion', userInput, container_name);
       this.closeQuestion2();
     },
+    clickSerialNumber (serial_number) {
+      let flag = serial_number.split(':')[0];
+      let sernum = serial_number.split(':')[1];
+      if (flag === 'SERNUM') {
+        this.$router.push('/vision/basic');
+        store.commit('changeSernum', sernum.replace(' ', ''));
+      }
+    }
   }
 };
 </script>

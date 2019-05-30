@@ -89,8 +89,9 @@
       </v-flex>
 
       <!-- Autotest Like Layout -->
-      <v-flex lg2 md4 sm6 pa-1 v-show="screenStyle" v-for="container of containerList" :key="container.id">
+      <v-flex lg2 md4 sm6 pa-1 v-for="container of containerList" :key="container.id">
         <container-slot2
+          v-if="screenStyle"
           v-bind:container="container"
           v-bind:questionContainer="questionContainer"
           @clickAction="clickAction"
