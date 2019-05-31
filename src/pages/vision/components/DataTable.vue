@@ -52,7 +52,7 @@
                               <v-list>TAN Rev: {{ props.item.tannumrev }}</v-list>
                               <v-list>PID: {{ props.item.pid }}</v-list>
                               <v-list>VID: {{ props.item.vid }}</v-list>
-                              <v-list>Username: <a @click="getParentChildren(props.item.sernum)">{{ props.item.username }}</a></v-list>
+                              <v-list>Username: {{ props.item.username }}</v-list>
                               <v-list>Parent: <a @click="clickSerialNumber(props.item.parentsernum)">{{ props.item.parentsernum }}</a></v-list>
                             </v-flex>
                             <v-flex lg2 sm6 xs6>
@@ -124,7 +124,6 @@
 import VWidget from '@/components/VWidget';
 import JsonToExcel from '../components/JsonToExcel';
 import { getTestLogList } from '../api/getTestLog';
-import { getGenealogy } from '../api/getParentChildren';
 import store from '../../vision/store';
 
 export default {
@@ -231,26 +230,6 @@ export default {
     clickSerialNumber (sernum) {
       this.$router.push('/vision/basic');
       store.commit('changeSernum', sernum.replace(' ', ''));
-    },
-    getParentChildren (sernum) {
-      this.sernum = sernum;
-      getGenealogy(sernum)
-        .then(response => {
-          console.log(response.data);
-          this.openDialogs = true;
-          if (response.data['status']) {
-            this.message = response.data['payload']['message'];
-            this.testLogs = response.data['payload']['data'];
-            // console.log(this.testLogs);
-          }
-          else {
-            this.message = response.data['payload']['message'];
-          }
-        })
-        .catch(e => {
-          console.log(e);
-          this.message = 'Service Error, Please Contact Genius Team.';
-        });
     }
   }
 };
