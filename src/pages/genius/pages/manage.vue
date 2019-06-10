@@ -46,7 +46,7 @@
           </v-btn>
       </v-layout>
       <v-divider></v-divider> -->
-      <h3><v-icon>menu</v-icon>Script Manipulation:</h3>
+      <!-- <h3><v-icon>menu</v-icon>Script Manipulation:</h3>
       <v-layout row>
           <v-btn large
             color="primary"
@@ -60,7 +60,7 @@
           >
             Update PROD
           </v-btn>
-      </v-layout>
+      </v-layout> -->
       <v-divider></v-divider>
       <h3><v-icon>menu</v-icon>Lock/Unlock Container:</h3>
       <v-layout row>

@@ -106,8 +106,8 @@ export default {
       this.submitUserInput();
     },
     closeQuestion () {
-      this.userInput = '';
       this.$emit('closeQuestion');
+      this.userInput = '';
     }
   }
 };

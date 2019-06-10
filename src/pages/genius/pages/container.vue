@@ -215,7 +215,7 @@ export default {
       this.websock.send(JSON.stringify(Data));
     },
     websocketclose (e) {
-      console.log('Connection Closed', e);
+      console.log('Connection Closed');
     },
     websocketonmessage (e) {
       const data = JSON.parse(e.data);

