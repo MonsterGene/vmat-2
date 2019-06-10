@@ -128,7 +128,6 @@ Vue.use(VueNativeSock, ws, {
   // reconnectionAttempts: 2,
   // reconnectionDelay: 3000,
 });
-
 const vm = new Vue();
 
 export default {
@@ -171,6 +170,10 @@ export default {
       // let use could go back to Container Page
       backPath: '',
       steps: [],  // to show step windows
+      //
+      currentUrl: '',
+      hostname: '',
+      ws: '',
     };
   },
   computed: {
@@ -195,26 +198,26 @@ export default {
       else { return 'play_arrow' }
     },
   },
-  mounted () {
+  created () {
     this.username = this.$cookies.get('username');
+    this.currentUrl = window.location.hash.substring(1);
+    this.hostname = getIpAddress();
+    this.ws = 'ws://' + this.hostname + this.currentUrl;
+  },
+  mounted () {
     this.backPath = window.location.hash.split('/').slice(0, 3).join('/');
     // console.log('backpath - ' + this.backPath);
-    const currentUrl = window.location.hash.substring(1).split('?')[0];
-    const hostname = getIpAddress();
-    let ws = 'ws://' + hostname + currentUrl;
-    if (ws.endsWith('/')) {
-      ws = ws.substring(0, ws.length - 1);
-    }
     // console.log('mounted - ' + ws);
-    vm.$connect(ws, { format: 'json' });
+    vm.$connect(this.ws, { format: 'json' });
     this.$options.sockets.onmessage = (data) => this.onReceived(data);
     this.controllerQty = 1;
     setTimeout(() => {
     // must add some delay, since wesocket neeeds some time to connect backend.
+      this.controllerPool.push('SEQ_LOG');
+      this.controllerPool.pop(0);
       this.controllerPool.push('INFO');
     // this.controllerPool.push('STEP');
     // this.controllerPool.push('UUT');
-    // this.controllerPool.push('SEQ_LOG');
 
     }, 1000);
   },

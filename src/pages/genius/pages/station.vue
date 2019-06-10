@@ -40,6 +40,7 @@ const mutations = {
 };
 
 import { getIpAddress } from '../api/basic';
+import { getStationPage } from '../api/getRenderPage';
 const currentUrl = window.location.hash.substring(1);
 const hostname = getIpAddress();
 const ws = 'ws://' + hostname + '/genius';
@@ -67,17 +68,20 @@ export default {
       openScreenStyle: false,
       openChangeMode: false,
       stationList: [],
+      //
+      currentUrl: '',
+      hostname: '',
+      ws: '',
     };
   },
+  created () {
+    this.currentUrl = window.location.hash.substring(1);
+    this.hostname = getIpAddress();
+    this.ws = 'ws://' + this.hostname + '/genius';
+    this.getStationList();
+  },
   mounted () {
-    const currentUrl = window.location.hash.substring(1).split('?')[0];
-    const hostname = getIpAddress();
-    let ws = 'ws://' + hostname + currentUrl;
-    if (ws.endsWith('/')) {
-      ws = ws.substring(0, ws.length - 1);
-    }
-    // console.log('mounted - ' + ws);
-    vm.$connect(ws, { format: 'json' });
+    vm.$connect(this.ws, { format: 'json' });
     this.$options.sockets.onmessage = (data) => this.onReceived(data);
   },
   destroyed () {
@@ -93,7 +97,22 @@ export default {
       } else {
         this.stationList = [];
       }
-    }
+    },
+    getStationList () {
+      getStationPage(this.currentUrl)
+        .then(response => {
+          if (response.data.status) {
+            const stationList = response.data.payload.data;
+            // console.log(stationList);
+            if (stationList) {
+              this.stationList = stationList;
+            }
+          }
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
   },
 };
 </script>

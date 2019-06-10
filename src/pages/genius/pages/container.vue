@@ -157,16 +157,18 @@ const mutations = {
 };
 
 import { getIpAddress } from '../api/basic';
+import { getContainerPage } from '../api/getRenderPage';
 const currentUrl = window.location.hash.substring(1);
 const hostname = getIpAddress();
-const ws = 'ws://' + hostname + currentUrl;
+const ws = 'ws://' + this.hostname + this.currentUrl;
+// const ws = 'ws://' + this.hostname + '/genius';
 Vue.use(VueNativeSock, ws, {
   store: store,
   mutations: mutations,
   format: 'json',
   connectManually: true,
   // reconnection: true,
-  // reconnectionAttempts: 2,
+  // reconnectionAttempts: 100,
   // reconnectionDelay: 3000,
 });
 
@@ -207,18 +209,21 @@ export default {
       run_qty: 0,
       fail_qty: 0,
       pass_qty: 0,
+      //
+      currentUrl: '',
+      hostname: '',
+      ws: '',
     };
   },
-  mounted () {
+  created () {
     this.username = this.$cookies.get('username');
-    const currentUrl = window.location.hash.substring(1).split('?')[0];
-    const hostname = getIpAddress();
-    let ws = 'ws://' + hostname + currentUrl;
-    if (ws.endsWith('/')) {
-      ws = ws.substring(0, ws.length - 1);
-    }
-    // console.log('mounted - ' + ws);
-    vm.$connect(ws, { format: 'json' });
+    this.currentUrl = window.location.hash.substring(1);
+    this.hostname = getIpAddress();
+    this.ws = 'ws://' + hostname + currentUrl;
+    this.getContainerList();
+  },
+  mounted () {
+    vm.$connect(this.ws, { format: 'json' });
     this.$options.sockets.onmessage = (data) => this.onReceived(data);
   },
   destroyed () {
@@ -271,9 +276,6 @@ export default {
           this.closeQuestion();
         }
       }
-      // console.log('action: ' + action);
-      // console.log('container: ' + container_name);
-      // console.log('mode: ' + this.mode);
       this.$socket.sendObj(
         { 
           'mode': this.mode,
@@ -326,7 +328,22 @@ export default {
           this.fail_qty += 1;
         }
       }
-    }
+    },
+    getContainerList () {
+      getContainerPage(this.currentUrl)
+        .then(response => {
+          if (response.data.status) {
+            const containerList = response.data.payload.data;
+            if (containerList) {
+              this.containerList = containerList;
+              this.calculateUnitQty();  // calc all status qty
+            }
+          }
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
   }
 };
 </script>
