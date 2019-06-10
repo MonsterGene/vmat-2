@@ -12,10 +12,10 @@
         {{ version || 'v0.0.0_xxxxxxxx' }}
         <v-icon v-if="new_version_visible" color="error">error</v-icon>
       </v-btn>
-      <span>Latest Genius Version: {{ latest_version }}</span>
+      <span>{{ latest_version }}</span>
     </v-tooltip>
 
-    <v-tooltip bottom>
+    <!-- <v-tooltip bottom>
       <v-btn
         slot="activator"
         :color="toolBarColor"
@@ -26,7 +26,7 @@
         <v-icon v-if="new_prod_version_visible" color="error">error</v-icon>
       </v-btn>
       <span>Latest Prod Version:  {{ latest_prod_version }}</span>
-    </v-tooltip>
+    </v-tooltip> -->
 
     <v-spacer></v-spacer>
     <span>{{ username }}</span>
@@ -94,7 +94,6 @@ export default {
       prod_version: '',
       new_prod_version: '',
       latest_prod_version: '',
-      new_prod_version_visible: false,
     };
   },
   mounted () {
@@ -118,7 +117,6 @@ export default {
   created () {
     this.toggleFullScreen();
     this.getCurrentVersion();
-    this.getProdCodeVersion();
   },
   methods: {
     getCurrentServerName () {
@@ -140,7 +138,7 @@ export default {
           if (this.all_version) {
             this.version = response.data.version;
             this.new_version = response.data.new_version;
-            this.latest_version = this.all_version[this.all_version.length - 1];
+            this.latest_version = 'Latest Genius Version: ' + this.all_version[this.all_version.length - 1] + '\n';
             if (this.new_version) {
               this.new_version_visible = !this.new_version_visible;
             }
@@ -149,18 +147,17 @@ export default {
         .catch(e => {
           console.log(e);
         });
-    },
-    getProdCodeVersion () {
       getProdVersion()
         .then(response => {
           // console.log(response.data);
           const all_version = response.data.all_version;
           if (all_version) {
-            this.prod_version = response.data.version;
+            this.prod_version = 'Current PROD Version: ' + response.data.version + '\n';
             this.new_prod_version = response.data.new_version;
-            this.latest_prod_version = response.data.all_version[response.data.all_version.length - 1];
+            this.latest_prod_version = 'Latest PROD Version: ' + response.data.all_version[response.data.all_version.length - 1] + '\n';
+            this.latest_version = this.latest_version + this.prod_version + this.latest_prod_version;
             if (this.new_prod_version) {
-              this.new_prod_version_visible = !this.new_prod_version_visible;
+              this.new_version_visible = !this.new_version_visible;
             }
           }
         })

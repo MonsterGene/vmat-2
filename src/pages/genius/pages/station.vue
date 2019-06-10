@@ -15,50 +15,16 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import VueNativeSock from 'vue-native-websocket';
 import ToolBar from '../components/ToolBar';
 import NotifyMarquee from '../components/NotifyMarquee';
 import StationSlot from '../components/StationSlot';
-import store from '../store';
-import {
-  SOCKET_ONOPEN,
-  SOCKET_ONCLOSE,
-  SOCKET_ONERROR,
-  SOCKET_ONMESSAGE,
-  SOCKET_RECONNECT,
-  SOCKET_RECONNECT_ERROR
-} from '../mutation-types';
-
-const mutations = {
-  SOCKET_ONOPEN,
-  SOCKET_ONCLOSE,
-  SOCKET_ONERROR,
-  SOCKET_ONMESSAGE,
-  SOCKET_RECONNECT,
-  SOCKET_RECONNECT_ERROR
-};
 
 import { getIpAddress } from '../api/basic';
 import { getStationPage } from '../api/getRenderPage';
-const currentUrl = window.location.hash.substring(1);
-const hostname = getIpAddress();
-const ws = 'ws://' + hostname + '/genius';
-Vue.use(VueNativeSock, ws, {
-  store: store,
-  mutations: mutations,
-  format: 'json',
-  connectManually: true,
-  // reconnection: true,
-  // reconnectionAttempts: 2,
-  // reconnectionDelay: 3000,
-});
-
-const vm = new Vue();
+const WebSocketClient = require('websocket').client;
 
 export default {
   components: {
-    VueNativeSock,
     ToolBar,
     NotifyMarquee,
     StationSlot,
@@ -71,26 +37,48 @@ export default {
       //
       currentUrl: '',
       hostname: '',
-      ws: '',
+      websock: null,
     };
   },
   created () {
-    this.currentUrl = window.location.hash.substring(1);
-    this.hostname = getIpAddress();
-    this.ws = 'ws://' + this.hostname + '/genius';
     this.getStationList();
-  },
-  mounted () {
-    vm.$connect(this.ws, { format: 'json' });
-    this.$options.sockets.onmessage = (data) => this.onReceived(data);
+    this.initWebSocket();
   },
   destroyed () {
-    vm.$disconnect();
-    delete this.$options.sockets.onmessage;
+    this.websock.close();
   },
   methods: {
-    onReceived (data) {
-      const stationList = JSON.parse(data.data)['payload'];
+    initWebSocket () {
+      this.currentUrl = window.location.hash.substring(1);
+      this.hostname = getIpAddress();
+      const wsUrl = 'ws://' + this.hostname + this.currentUrl;
+      this.websock = new WebSocket(wsUrl);
+      this.websock.onmessage = this.websocketonmessage;
+      // this.websock.onopen = this.websocketonopen;
+      this.websock.onerror = this.websocketonerror;
+      this.websock.onclose = this.websocketclose;
+    },
+    // websocketonopen() {
+    //   let actions = {"test":"12345"};
+    //   this.websocketsend(JSON.stringify(actions));
+    // },
+    websocketonerror (e) {
+      console.log('Connection lost', e);
+      window.getApp.$emit('WEB_SOCKET_RECONNECT');
+      setTimeout(() => {
+        this.initWebSocket();
+      }, 3000);
+    },
+    websocketsend (Data) {
+      this.websock.send(JSON.stringify(Data));
+    },
+    websocketclose (e) {
+      console.log('Connection Closed', e);
+    },
+    websocketonmessage (e) {
+      const data = JSON.parse(e.data);
+      // console.log(data);
+      const stationList = data.payload;
       if (stationList) {
         this.stationList = stationList;
       // console.log(this.stationList);

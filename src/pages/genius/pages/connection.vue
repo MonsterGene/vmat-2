@@ -88,47 +88,13 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import VueNativeSock from 'vue-native-websocket';
 import ToolBar from '../components/ToolBar';
 import AskQuestion from '../components/AskQuestion';
 import NotifyMarquee from '../components/NotifyMarquee';
 import ConnectionSlot from '../components/ConnectionSlot';
 import NotifySnackbar from '../components/NotifySnackbar';
 
-import store from '../store';
-import {
-  SOCKET_ONOPEN,
-  SOCKET_ONCLOSE,
-  SOCKET_ONERROR,
-  SOCKET_ONMESSAGE,
-  SOCKET_RECONNECT,
-  SOCKET_RECONNECT_ERROR
-} from '../mutation-types';
-
-const mutations = {
-  SOCKET_ONOPEN,
-  SOCKET_ONCLOSE,
-  SOCKET_ONERROR,
-  SOCKET_ONMESSAGE,
-  SOCKET_RECONNECT,
-  SOCKET_RECONNECT_ERROR
-};
-
 import { getIpAddress } from '../api/basic';
-const currentUrl = window.location.hash.substring(1);
-const hostname = getIpAddress();
-const ws = 'ws://' + hostname + currentUrl;
-Vue.use(VueNativeSock, ws, {
-  store: store,
-  mutations: mutations,
-  format: 'json',
-  connectManually: true,
-  // reconnection: true,
-  // reconnectionAttempts: 2,
-  // reconnectionDelay: 3000,
-});
-const vm = new Vue();
 
 export default {
   components: {
@@ -173,7 +139,7 @@ export default {
       //
       currentUrl: '',
       hostname: '',
-      ws: '',
+      websock: null,
     };
   },
   computed: {
@@ -200,21 +166,16 @@ export default {
   },
   created () {
     this.username = this.$cookies.get('username');
-    this.currentUrl = window.location.hash.substring(1);
-    this.hostname = getIpAddress();
-    this.ws = 'ws://' + this.hostname + this.currentUrl;
+    this.initWebSocket();
   },
   mounted () {
     this.backPath = window.location.hash.split('/').slice(0, 3).join('/');
     // console.log('backpath - ' + this.backPath);
-    // console.log('mounted - ' + ws);
-    vm.$connect(this.ws, { format: 'json' });
-    this.$options.sockets.onmessage = (data) => this.onReceived(data);
     this.controllerQty = 1;
     setTimeout(() => {
     // must add some delay, since wesocket neeeds some time to connect backend.
-      this.controllerPool.push('SEQ_LOG');
-      this.controllerPool.pop(0);
+      // this.controllerPool.push('SEQ_LOG');
+      // this.controllerPool.pop(0);
       this.controllerPool.push('INFO');
     // this.controllerPool.push('STEP');
     // this.controllerPool.push('UUT');
@@ -222,12 +183,38 @@ export default {
     }, 1000);
   },
   destroyed () {
-    vm.$disconnect();
-    delete this.$options.sockets.onmessage;
+    this.websock.close();
   }, 
   methods: {
-    onReceived (data) {
-      const content = JSON.parse(data.data);
+    initWebSocket () {
+      this.currentUrl = window.location.hash.substring(1);
+      this.hostname = getIpAddress();
+      const wsUrl = 'ws://' + this.hostname + this.currentUrl;
+      this.websock = new WebSocket(wsUrl);
+      this.websock.onmessage = this.websocketonmessage;
+      // this.websock.onopen = this.websocketonopen;
+      this.websock.onerror = this.websocketonerror;
+      this.websock.onclose = this.websocketclose;
+    },
+    // websocketonopen() {
+    //   let actions = {"test":"12345"};
+    //   this.websocketsend(JSON.stringify(actions));
+    // },
+    websocketonerror (e) {
+      console.log('Connection lost', e);
+      window.getApp.$emit('WEB_SOCKET_RECONNECT');
+      setTimeout(() => {
+        this.initWebSocket();
+      }, 3000);
+    },
+    websocketsend (Data) {
+      this.websock.send(JSON.stringify(Data));
+    },
+    websocketclose (e) {
+      console.log('Connection Closed', e);
+    },
+    websocketonmessage (e) {
+      const content = JSON.parse(e.data);
       // console.log(content);
       // Parser containers list
       const container = content.payload;
@@ -297,7 +284,7 @@ export default {
         // if deposit, should clear all logs from windows, and do init for windows who is open.
         this.cleanTestLog = this.cleanTestLog;
       }
-      this.$socket.sendObj(
+      this.websocketsend(
         { 
           'mode': this.mode,
           'name': container_name, 
@@ -308,7 +295,7 @@ export default {
     },
     submitUserCommand (userInput, controller) {
       // send user's commands to backend
-      this.$socket.sendObj(
+      this.websocketsend(
         { 
           'name': this.container.name, 
           'controller': controller,
@@ -319,7 +306,7 @@ export default {
     requestInitLog (controller) {
       // controller requests the initial test log.
       // {'name': this.container_name, 'controller': this.controller_name, 'request': 'Test Log'}
-      this.$socket.sendObj(
+      this.websocketsend(
         { 
           'name': this.container.name, 
           'controller': controller,
@@ -329,7 +316,7 @@ export default {
     },
     requestSteps (controller) {
       // {'name': this.container_name, 'controller': this.controller_name, 'request': 'Test Log'}
-      this.$socket.sendObj(
+      this.websocketsend(
         { 
           'name': this.container.name, 
           'controller': controller,
@@ -338,7 +325,7 @@ export default {
       );
     },
     answerQuestion (userInput, container_name) {
-      this.$socket.sendObj(
+      this.websocketsend(
         { 
           'name': container_name, 
           'action': 'Answer Question',

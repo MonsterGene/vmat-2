@@ -130,49 +130,15 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import VueNativeSock from 'vue-native-websocket';
 import ToolBar from '../components/ToolBar';
 import AskQuestion from '../components/AskQuestion';
 import ContainerSlot from '../components/ContainerSlot';
 import ContainerSlot2 from '../components/ContainerSlot2';
 import NotifyMarquee from '../components/NotifyMarquee';
-import store from '../store';
-import {
-  SOCKET_ONOPEN,
-  SOCKET_ONCLOSE,
-  SOCKET_ONERROR,
-  SOCKET_ONMESSAGE,
-  SOCKET_RECONNECT,
-  SOCKET_RECONNECT_ERROR
-} from '../mutation-types';
-
-const mutations = {
-  SOCKET_ONOPEN,
-  SOCKET_ONCLOSE,
-  SOCKET_ONERROR,
-  SOCKET_ONMESSAGE,
-  SOCKET_RECONNECT,
-  SOCKET_RECONNECT_ERROR
-};
 
 import { getIpAddress } from '../api/basic';
 import { getContainerPage } from '../api/getRenderPage';
-const currentUrl = window.location.hash.substring(1);
-const hostname = getIpAddress();
-const ws = 'ws://' + this.hostname + this.currentUrl;
-// const ws = 'ws://' + this.hostname + '/genius';
-Vue.use(VueNativeSock, ws, {
-  store: store,
-  mutations: mutations,
-  format: 'json',
-  connectManually: true,
-  // reconnection: true,
-  // reconnectionAttempts: 100,
-  // reconnectionDelay: 3000,
-});
-
-const vm = new Vue();
+const WebSocketClient = require('websocket').client;
 
 export default {
   components: {
@@ -212,36 +178,57 @@ export default {
       //
       currentUrl: '',
       hostname: '',
-      ws: '',
+      websock: null,
     };
   },
   created () {
     this.username = this.$cookies.get('username');
     this.currentUrl = window.location.hash.substring(1);
     this.hostname = getIpAddress();
-    this.ws = 'ws://' + hostname + currentUrl;
     this.getContainerList();
-  },
-  mounted () {
-    vm.$connect(this.ws, { format: 'json' });
-    this.$options.sockets.onmessage = (data) => this.onReceived(data);
+    this.initWebSocket();
   },
   destroyed () {
-    vm.$disconnect();
-    delete this.$options.sockets.onmessage;
+    this.websock.close();
   }, 
   methods: {
-    onReceived (data) {
-      // console.log(JSON.parse(data.data));
+    initWebSocket () {
+      const wsUrl = 'ws://' + this.hostname + this.currentUrl;
+      this.websock = new WebSocket(wsUrl);
+      this.websock.onmessage = this.websocketonmessage;
+      // this.websock.onopen = this.websocketonopen;
+      this.websock.onerror = this.websocketonerror;
+      this.websock.onclose = this.websocketclose;
+    },
+    // websocketonopen() { //连接建立之后执行send方法发送数据
+    //   let actions = {"test":"12345"};
+    //   this.websocketsend(JSON.stringify(actions));
+    // },
+    websocketonerror (e) {
+      console.log('Connection lost', e);
+      window.getApp.$emit('WEB_SOCKET_RECONNECT');
+      setTimeout(() => {
+        this.initWebSocket();
+      }, 3000);
+    },
+    websocketsend (Data) {
+      this.websock.send(JSON.stringify(Data));
+    },
+    websocketclose (e) {
+      console.log('Connection Closed', e);
+    },
+    websocketonmessage (e) {
+      const data = JSON.parse(e.data);
+      // console.log(data);
       // Parser containers list
-      const containerList = JSON.parse(data.data)['payload'];
+      const containerList = data.payload;
       if (containerList) {
         this.containerList = containerList;
         this.calculateUnitQty();  // calc all status qty
         // console.log(this.containerList);
       }
       // Parser Question.
-      const question = JSON.parse(data.data)['ask_question'];
+      const question = data.ask_question;
       // console.log(question);
       if (question) {
         if (question.question) {
@@ -276,7 +263,7 @@ export default {
           this.closeQuestion();
         }
       }
-      this.$socket.sendObj(
+      this.websocketsend(
         { 
           'mode': this.mode,
           'name': container_name, 
@@ -287,7 +274,7 @@ export default {
     },
     answerQuestion (userInput, container_name) {
       // console.log(userInput, container_name);
-      this.$socket.sendObj(
+      this.websocketsend(
         { 
           'name': container_name,
           'action': 'Answer Question',

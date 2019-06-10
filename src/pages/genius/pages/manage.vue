@@ -155,31 +155,10 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import VueNativeSock from 'vue-native-websocket';
 import ToolBar from '../components/ToolBar';
 import NotifyMarquee from '../components/NotifyMarquee';
 import StationSlot from '../components/StationSlot';
-import store from '../store';
 import TimeCounter from '../components/TimeCounter';
-
-import {
-  SOCKET_ONOPEN,
-  SOCKET_ONCLOSE,
-  SOCKET_ONERROR,
-  SOCKET_ONMESSAGE,
-  SOCKET_RECONNECT,
-  SOCKET_RECONNECT_ERROR
-} from '../mutation-types';
-
-const mutations = {
-  SOCKET_ONOPEN,
-  SOCKET_ONCLOSE,
-  SOCKET_ONERROR,
-  SOCKET_ONMESSAGE,
-  SOCKET_RECONNECT,
-  SOCKET_RECONNECT_ERROR
-};
 
 import { getIpAddress } from '../api/basic';
 import { getGeniusVersion } from '../api/getGeniusVersion';
@@ -188,24 +167,8 @@ import {
   setNotifyMarquee
 } from '../api/getNotifyMarquee';
 
-const currentUrl = window.location.hash.substring(1);
-const hostname = getIpAddress();
-const ws = 'ws://' + hostname + '/genius';
-Vue.use(VueNativeSock, ws, {
-  store: store,
-  mutations: mutations,
-  format: 'json',
-  connectManually: true,
-  // reconnection: true,
-  // reconnectionAttempts: 2,
-  // reconnectionDelay: 3000,
-});
-
-const vm = new Vue();
-
 export default {
   components: {
-    VueNativeSock,
     ToolBar,
     NotifyMarquee,
     StationSlot,
@@ -235,26 +198,46 @@ export default {
       all_version: [],
     };
   },
-  mounted () {
+  created () {
     this.username = this.$cookies.get('username');
-    const hostname = getIpAddress();
-    let ws = 'ws://' + hostname + '/version';
-    if (ws.endsWith('/')) {
-      ws = ws.substring(0, ws.length - 1);
-    }
-    // console.log('mounted - ' + ws);
-    vm.$connect(ws, { format: 'json' });
-    this.$options.sockets.onmessage = (data) => this.onReceived(data);
+    this.initWebSocket();
     this.getNotification();  // get current notification when open the page.
     this.getCurrentVersion();  // get current Genius version, and version list for upgrade
   },
   destroyed () {
-    vm.$disconnect();
-    delete this.$options.sockets.onmessage;
-  },
+    this.websock.close();
+  }, 
   methods: {
-    onReceived (data) {
-      const payload = JSON.parse(data.data);
+    initWebSocket () {
+      this.currentUrl = window.location.hash.substring(1);
+      this.hostname = getIpAddress();
+      const wsUrl = 'ws://' + this.hostname + '/' + this.currentUrl.split('/')[2];
+      console.log(wsUrl);
+      this.websock = new WebSocket(wsUrl);
+      this.websock.onmessage = this.websocketonmessage;
+      // this.websock.onopen = this.websocketonopen;
+      this.websock.onerror = this.websocketonerror;
+      this.websock.onclose = this.websocketclose;
+    },
+    // websocketonopen() { //连接建立之后执行send方法发送数据
+    //   let actions = {"test":"12345"};
+    //   this.websocketsend(JSON.stringify(actions));
+    // },
+    websocketonerror (e) {
+      console.log('Connection lost', e);
+      window.getApp.$emit('WEB_SOCKET_RECONNECT');
+      setTimeout(() => {
+        this.initWebSocket();
+      }, 3000);
+    },
+    websocketsend (Data) {
+      this.websock.send(JSON.stringify(Data));
+    },
+    websocketclose (e) {
+      console.log('Connection Closed', e);
+    },
+    websocketonmessage (e) {
+      const payload = JSON.parse(e.data);
       // console.log(payload);
       const history = payload.history;
       if (history) {
@@ -266,7 +249,7 @@ export default {
       }
     },
     setNotification () {
-      this.$socket.sendObj(
+      this.websocketsend(
         { 
           'action': 'notification',
           'notification': this.notification,
@@ -276,15 +259,7 @@ export default {
       setTimeout(() => {
         // must add some delay, since wesocket neeeds some time to connect backend.
         this.getNotification();
-      }, 1500);
-      // setNotifyMarquee(this.notification)
-      //   .then(response => {
-      //     this.notification = '';
-      //     this.getNotification();
-      //   })
-      //   .catch(e => {
-      //     console.log(e);
-      //   });
+      }, 1000);
     },
     getNotification () {
       getNotifyMarquee()
@@ -345,7 +320,7 @@ export default {
         // console.log(action + this.selectContainer);
         obj = { 'action': 'unlock', 'container': this.selectContainer, 'user': this.username };
       }
-      this.$socket.sendObj(obj);
+      this.websocketsend(obj);
       this.selectContainer = '';
     }
   },

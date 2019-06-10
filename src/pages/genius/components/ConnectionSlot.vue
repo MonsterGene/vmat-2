@@ -88,7 +88,6 @@
 </template>
 
 <script>
-import store from '../store';
 import { getContainerInfo } from '../api/getContainerInfo';
 
 export default {

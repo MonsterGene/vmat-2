@@ -57,5 +57,16 @@ export default [
       this.$message.success(msg);
     }
   },
+  {
+    name: 'WEB_SOCKET_RECONNECT',
+    // @error api response data
+    callback: function (e) {
+      this.snackbar = {
+        show: true,
+        color: 'red',
+        text: 'Connection is lost, reconnecting...'
+      };
+    }
+  },
 
 ];
