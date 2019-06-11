@@ -78,6 +78,19 @@ const genius_router = [
       `@/pages/genius/pages/connection.vue`
     )
   },
+  {
+    path: '/xterm',
+    meta: {
+      breadcrumb: false,
+      theme: 'purple'
+    },
+    name: 'genius/xterm',
+    component: () => import(
+      /* webpackChunkName: "routes" */
+      /* webpackMode: "lazy-once" */
+      `@/pages/genius/pages/xterm.vue`
+    )
+  },
 ];
 
 export default genius_router;

@@ -1,8 +1,13 @@
 const genius_menu = [
   {
-    title: 'Genius-测试平台',  // for Genius Server
+    title: 'Genius Solution',  // for Genius Server
     icon: 'filter_vintage',
     name: 'genius',
+  },
+  {
+    title: 'Genius-xterm',
+    icon: 'filter_vintage',
+    name: 'genius/xterm',
   },
 ];
 

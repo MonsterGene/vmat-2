@@ -41,6 +41,7 @@
 
       <v-flex :class="'lg' + 12 / controllerQty + ' md12 sm12 xs12'" pa-1 v-for="controller of controllerPool" :key="controller">
         <connection-slot
+          v-if="controller === 'SEQ_LOG' || controller === 'STEP' || controller === 'INFO'"
           v-bind:steps="steps"
           v-bind:testLog="testLog"
           v-bind:cleanTestLog="cleanTestLog"
@@ -50,6 +51,14 @@
           @requestSteps="requestSteps"
           @submitUserCommand="submitUserCommand"
         ></connection-slot>
+        <connection-slot-xterm v-else
+          v-bind="websock"
+          v-bind:testLog="testLog"
+          v-bind:controller="controller"
+          v-bind:container="container.name"
+          @requestInitLog="requestInitLog"
+          @submitUserCommand="submitUserCommand"
+        ></connection-slot-xterm>
       </v-flex>
 
       <!-- ask question -->
@@ -92,6 +101,7 @@ import ToolBar from '../components/ToolBar';
 import AskQuestion from '../components/AskQuestion';
 import NotifyMarquee from '../components/NotifyMarquee';
 import ConnectionSlot from '../components/ConnectionSlot';
+import ConnectionSlotXterm from '../components/ConnectionSlotXterm';
 import NotifySnackbar from '../components/NotifySnackbar';
 
 import { getIpAddress } from '../api/basic';
@@ -102,6 +112,7 @@ export default {
     AskQuestion,
     NotifyMarquee,
     ConnectionSlot,
+    ConnectionSlotXterm,
     NotifySnackbar,
   },
   data () {
@@ -295,6 +306,7 @@ export default {
     },
     submitUserCommand (userInput, controller) {
       // send user's commands to backend
+      console.log(userInput, controller);
       this.websocketsend(
         { 
           'name': this.container.name, 
