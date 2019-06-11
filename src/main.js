@@ -11,6 +11,7 @@ import colors from 'vuetify/es5/util/colors';
 import Truncate from 'lodash.truncate';
 import store from './store';
 import VueCookies from 'vue-cookies';
+import 'xterm/dist/xterm.css';
 Vue.config.productionTip = false;
 // Helpers
 // Global filters
