@@ -20,7 +20,32 @@
         style="margin-left: -5px;"
         color="primary" 
         @click="openCommandPromp" 
+        v-if="controller !== 'INFO' && controller !== 'SEQ_LOG' && controller !== 'STEP'"
       >CMD</v-btn>
+      <v-text-field v-if="commandPromp"
+        placeholder="Type Commands Here."
+        clearable
+        v-on:keyup.enter="onEnter"
+        v-model="userInput"
+      ></v-text-field>
+      <!-- Special Characters -->
+      <v-menu v-show="commandPromp">
+        <v-btn
+          slot="activator"
+          color="error"
+        >
+          ASCII
+        </v-btn>
+        <v-list>
+          <v-list-tile
+            v-for="(ascii, index) in asciis"
+            :key="index"
+            @click="sendAscii(ascii)"
+          >
+            <v-list-tile-title>{{ ascii.name }}</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
     </v-card-actions>
   </v-card>
 </template>
@@ -28,11 +53,38 @@
 import Terminal from '../api/xTerm';
 
 export default {
-  props: ['websock', 'controller', 'container', 'testLog'],
+  props: ['controller', 'container', 'testLog'],
   data () {
     return {
       term: null,
       commandPromp: false,
+      userInput: '',
+      asciis: [
+        {
+          value: '::CTRL_C',
+          name: 'CTRL_C'
+        },
+        {
+          value: '::CTRL_X',
+          name: 'CTRL_X'
+        },
+        {
+          value: '::ESC',
+          name: 'ESC'
+        },
+        {
+          value: '::TELNET_BREAK',
+          name: 'TELNET_BREAK'
+        },
+        {
+          value: '::SSH_BREAK',
+          name: 'SSH_BREAK'
+        },
+        {
+          value: '::CTRL_CARET',
+          name: 'CTRL_CARET'
+        },
+      ],
     };
   },
   computed: {
@@ -52,26 +104,49 @@ export default {
   },
   mounted () {
     let terminalContainer = document.getElementById('terminal-' + this.container + '-' + this.controller);
-    this.term = new Terminal();
+    this.term = new Terminal({
+      cols: 1,
+      rows: 500,
+      cursorBlink: 5,
+      scrollback: 500,
+    });
     this.term.open(terminalContainer);
     this.term._initialized = true;
     this.term.fit();
     this.requestInitLog();
-    this.term.on('data', function (data) {
-      this.userInput = JSON.stringify(data);
-      this.userInput = data;
-      console.log(this.websock);
-      this.websock.send(JSON.stringify(data));
-    });
+  },
+  destroyed () {
+    this.term.dispose();
   },
   methods: {
     openCommandPromp () {
       this.commandPromp = !this.commandPromp;
+      // if (this.commandPromp) {
+      //   this.term.on('data', function (data) {
+      //     // this.userInput = JSON.stringify(data);
+      //     this.userInput = data;
+      //     // if (this.commandPromp) {
+      //       // this.submitUserCommand();
+      //     // }
+      //   });
+      // }
     },
     requestInitLog () {
       // when controller window is open, request initial test log
       this.$emit('requestInitLog', this.controller);
     },
+    submitUserCommand () {
+      this.$emit('submitUserCommand', this.userInput, this.controller);
+      this.userInput = '';
+    },
+    onEnter () {
+      this.submitUserCommand();
+    },
+    sendAscii (ascii) {
+      this.userInput = ascii.value;
+      // console.log(this.userInput);
+      this.submitUserCommand();
+    }
   },
 };
 </script>

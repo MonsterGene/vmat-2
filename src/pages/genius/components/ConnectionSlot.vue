@@ -5,7 +5,7 @@
     </v-card-title>
     <v-divider></v-divider>
     
-    <v-card-text v-if="controller !== 'STEP' && controller !== 'INFO'">
+    <v-card-text v-if="controller === 'SEQ_LOG'">
       <textarea :id="controller"
         class="test-log-area"
         :rows="logRows"
@@ -66,23 +66,6 @@
         target="_blank"
         v-if="controller !== 'STEP' && controller !== 'INFO'"
       >LOG</v-btn>
-      
-      <v-btn 
-        style="margin-left: -5px;"
-        color="primary" 
-        @click="openCommandPromp" 
-        v-if="controller !== 'INFO' && controller !== 'SEQ_LOG' && controller !== 'STEP'"
-      >CMD</v-btn>
-      <v-text-field v-if="commandPromp"
-        placeholder="Type Commands Here."
-        clearable
-        v-on:keyup.enter="onEnter"
-        v-model="userInput"
-      ></v-text-field>
-      <v-btn 
-        v-if="commandPromp" 
-        @click="submitUserCommand" 
-      ><v-icon left>send</v-icon>send</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -97,8 +80,6 @@ export default {
   data () {
     return {
       containerInfo: '',
-      commandPromp: false,
-      userInput: '',
       logs: '',
       logRows: 22,
     };
@@ -114,8 +95,8 @@ export default {
         if (newLog['testLogController'] === this.controller) {
           this.logs += newLog['testLog'];
           const logLength = this.logs.length;
-          if (logLength > 3000) {  // Limit test log length
-            this.logs = this.logs.substring(logLength - 3000, logLength);
+          if (logLength > 4000) {  // Limit test log length
+            this.logs = this.logs.substring(logLength - 4000, logLength);
           }
           // Make sure the scroll is update to date.
           const container = this.$el.querySelector('#' + this.controller);
@@ -147,16 +128,6 @@ export default {
     }
   },
   methods: {
-    openCommandPromp () {
-      this.commandPromp = !this.commandPromp;
-    },
-    submitUserCommand () {
-      this.$emit('submitUserCommand', this.userInput, this.controller);
-      this.userInput = '';
-    },
-    onEnter () {
-      this.submitUserCommand();
-    },
     requestInitLog () {
       // when controller window is open, request initial test log
       this.$emit('requestInitLog', this.controller);

@@ -52,7 +52,6 @@
           @submitUserCommand="submitUserCommand"
         ></connection-slot>
         <connection-slot-xterm v-else
-          v-bind="websock"
           v-bind:testLog="testLog"
           v-bind:controller="controller"
           v-bind:container="container.name"
@@ -306,7 +305,7 @@ export default {
     },
     submitUserCommand (userInput, controller) {
       // send user's commands to backend
-      console.log(userInput, controller);
+      // console.log(userInput, controller);
       this.websocketsend(
         { 
           'name': this.container.name, 

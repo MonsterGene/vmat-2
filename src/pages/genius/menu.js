@@ -4,11 +4,6 @@ const genius_menu = [
     icon: 'filter_vintage',
     name: 'genius',
   },
-  {
-    title: 'Genius-xterm',
-    icon: 'filter_vintage',
-    name: 'genius/xterm',
-  },
 ];
 
 export default genius_menu;
