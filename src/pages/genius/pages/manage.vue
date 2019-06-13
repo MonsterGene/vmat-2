@@ -86,7 +86,7 @@
         </v-flex>
       </v-layout>
       <v-divider></v-divider>
-      <h3><v-icon>menu</v-icon>Genius Engine Version Upgrade:</h3>
+      <!-- <h3><v-icon>menu</v-icon>Genius Engine Version Upgrade:</h3>
         <v-list>
           <v-list-tile
             v-for="ver of all_version"
@@ -114,7 +114,7 @@
             </v-btn>
           </v-list-tile>
         </v-list>
-      <v-divider></v-divider>
+      <v-divider></v-divider> -->
 
       <!-- Training & Relase -->
       <h3><v-icon>menu</v-icon>Training & Relase:</h3>
@@ -157,7 +157,7 @@
 <script>
 import ToolBar from '../components/ToolBar';
 import NotifyMarquee from '../components/NotifyMarquee';
-import StationSlot from '../components/StationSlot';
+// import StationSlot from '../components/StationSlot';
 import TimeCounter from '../components/TimeCounter';
 
 import { getIpAddress } from '../api/basic';
@@ -171,7 +171,7 @@ export default {
   components: {
     ToolBar,
     NotifyMarquee,
-    StationSlot,
+    // StationSlot,
     TimeCounter,
   },
   data () {
@@ -202,7 +202,7 @@ export default {
     this.username = this.$cookies.get('username');
     this.initWebSocket();
     this.getNotification();  // get current notification when open the page.
-    this.getCurrentVersion();  // get current Genius version, and version list for upgrade
+    // this.getCurrentVersion();  // get current Genius version, and version list for upgrade
   },
   destroyed () {
     this.websock.close();
@@ -271,17 +271,17 @@ export default {
           console.log(e);
         });
     },
-    getCurrentVersion () {
-      getGeniusVersion()
-        .then(response => {
-          // console.log(response.data);
-          this.version = response.data.version;
-          this.all_version = response.data.all_version;
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
+    // getCurrentVersion () {
+    //   getGeniusVersion()
+    //     .then(response => {
+    //       // console.log(response.data);
+    //       this.version = response.data.version;
+    //       this.all_version = response.data.all_version;
+    //     })
+    //     .catch(e => {
+    //       console.log(e);
+    //     });
+    // },
     engineAction (action, seq) {
       if (seq === 'first') {
         this.titleDialogs = action;
@@ -322,7 +322,7 @@ export default {
       }
       this.websocketsend(obj);
       this.selectContainer = '';
-    }
+    },
   },
 };
 </script>
