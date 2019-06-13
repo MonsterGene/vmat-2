@@ -77,12 +77,12 @@ export default {
           name: 'TELNET_BREAK'
         },
         {
-          value: '::SSH_BREAK',
-          name: 'SSH_BREAK'
+          value: '::OPEN',
+          name: 'OPEN CONN'
         },
         {
-          value: '::CTRL_CARET',
-          name: 'CTRL_CARET'
+          value: '::CLOSE',
+          name: 'CLOSE CONN'
         },
       ],
     };
