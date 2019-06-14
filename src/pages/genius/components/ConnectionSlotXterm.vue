@@ -94,6 +94,7 @@ export default {
   watch: {
     'testLog': {
       handler: function (newLog) {
+        console.log(newLog['testLog']);
         if (newLog['testLogController'] === this.controller) {
           this.term.write(newLog['testLog']);
         }
@@ -161,19 +162,7 @@ export default {
 
 <style lang='stylus' scoped>
 .console {
-  // color: rgb(225, 225, 225);
-  // background-color: black;
-  // resize: none;
-  // overflow: auto;
-  // width: 102%;
-  // margin-top: -15px;
-  // margin-bottom: -20px;
-  // margin-left: -14px;
-  // padding-left: 5px;
-  // padding-right: 5px;
-  // overflow-y: scroll; 
-  // overflow-x: hidden; 
-  max-height: 500px;
-  min-height: 500px;
+  max-height: 600px;
+  min-height: 600px;
 }
 </style>

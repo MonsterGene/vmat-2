@@ -8,7 +8,6 @@
     <notify-marquee :notify="currentNotification"></notify-marquee>
     <v-flex lg7 md7 sm12 xs12>
       <h3><v-icon>menu</v-icon>Notification:</h3>
-      
       <v-layout row>
         <v-flex>
           <v-text-field
@@ -29,38 +28,27 @@
           </v-btn>
         </v-flex>
       </v-layout>
+
       <v-divider></v-divider>
-      <!-- <h3><v-icon>menu</v-icon>Engine Manipulation:</h3>
+      <h3><v-icon>menu</v-icon>Container Style:</h3>
       <v-layout row>
+        <v-flex>
+          <v-select
+            v-model="containerStyle"
+            :items="options"
+          >
+          </v-select>
+        </v-flex>
+        <v-flex>
           <v-btn large
             color="primary"
-            @click="engineAction('Start Engine', 'first')"
+            @click="setGeniusStyle"
           >
-            Start Engine
+            Update
           </v-btn>
-          <v-btn large
-            color="primary"
-            @click="engineAction('Stop Engine', 'first')"
-          >
-            Stop Engine
-          </v-btn>
+        </v-flex>
       </v-layout>
-      <v-divider></v-divider> -->
-      <!-- <h3><v-icon>menu</v-icon>Script Manipulation:</h3>
-      <v-layout row>
-          <v-btn large
-            color="primary"
-            @click="engineAction('Update DEBUG', 'first')"
-          >
-            Update DEBUG
-          </v-btn>
-          <v-btn large
-            color="primary"
-            @click="engineAction('Update PROD', 'first')"
-          >
-            Update PROD
-          </v-btn>
-      </v-layout> -->
+
       <v-divider></v-divider>
       <h3><v-icon>menu</v-icon>Lock/Unlock Container:</h3>
       <v-layout row>
@@ -73,48 +61,19 @@
         <v-flex>
           <v-btn large
             color="primary"
-            @click="engineAction('Lock Container', 'first')"
+            @click="handleGeniusContainer('Lock Container', 'first')"
           >
             Lock
           </v-btn>
           <v-btn large
             color="primary"
-            @click="engineAction('Unlock Container', 'first')"
+            @click="handleGeniusContainer('Unlock Container', 'first')"
           >
             Unlock
           </v-btn>
         </v-flex>
       </v-layout>
       <v-divider></v-divider>
-      <!-- <h3><v-icon>menu</v-icon>Genius Engine Version Upgrade:</h3>
-        <v-list>
-          <v-list-tile
-            v-for="ver of all_version"
-            :key="ver"
-          >
-            <v-list-tile-action>
-              <v-icon v-show="version === ver" color="pink">star</v-icon>
-            </v-list-tile-action>
-
-            <v-list-tile-content>
-              <v-list-tile-title v-text="ver"></v-list-tile-title>
-            </v-list-tile-content>
-              <v-btn v-show="version !== ver"
-              color="primary"
-              @click="engineAction('Upgrade Engine to - ' + ver, 'first')"
-            >
-              Upgrade Engine
-            </v-btn>
-            <v-btn v-show="version === ver"
-              disabled
-              color="primary"
-              @click="engineAction('Upgrade Engine to - ' + ver, 'first')"
-            >
-              Upgrade Engine
-            </v-btn>
-          </v-list-tile>
-        </v-list>
-      <v-divider></v-divider> -->
 
       <!-- Training & Relase -->
       <h3><v-icon>menu</v-icon>Training & Relase:</h3>
@@ -146,7 +105,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="green darken-1" flat @click="openDialogs = false">Cancel</v-btn>
-              <v-btn color="green darken-1" flat @click="openDialogs = false; engineAction(titleDialogs, 'second')">Confirm</v-btn>
+              <v-btn color="green darken-1" flat @click="openDialogs = false; handleGeniusContainer(titleDialogs, 'second')">Confirm</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -157,15 +116,20 @@
 <script>
 import ToolBar from '../components/ToolBar';
 import NotifyMarquee from '../components/NotifyMarquee';
-// import StationSlot from '../components/StationSlot';
 import TimeCounter from '../components/TimeCounter';
 
 import { getIpAddress } from '../api/basic';
-import { getGeniusVersion } from '../api/getGeniusVersion';
 import {
   getNotifyMarquee,
-  setNotifyMarquee
+  setNotifyMarquee,
+  getHistory,
 } from '../api/getNotifyMarquee';
+import {
+  getStyle,
+  setStyle,
+  lockContainer,
+  unlockContainer,
+} from '../api/getStyle';
 
 export default {
   components: {
@@ -196,132 +160,109 @@ export default {
       // Choose the Genius to update.
       version: '',
       all_version: [],
+      containerStyle: 'DYNAMIC',
+      options: ['DYNAMIC', 'STATIC'],
     };
   },
   created () {
     this.username = this.$cookies.get('username');
-    this.initWebSocket();
-    this.getNotification();  // get current notification when open the page.
-    // this.getCurrentVersion();  // get current Genius version, and version list for upgrade
+    this.getGeniusHistory();
+    this.getNotification();
+    this.getGeniusStyle();
   },
-  destroyed () {
-    this.websock.close();
-  }, 
   methods: {
-    initWebSocket () {
-      this.currentUrl = window.location.hash.substring(1);
-      this.hostname = getIpAddress();
-      const wsUrl = 'ws://' + this.hostname + '/' + this.currentUrl.split('/')[2];
-      console.log(wsUrl);
-      this.websock = new WebSocket(wsUrl);
-      this.websock.onmessage = this.websocketonmessage;
-      // this.websock.onopen = this.websocketonopen;
-      this.websock.onerror = this.websocketonerror;
-      this.websock.onclose = this.websocketclose;
-    },
-    // websocketonopen() { //连接建立之后执行send方法发送数据
-    //   let actions = {"test":"12345"};
-    //   this.websocketsend(JSON.stringify(actions));
-    // },
-    websocketonerror (e) {
-      console.log('Connection lost', e);
-      window.getApp.$emit('WEB_SOCKET_RECONNECT');
-      setTimeout(() => {
-        this.initWebSocket();
-      }, 3000);
-    },
-    websocketsend (Data) {
-      this.websock.send(JSON.stringify(Data));
-    },
-    websocketclose (e) {
-      console.log('Connection Closed', e);
-    },
-    websocketonmessage (e) {
-      const payload = JSON.parse(e.data);
-      // console.log(payload);
-      const history = payload.history;
-      if (history) {
-        this.history = history.slice(0, 15);
-      }
-      const message = payload.message;
-      if (message) {
-        this.message += message + '\n';
-      }
-    },
-    setNotification () {
-      this.websocketsend(
-        { 
-          'action': 'notification',
-          'notification': this.notification,
-          'user': this.username
-        }
-      );
-      setTimeout(() => {
-        // must add some delay, since wesocket neeeds some time to connect backend.
-        this.getNotification();
-      }, 1000);
-    },
-    getNotification () {
-      getNotifyMarquee()
+    getGeniusHistory () {
+      getHistory()
         .then(response => {
-          // console.log('Notification: ' + response.data.notification);
-          this.currentNotification = response.data.notification;
+          this.history = response.data.payload.data;
         })
         .catch(e => {
           console.log(e);
         });
     },
-    // getCurrentVersion () {
-    //   getGeniusVersion()
-    //     .then(response => {
-    //       // console.log(response.data);
-    //       this.version = response.data.version;
-    //       this.all_version = response.data.all_version;
-    //     })
-    //     .catch(e => {
-    //       console.log(e);
-    //     });
-    // },
-    engineAction (action, seq) {
+    setNotification () {
+      setNotifyMarquee(this.username, this.notification)
+        .then(response => {
+          // console.log('Notification: ' + response.data.notification);
+          // this.currentNotification = response.data.notification;
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      setTimeout(() => {
+        // must add some delay, since wesocket neeeds some time to connect backend.
+        this.getNotification();
+        this.getGeniusHistory();
+      }, 1000);
+    },
+    getNotification () {
+      getNotifyMarquee()
+        .then(response => {
+          this.currentNotification = response.data.notification;
+          // console.log('Notification: ' + this.currentNotification);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    setGeniusStyle () {
+      setStyle(this.username, this.containerStyle)
+        .then(response => {
+          // console.log('Set Genius Style to ' + this.containerStyle);
+          // this.currentNotification = response.data.status;
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      setTimeout(() => {
+        // this.getGeniusStyle();
+        this.getGeniusHistory();
+      }, 1500);
+    },
+    getGeniusStyle () {
+      getStyle()
+        .then(response => {
+          this.containerStyle = response.data.payload.data;
+          // console.log('Get Sytle ' + this.containerStyle);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    lockGeniusContainer () {
+      lockContainer(this.username, this.selectContainer)
+        .then(response => {
+          // console.log('Lock Container ');
+          this.message = response.data.payload.message;
+          this.getGeniusHistory();
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    unlockGeniusContainer () {
+      unlockContainer(this.username, this.selectContainer)
+        .then(response => {
+          // console.log('unLock Container ');
+          this.message = response.data.payload.message;
+          this.getGeniusHistory();
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    handleGeniusContainer (action, seq) {
       if (seq === 'first') {
         this.titleDialogs = action;
         this.openDialogs = true;
         return false;
       }
-      this.message = 'Please wait about 1 minute..';  // clean message for next action.
-      this.startCounter = !this.startCounter;
-      let obj = {};
-      if (action === 'Start Engine') {
-        // console.log(action);
-        obj = { 'action': 'start_engine', 'user': this.username };
-      }
-      if (action === 'Stop Engine') {
-        // console.log(action);
-        obj = { 'action': 'stop_engine', 'user': this.username };
-      }
-      if (action.includes('Upgrade Engine')) {
-        const version = action.split('-')[1];
-        // console.log(version);
-        obj = { 'action': 'upgrade_engine', 'version': version, 'user': this.username };
-      }
-      if (action === 'Update DEBUG') {
-        // console.log(action);
-        obj = { 'action': 'update_te', 'user': this.username };
-      }
-      if (action === 'Update PROD') {
-        // console.log(action);
-        obj = { 'action': 'update_prod', 'user': this.username };
-      }
       if (action === 'Lock Container') {
-        // console.log(action + this.selectContainer);
-        obj = { 'action': 'lock', 'container': this.selectContainer, 'user': this.username };
+        this.lockGeniusContainer();
       }
       if (action === 'Unlock Container') {
-        // console.log(action + this.selectContainer);
-        obj = { 'action': 'unlock', 'container': this.selectContainer, 'user': this.username };
+        this.unlockGeniusContainer();
       }
-      this.websocketsend(obj);
-      this.selectContainer = '';
     },
   },
 };

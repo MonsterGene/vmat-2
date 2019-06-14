@@ -163,8 +163,8 @@ export default {
   padding-left: 5px;
   padding-right: 5px;
   // overflow-y: scroll; 
-  max-height: 500px;
-  min-height: 500px;
+  max-height: 600px;
+  min-height: 600px;
 }
 
 .steps-area {
@@ -180,7 +180,7 @@ export default {
   padding-right: 5px;
   overflow-y: scroll; 
   overflow-x: hidden; 
-  max-height: 500px;
-  min-height: 500px;
+  max-height: 600px;
+  min-height: 600px;
 }
 </style>

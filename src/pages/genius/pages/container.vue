@@ -138,6 +138,9 @@ import NotifyMarquee from '../components/NotifyMarquee';
 
 import { getIpAddress } from '../api/basic';
 import { getContainerPage } from '../api/getRenderPage';
+import {
+  getStyle,
+} from '../api/getStyle';
 const WebSocketClient = require('websocket').client;
 
 export default {
@@ -185,6 +188,7 @@ export default {
     this.username = this.$cookies.get('username');
     this.currentUrl = window.location.hash.substring(1);
     this.hostname = getIpAddress();
+    this.getGeniusStyle();
     this.getContainerList();
     this.initWebSocket();
   },
@@ -325,6 +329,19 @@ export default {
               this.containerList = containerList;
               this.calculateUnitQty();  // calc all status qty
             }
+          }
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    getGeniusStyle () {
+      getStyle()
+        .then(response => {
+          this.containerStyle = response.data.payload.data;
+          // console.log('Get Sytle ' + this.containerStyle);
+          if (this.containerStyle === 'STATIC') {
+            this.screenStyle = !this.screenStyle;
           }
         })
         .catch(e => {

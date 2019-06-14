@@ -78,6 +78,7 @@ export default {
       details: '',
       new_version: '',
       new_version_visible: false,
+      containerStyle: 'DYNAMIC',
     };
   },
   mounted () {
