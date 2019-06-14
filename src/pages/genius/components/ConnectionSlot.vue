@@ -11,7 +11,7 @@
         :rows="logRows"
         autofocus
         readonly
-        v-model.lazy="logs"
+        v-model="logs"
       ></textarea>
     </v-card-text>
 
@@ -81,7 +81,7 @@ export default {
     return {
       containerInfo: '',
       logs: '',
-      logRows: 22,
+      logRows: 25,
     };
   },
   computed: {
@@ -94,9 +94,10 @@ export default {
       handler: function (newLog) {
         if (newLog['testLogController'] === this.controller) {
           this.logs += newLog['testLog'];
+          // console.log(this.logs);
           const logLength = this.logs.length;
-          if (logLength > 4000) {  // Limit test log length
-            this.logs = this.logs.substring(logLength - 4000, logLength);
+          if (logLength > 6000) {  // Limit test log length
+            this.logs = this.logs.substring(logLength - 6000, logLength);
           }
           // Make sure the scroll is update to date.
           const container = this.$el.querySelector('#' + this.controller);
@@ -112,7 +113,7 @@ export default {
     //   console.log(this.steps);
     // }
   },
-  mounted () {
+  created () {
     if (this.controller === 'INFO') {
       // here need to get INFO controller info from backend.
       this.getInformation();
@@ -122,10 +123,10 @@ export default {
       this.requestInitLog();
     }
     // dynamically change logs Rows
-    const height = document.documentElement.scrollHeight;
-    if (height < 700) {
-      this.logRows = 22;
-    }
+    // const height = document.documentElement.scrollHeight;
+    // if (height < 700) {
+    //   this.logRows = 22;
+    // }
   },
   methods: {
     requestInitLog () {

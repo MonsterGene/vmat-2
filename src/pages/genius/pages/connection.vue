@@ -52,6 +52,7 @@
           @submitUserCommand="submitUserCommand"
         ></connection-slot>
         <connection-slot-xterm v-else
+          v-bind:controllerQty="controllerQty"
           v-bind:testLog="testLog"
           v-bind:controller="controller"
           v-bind:container="container.name"
@@ -188,7 +189,7 @@ export default {
       // this.controllerPool.pop(0);
       this.controllerPool.push('INFO');
     // this.controllerPool.push('STEP');
-    // this.controllerPool.push('UUT');
+      // this.controllerPool.push('UUT');
 
     }, 1000);
   },
