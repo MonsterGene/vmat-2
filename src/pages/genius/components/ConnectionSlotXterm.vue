@@ -94,7 +94,7 @@ export default {
   watch: {
     'testLog': {
       handler: function (newLog) {
-        console.log(newLog['testLog']);
+        // console.log(newLog['testLog']);
         if (newLog['testLogController'] === this.controller) {
           this.term.write(newLog['testLog']);
         }
@@ -127,6 +127,9 @@ export default {
       that.userInput = data;
       that.submitUserCommand();
     });
+    // this.term.textarea.onkeydown = function (e) {
+    //   console.log(e);
+    // };
     // console.log('cols:', this.term.cols);
   },
   destroyed () {
