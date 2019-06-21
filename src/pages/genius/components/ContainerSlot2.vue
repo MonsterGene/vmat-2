@@ -14,9 +14,9 @@
 
           <span class="black--text">{{ container.test_time }}</span><br>
           <v-divider></v-divider>
-          <span class="black--text" @click="clickSerialNumber(container.display1)">{{ container.display1.split(':')[1] }}</span><br>
+          <span class="black--text" @click="clickSerialNumber(container.display1)">{{ display1 }}</span><br>
           <v-divider></v-divider>
-          <span class="black--text">{{ container.display2.split(':')[1] }}</span><br>
+          <span class="black--text">{{ display2 }}</span><br>
           <v-divider></v-divider>
           <span class="black--text">{{ display3 }}</span><br>
         </v-flex>
@@ -121,12 +121,28 @@ export default {
     };
   },
   computed: {
-    display3 () {
-      let display = this.container.display3.split(':')[1];
-      if (display) {
-        return display.substring(0, 22);
+    display1 () {
+      let display = this.container.display1.split(':')[0];
+      if (display === 'SERNUM') {
+        return this.container.display1.split(':')[1].substring(0, 22);
       } else {
-        return '';
+        return this.container.display1.substring(0, 22);
+      }
+    },
+    display2 () {
+      let display = this.container.display2.split(':')[0];
+      if (display === 'UUTTYPE') {
+        return this.container.display2.split(':')[1].substring(0, 22);
+      } else {
+        return this.container.display2.substring(0, 22);
+      }
+    },
+    display3 () {
+      let display = this.container.display3.split(':')[0];
+      if (display === 'STEP') {
+        return this.container.display3.split(':')[1].substring(0, 22);
+      } else {
+        return this.container.display3.substring(0, 22);
       }
     },
     questionTitle2 () {
@@ -151,8 +167,10 @@ export default {
       if (this.questionContainer === this.container.name && this.container.status === 'run') { return 'info' }
       else if (this.container.question) { return 'info' }  // it is for nested Ask Quesiton.
       else if (this.container.status === 'run') { return 'background: rgb(240,184,0);' }
-      else if (this.container.status === 'pass') { return 'background: rgb(79,145,58);' }
-      else if (this.container.status === 'stop' || this.container.status === 'fail') { return 'background: rgb(216,31,40);' } 
+      // else if (this.container.status === 'pass') { return 'background: rgb(79,145,58);' }
+      // else if (this.container.status === 'stop' || this.container.status === 'fail') { return 'background: rgb(216,31,40);' } 
+      else if (this.container.status === 'pass') { return 'background: rgb(92,182,73);' }
+      else if (this.container.status === 'stop' || this.container.status === 'fail') { return 'background: rgb(239,143,155);' } 
       else { return '' }
     },
     action () {

@@ -51,6 +51,13 @@
           @requestSteps="requestSteps"
           @submitUserCommand="submitUserCommand"
         ></connection-slot>
+        <connection-slot-profile v-else-if="controller === 'PROFILE'"
+          v-bind:profileData="profileData"
+          v-bind:controllerQty="controllerQty"
+          v-bind:controller="controller"
+          v-bind:container="container.name"
+          @requestProfile="requestProfile"
+        ></connection-slot-profile>
         <connection-slot-xterm v-else
           v-bind:controllerQty="controllerQty"
           v-bind:testLog="testLog"
@@ -102,6 +109,7 @@ import AskQuestion from '../components/AskQuestion';
 import NotifyMarquee from '../components/NotifyMarquee';
 import ConnectionSlot from '../components/ConnectionSlot';
 import ConnectionSlotXterm from '../components/ConnectionSlotXterm';
+import ConnectionSlotProfile from '../components/ConnectionSlotProfile';
 import NotifySnackbar from '../components/NotifySnackbar';
 
 import { getIpAddress } from '../api/basic';
@@ -113,6 +121,7 @@ export default {
     NotifyMarquee,
     ConnectionSlot,
     ConnectionSlotXterm,
+    ConnectionSlotProfile,
     NotifySnackbar,
   },
   data () {
@@ -147,6 +156,7 @@ export default {
       // let use could go back to Container Page
       backPath: '',
       steps: [],  // to show step windows
+      profileData: [],  // profileData to show chamber chart
       //
       currentUrl: '',
       hostname: '',
@@ -186,9 +196,8 @@ export default {
     setTimeout(() => {
     // must add some delay, since wesocket neeeds some time to connect backend.
       // this.controllerPool.push('SEQ_LOG');
-      // this.controllerPool.pop(0);
+      // this.controllerPool.push('PROFILE');
       this.controllerPool.push('INFO');
-    // this.controllerPool.push('STEP');
       // this.controllerPool.push('UUT');
 
     }, 1000);
@@ -236,6 +245,10 @@ export default {
       const controllerList = content.controllerList;
       if (controllerList) {
         this.controllerList = controllerList;
+        const index = this.controllerList.indexOf('CHAMBER', 0);
+        if (index !== -1) {  // means found CHAMBER connection.
+          this.controllerList.push('PROFILE');
+        }
       }
       // Parser Question.
       const question = content.ask_question;
@@ -271,6 +284,12 @@ export default {
       if (steps) {
         this.steps = steps;
         // console.log(this.steps);
+      }
+      // Get profile
+      const profile = content.profile;
+      if (profile) {
+        this.profileData = profile;
+        // console.log(this.profileData);
       }
     },
     clickAction (action, container_name) {
@@ -323,6 +342,17 @@ export default {
           'name': this.container.name, 
           'controller': controller,
           'request': 'Test Log'
+        }
+      );
+    },
+    requestProfile (controller) {
+      // controller requests the initial test log.
+      // {'name': this.container_name, 'controller': this.controller_name, 'request': 'Profile'}
+      this.websocketsend(
+        { 
+          'name': this.container.name, 
+          'controller': controller,
+          'request': 'Profile'
         }
       );
     },
