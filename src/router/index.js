@@ -18,7 +18,7 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requireAuth)) {
     const auth = vueCookies.get('username');
     if (!auth) {
-      router.replace('/genius/login?next=' + to.path);
+      router.replace('/genius/login');
       next(false);
     }
   }
