@@ -94,48 +94,46 @@ export default {
             if (this.salt === '') {
               this.error = 'GAC Background Service Error';
               this.loading = false;
-              return false;
             } else {
               this.$cookies.set('pid', this.salt, '12h');
+              const password = this.ssha_pass(this.model.password, this.salt);
+              validatePasswordApi(this.model.username, password)
+                .then(response => {
+                  // console.log(response.data.payload.data);
+                  if (response.data.status) {
+                    // console.log('Login Successfully');
+                    let username = response.data.payload.data.username;
+                    let role = response.data.payload.data.role;
+                    this.$cookies.set('username', username, '12h');
+                    this.$cookies.set('role', role, '12h');
+                    this.error = '';
+                    setTimeout(() => {
+                      if (this.next) {
+                        this.$router.push(this.next);
+                      } else {
+                        this.$router.push('/genius');
+                      }
+                    }, 1500);
+                  } else {
+                    this.error = response.data.payload.message;
+                    this.loading = false;
+                  }
+                })
+                .catch(e => {
+                  console.log(e);
+                  this.error = 'GAC Service2 Error';
+                  this.loading = false;
+                });
             }
           } else {
             this.error = response.data.payload.message;
             this.loading = false;
-            return false;
           }
         })
         .catch(e => {
           console.log(e);
           this.error = 'GAC Service Error';
           return false;
-        });
-      const password = this.ssha_pass(this.model.password, this.salt);
-      validatePasswordApi(this.model.username, password)
-        .then(response => {
-          // console.log(response.data.payload.data);
-          if (response.data.status) {
-            // console.log('Login Successfully');
-            let username = response.data.payload.data.username;
-            let role = response.data.payload.data.role;
-            this.$cookies.set('username', username, '12h');
-            this.$cookies.set('role', role, '12h');
-            this.error = '';
-            setTimeout(() => {
-              if (this.next) {
-                this.$router.push(this.next);
-              } else {
-                this.$router.push('/genius');
-              }
-            }, 1500);
-          } else {
-            this.error = response.data.payload.message;
-            this.loading = false;
-          }
-        })
-        .catch(e => {
-          console.log(e);
-          this.error = 'GAC Service Error';
-          this.loading = false;
         });
     },
     ssha_pass (passwd, salt) {
