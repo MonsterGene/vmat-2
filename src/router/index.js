@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import paths from './paths';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
+import vueCookies from 'vue-cookies';
 import { globalMixin } from '../util/mixins/globalMixins';
 
 Vue.use(Router);
@@ -14,6 +15,13 @@ const router =  new Router({
 });
 // router gards
 router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requireAuth)) {
+    const auth = vueCookies.get('username');
+    if (!auth) {
+      router.replace('/genius/login?next=' + to.path);
+      next(false);
+    }
+  }
   NProgress.start();
   next();
 });

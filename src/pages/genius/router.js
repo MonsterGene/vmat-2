@@ -14,10 +14,25 @@ const genius_router = [
     )
   },
   {
+    path: '/genius/logout',
+    meta: {
+      breadcrumb: true,
+      // public: true,
+      theme: 'purple'
+    },
+    name: 'genius/logout',
+    component: () => import(
+      /* webpackChunkName: "routes" */
+      /* webpackMode: "lazy-once" */
+      `@/pages/genius/pages/logout.vue`
+    )
+  },
+  {
     path: '/genius/manage',
     meta: {
       breadcrumb: false,
-      theme: 'purple'
+      theme: 'purple',
+      requireAuth: true,
     },
     name: 'genius/manage',
     component: () => import(
@@ -30,7 +45,8 @@ const genius_router = [
     path: '/genius/logs/:connection',
     meta: {
       breadcrumb: false,
-      theme: 'purple'
+      theme: 'purple',
+      requireAuth: true,
     },
     name: 'genius/logs',
     component: () => import(
@@ -44,6 +60,7 @@ const genius_router = [
     meta: {
       breadcrumb: false,
       theme: 'purple',
+      requireAuth: true,
     },
     name: 'genius',
     component: () => import(
@@ -56,7 +73,8 @@ const genius_router = [
     path: '/genius/:container',
     meta: {
       breadcrumb: false,
-      theme: 'purple'
+      theme: 'purple',
+      requireAuth: true,
     },
     name: 'genius/station',
     component: () => import(
@@ -69,7 +87,8 @@ const genius_router = [
     path: '/genius/:container/:connection',
     meta: {
       breadcrumb: false,
-      theme: 'purple'
+      theme: 'purple',
+      requireAuth: true,
     },
     name: 'genius/container',
     component: () => import(

@@ -13,30 +13,27 @@
                 </div>
                 <v-form>
                   <v-text-field 
-                  :disabled="usernameDisabled"
                   append-icon="person" 
                   name="login" 
                   placeholder="Username" 
                   type="text"
-                  :loading="usernameLoading"
                   v-model="model.username" 
-                  v-on:keyup.enter="validateUsername"></v-text-field>
+                  ></v-text-field>
                   <v-text-field 
-                  v-show="showPassword" 
                   append-icon="lock" 
                   name="password" 
                   placeholder="Password" 
                   id="password" 
-                  :loading="passwordLoading"
                   type="password" 
                   v-model="model.password"
-                  v-on:keyup.enter="validatePassword"></v-text-field>
+                  v-on:keyup.enter="validatePassword"
+                  ></v-text-field>
                 </v-form>
               </v-card-text>
               <v-card-actions>
                 <v-btn block color="primary" 
                 @click="validatePassword" 
-                :loading="loading">{{ loginLabel }}</v-btn>
+                :loading="loading">Login</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -58,12 +55,7 @@ export default {
     error: '',
     salt: '',
     next: '',
-    loginLabel: 'Next',
     loading: false,
-    showPassword: false,
-    usernameLoading: false,
-    passwordLoading: false,
-    usernameDisabled: false,
     model: {
       username: '',
       password: ''
@@ -80,81 +72,53 @@ export default {
     // this.$router.push(this.next);
   },
   methods: {
-    validateUsername () {
-      if (this.model.username === 'genius') {
-        this.showPassword = true;
-        this.usernameDisabled = true;
-        this.loginLabel = 'Login';
-        this.loading = false;
-        this.usernameLoading = false;
-        return false;
-      }
-      this.usernameLoading = true;
-      validateUsernameApi(this.model.username)
-        .then(response => {
-          if (response.data.status) {
-            this.salt = response.data.payload.data;
-            this.error = '';
-            if (this.salt === '') {
-              this.error = 'GAC Background Service Error';
-              this.showPassword = false;
-              this.loading = false;
-            } else {
-              this.$cookies.set('pid', this.salt, '12h');
-              this.showPassword = true;
-              this.usernameDisabled = true;
-              this.loginLabel = 'Login';
-              this.loading = false;
-            }
-          } else {
-            this.error = response.data.payload.message;
-            this.showPassword = false;
-            this.loading = false;
-          }
-        })
-        .catch(e => {
-          console.log(e);
-          this.error = 'GAC Service Error';
-          this.showPassword = false;
-        });
-      this.usernameLoading = false;
-    },
     validatePassword () {
-      this.usernameLoading = true;
+      this.error = '';
       this.loading = true;
-      if (!this.showPassword) {
-        this.validateUsername();
-        return false;
-      }
       if (this.model.username === 'genius' && this.model.password === 'genius') {
         this.$cookies.set('username', 'genius', '12h');
         this.$cookies.set('role', 'operator', '12h');
-        this.loading = true;
         this.$router.push('/genius');
         return false;
       }
       if (this.model.username === 'engineer' && this.model.password === 'engineer') {
         this.$cookies.set('username', 'engineer', '12h');
         this.$cookies.set('role', 'engineer', '12h');
-        this.loading = true;
         this.$router.push('/genius');
         return false;
       }
-      this.passwordLoading = true;
-      this.loading = true;
+      validateUsernameApi(this.model.username)
+        .then(response => {
+          if (response.data.status) {
+            this.salt = response.data.payload.data;
+            if (this.salt === '') {
+              this.error = 'GAC Background Service Error';
+              this.loading = false;
+              return false;
+            } else {
+              this.$cookies.set('pid', this.salt, '12h');
+            }
+          } else {
+            this.error = response.data.payload.message;
+            this.loading = false;
+            return false;
+          }
+        })
+        .catch(e => {
+          console.log(e);
+          this.error = 'GAC Service Error';
+          return false;
+        });
       const password = this.ssha_pass(this.model.password, this.salt);
       validatePasswordApi(this.model.username, password)
         .then(response => {
           // console.log(response.data.payload.data);
           if (response.data.status) {
-            console.log('Login Successfully');
+            // console.log('Login Successfully');
             let username = response.data.payload.data.username;
             let role = response.data.payload.data.role;
-            // let profile = response.data.payload.data;
-            // console.log(profile);
             this.$cookies.set('username', username, '12h');
             this.$cookies.set('role', role, '12h');
-            // this.$cookies.set('profile', profile, '12h');
             this.error = '';
             setTimeout(() => {
               if (this.next) {
@@ -173,8 +137,6 @@ export default {
           this.error = 'GAC Service Error';
           this.loading = false;
         });
-      this.usernameLoading = false;
-      this.passwordLoading = false;
     },
     ssha_pass (passwd, salt) {
       let ctx = crypto.createHash('sha1');

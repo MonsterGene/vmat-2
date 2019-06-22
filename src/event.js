@@ -13,7 +13,7 @@ export default [
         color: 'green',
         text: 'Logout successfully.'
       };
-      this.$router.replace({ path: '/genius/login' });
+      this.$router.replace('/genius/logout');
     }
   },
   {
@@ -24,7 +24,7 @@ export default [
   {
     name: 'APP_AUTH_FAILED',
     callback: function (e) {
-      this.$router.push('/login');
+      this.$router.push('/genius/login');
       this.$message.error('Token has expired');
     }
   },

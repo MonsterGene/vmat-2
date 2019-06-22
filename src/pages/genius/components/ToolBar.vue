@@ -85,8 +85,7 @@ export default {
     this.username = this.$cookies.get('username');
     this.role = this.$cookies.get('role');
     if (!this.username) {
-      this.$router.push('/genius/login');
-      return false;
+      this.$router.replace('/genius/login');
     }
     if (this.role === 'operator') {
       this.modes = [
