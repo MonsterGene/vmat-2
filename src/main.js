@@ -12,6 +12,7 @@ import Truncate from 'lodash.truncate';
 import store from './store';
 import VueCookies from 'vue-cookies';
 import 'xterm/dist/xterm.css';
+import 'xterm/dist/addons/fullscreen/fullscreen.css';
 Vue.config.productionTip = false;
 // Helpers
 // Global filters

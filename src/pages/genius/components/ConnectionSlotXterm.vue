@@ -16,24 +16,17 @@
         target="_blank"
       >LOG</v-btn>
       
-      <v-btn 
+      <v-btn v-show="role === 'engineer'"
         style="margin-left: -5px;"
         color="primary" 
         @click="openCommandPromp" 
       >CMD</v-btn>
-      <!-- <v-text-field v-if="commandPromp"
-        placeholder="Type Commands Here."
-        clearable
-        v-on:keyup.enter="onEnter"
-        v-model="userInput"
-      ></v-text-field> -->
-      <!-- Special Characters -->
       <v-menu v-show="commandPromp">
         <v-btn
           slot="activator"
           color="error"
         >
-          ASCII
+          ACTION
         </v-btn>
         <v-list>
           <v-list-tile
@@ -58,14 +51,12 @@ export default {
       term: null,
       commandPromp: false,
       userInput: '',
+      role: '',
+      terminalContainer: null,
       asciis: [
         {
           value: '::CTRL_C',
           name: 'CTRL_C'
-        },
-        {
-          value: '::CTRL_X',
-          name: 'CTRL_X'
         },
         {
           value: '::ESC',
@@ -97,6 +88,7 @@ export default {
         // console.log(newLog['testLog']);
         if (newLog['testLogController'] === this.controller) {
           this.term.write(newLog['testLog']);
+          this.term.scrollToBottom();
         }
       },
       deep: true,
@@ -109,28 +101,33 @@ export default {
     },
   },
   mounted () {
-    let terminalContainer = document.getElementById('terminal-' + this.container + '-' + this.controller);
+    this.role = this.$cookies.get('role');
+    this.terminalContainer = document.getElementById('terminal-' + this.container + '-' + this.controller);
     this.term = new Terminal({
-      cols: 1,
-      rows: 500,
       cursorBlink: 5,
-      scrollback: 500,
+      scrollback: 1000,
     });
     let that = this;
-    this.term.open(terminalContainer, true);
+    this.term.open(this.terminalContainer, true);
     this.term._initialized = true;
     this.term.fit();
     this.term.scrollToBottom();
     this.requestInitLog();
+    // this.term.toggleFullScreen();
     this.term.on('data', function (data) {
-      // console.log('data xterm=>', data);
+      // console.log('data xterm=>', JSON.stringify(data));
       that.userInput = data;
       that.submitUserCommand();
     });
-    // this.term.textarea.onkeydown = function (e) {
-    //   console.log(e);
-    // };
-    // console.log('cols:', this.term.cols);
+    this.term.on('keydown', arrayBuffer => {
+      // console.log('keydown===', arrayBuffer);
+      // console.log('keydown===', arrayBuffer.key);
+      // console.log('keydown===', arrayBuffer.ctrlKey);
+      if (arrayBuffer.key === 'F1' && arrayBuffer.ctrlKey) {
+        this.term.toggleFullScreen();
+      }
+      // xterm.write(arrayBuffer);
+    });
   },
   destroyed () {
     this.term.dispose();
@@ -150,9 +147,8 @@ export default {
         this.userInput = '';
       }
     },
-    onEnter () {
-      this.userInput = this.userInput + '\r';
-      this.submitUserCommand();
+    toggleFullScreen () {
+      this.term.toggleFullScreen();
     },
     sendAscii (ascii) {
       this.userInput = ascii.value;
