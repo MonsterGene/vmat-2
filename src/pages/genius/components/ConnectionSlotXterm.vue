@@ -125,6 +125,7 @@ export default {
       // console.log('keydown===', arrayBuffer.ctrlKey);
       if (arrayBuffer.key === 'F1' && arrayBuffer.ctrlKey) {
         this.term.toggleFullScreen();
+        this.term.fit();
       }
       // xterm.write(arrayBuffer);
     });
