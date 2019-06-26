@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title style="height: 30px;">
-      <h4 style="margin-top: -15px;"><v-icon>menu</v-icon>{{ controller }}</h4>
+      <h4 style="margin-top: -11px;"><v-icon>menu</v-icon>{{ controller }}</h4>
     </v-card-title>
     <v-divider></v-divider>
     
