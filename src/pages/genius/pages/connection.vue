@@ -192,7 +192,7 @@ export default {
   mounted () {
     this.backPath = window.location.hash.split('/').slice(0, 3).join('/');
     // console.log('backpath - ' + this.backPath);
-    this.controllerQty = 1;
+    this.controllerQty = 2;
     setTimeout(() => {
     // must add some delay, since wesocket neeeds some time to connect backend.
       // this.controllerPool.push('PROFILE');
