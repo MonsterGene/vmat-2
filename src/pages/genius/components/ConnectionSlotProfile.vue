@@ -18,7 +18,7 @@
           ['xAxis.axisLabel.show', true],
           ['xAxis.axisLabel.rotate', 40],
           ['yAxis.axisLabel.show', true],
-          ['yAxis', [{'position': 'left', 'min': -60, 'max': 90, 'axisLabel': {formatter : '{value} ℃'}}]],
+          ['yAxis', [{'position': 'left', 'min': -50, 'max': 70, 'interval': 10, 'axisLabel': {formatter : '{value} ℃'}}]],
           
           ['series[0].type', 'line'],
           ['series[0].yAxisIndex', 0],
