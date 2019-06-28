@@ -2,7 +2,11 @@ export default [
   {
     name: 'APP_LOGIN_SUCCESS',
     callback: function (e) {
-      this.$router.push({ path: 'dashboard' });
+      this.snackbar = {
+        show: true,
+        color: 'green',
+        text: 'Login successfully.'
+      };
     }
   },
   {

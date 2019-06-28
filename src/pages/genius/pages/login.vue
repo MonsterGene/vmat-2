@@ -107,6 +107,7 @@ export default {
                     this.$cookies.set('username', username, '12h');
                     this.$cookies.set('role', role, '12h');
                     this.error = '';
+                    window.getApp.$emit('APP_LOGIN_SUCCESS');
                     setTimeout(() => {
                       if (this.next) {
                         this.$router.push(this.next);
