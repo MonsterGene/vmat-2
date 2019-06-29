@@ -158,7 +158,6 @@ export default {
       else { return 'Start Test' }
     }, 
     actionIcon () {
-      this.actionDisabled = false;
       if (this.container.status === 'idle') { return 'play_arrow' }
       else if (this.container.status === 'run') { return 'highlight_off' }
       else if (this.container.status === 'stop' || this.container.status === 'fail' || this.container.status === 'pass') { return 'delete_forever' }
@@ -179,12 +178,13 @@ export default {
         this.openSnack = !this.openSnack;
         return false;
       }
-      // 20190527, void duplicate start test
-      if (this.container.status === 'idle') {
-        this.actionDisabled = true;
-      }
-      // console.log(action);
       this.$emit('clickAction', action, this.container.name);
+      // 20190527, void duplicate start test
+      this.actionDisabled = true;
+      setTimeout(() => {
+        this.actionDisabled = false;
+      }, 1500);
+      // console.log(action);
     },
     reOpenQuestion () {
       if (this.container.question) {  // it is for nested Ask Question
