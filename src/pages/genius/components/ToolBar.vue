@@ -45,7 +45,6 @@
 </template>
 
 <script>
-import { getGeniusVersion } from '../api/getGeniusVersion';
 import { getProdVersion } from '../api/getProdVersion';
 import { getServerName } from '../api/getServerName';
 
