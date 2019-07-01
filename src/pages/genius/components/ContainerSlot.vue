@@ -178,9 +178,9 @@ export default {
         this.openSnack = !this.openSnack;
         return false;
       }
-      this.$emit('clickAction', action, this.container.name);
       // 20190527, void duplicate start test
       this.actionDisabled = true;
+      this.$emit('clickAction', action, this.container.name);
       setTimeout(() => {
         this.actionDisabled = false;
       }, 1500);
