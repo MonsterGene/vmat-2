@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import { getMachineStatus } from '../api/getMachineStatus';
 import { getProdVersion } from '../api/getProdVersion';
 import { getServerName } from '../api/getServerName';
 
@@ -74,7 +75,7 @@ export default {
       ],
       // for code version
       genius_version: '',
-      details: '',
+      details: [],
       new_version: '',
       new_version_visible: false,
       containerStyle: 'DYNAMIC',
@@ -96,10 +97,11 @@ export default {
     }
     // change title here
     this.getCurrentServerName();
+    this.getCurrentVersion();
+    this.getCurrentMachineStatus();
   },
   created () {
     this.toggleFullScreen();
-    this.getCurrentVersion();
   },
   methods: {
     getCurrentServerName () {
@@ -118,10 +120,25 @@ export default {
         .then(response => {
           // console.log(response.data);
           this.genius_version = response.data.genius_version;
-          this.details = response.data.details;
+          this.details = this.details.concat(response.data.details);
           this.new_version = response.data.new_version;
           if (this.new_version) {
             this.new_version_visible = !this.new_version_visible;
+          }
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    getCurrentMachineStatus () {
+      getMachineStatus()
+        .then(response => {
+          // console.log(response.data);
+          if (response.data.status) {
+            this.details.push(response.data.cpu_usage);
+            this.details.push(response.data.ram_usage);
+            this.details.push(response.data.hdd_usage);
+            this.details.push('------');
           }
         })
         .catch(e => {
