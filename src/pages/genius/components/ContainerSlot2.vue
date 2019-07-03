@@ -203,7 +203,7 @@ export default {
       this.$emit('clickAction', action, this.container.name);
       setTimeout(() => {
         this.actionDisabled = false;
-      }, 1500);
+      }, 1000);
     },
     reOpenQuestion () {
       if (this.container.question) {  // it is for nested Ask Question

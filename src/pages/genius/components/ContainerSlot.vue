@@ -183,7 +183,7 @@ export default {
       this.$emit('clickAction', action, this.container.name);
       setTimeout(() => {
         this.actionDisabled = false;
-      }, 1500);
+      }, 1000);
       // console.log(action);
     },
     reOpenQuestion () {
