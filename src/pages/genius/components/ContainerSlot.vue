@@ -120,7 +120,7 @@ export default {
   props: ['container', 'questionContainer'],
   data () {
     return {
-      actionDisabled: false,
+      actionDisabledFlag: false,
       snackTitle: '',
       openSnack: false,
       // Question
@@ -142,7 +142,7 @@ export default {
       } else { return [] }
     },
     questionImage2 () { 
-      console.log(this.container.symptom);
+      // console.log(this.container.symptom);
       return this.container.symptom;
     },
     questionContainer2 () { return this.container.name },
@@ -167,9 +167,12 @@ export default {
       if (this.container.mode === 'PROD') { return 'stars' }
       else if (this.container.mode === 'DEBUG') { return 'bug_report' } 
       else { return 'stars' }
+    },
+    actionDisabled () {
+      if (this.container.user === 'disabled' && this.container.status === 'idle') { return true }
+      else if (this.actionDisabledFlag) { return true }
+      else { return false }
     }
-  },
-  watch: {
   },
   methods: {
     clickAction (action) {
@@ -179,10 +182,10 @@ export default {
         return false;
       }
       // 20190527, void duplicate start test
-      this.actionDisabled = true;
+      this.actionDisabledFlag = true;
       this.$emit('clickAction', action, this.container.name);
       setTimeout(() => {
-        this.actionDisabled = false;
+        this.actionDisabledFlag = false;
       }, 1000);
       // console.log(action);
     },
