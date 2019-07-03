@@ -1,8 +1,8 @@
 <template>
   <v-hover>
-    <v-card tile flat
+    <v-card ma-3 tile flat
       slot-scope="{ hover }"
-      :class="`elevation-${hover ? 20 : 5}`"
+      :class="`elevation-${hover ? 10 : 5}`"
       class="mx-auto"
       :color="containerColor"
       :style="containerColor"
@@ -169,7 +169,7 @@ export default {
       else if (this.container.status === 'run') { return 'background: rgb(240,184,0);' }
       // else if (this.container.status === 'pass') { return 'background: rgb(79,145,58);' }
       // else if (this.container.status === 'stop' || this.container.status === 'fail') { return 'background: rgb(216,31,40);' } 
-      else if (this.container.status === 'pass') { return 'background: rgb(92,182,73);' }
+      else if (this.container.status === 'pass') { return 'background: rgb(80,185,90);' }
       else if (this.container.status === 'stop' || this.container.status === 'fail') { return 'background: rgb(239,143,155);' } 
       else { return '' }
     },

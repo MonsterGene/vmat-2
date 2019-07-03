@@ -89,8 +89,9 @@
       </v-flex>
 
       <!-- Autotest Like Layout -->
-      <v-flex lg2 md4 sm6 pa-1 v-for="container of containerList" :key="container.id">
-        <container-slot2
+      <v-flex lg2 md4 sm6 v-for="container of containerList" :key="container.id" 
+        style="padding-right: 2px; padding-left: 2px; padding-bottom: 3px; padding-top: 3px;">
+        <container-slot2 
           v-if="screenStyle"
           v-bind:container="container"
           v-bind:questionContainer="questionContainer"
@@ -353,4 +354,5 @@ export default {
 </script>
 
 <style lang='stylus' scoped>
+
 </style>
