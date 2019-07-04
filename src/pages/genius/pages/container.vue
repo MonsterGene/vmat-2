@@ -236,9 +236,11 @@ export default {
       const question = data.ask_question;
       // console.log(question);
       if (question) {
+        console.log(data);
         if (question.question) {
           this.questionContainer = question.container;
           this.questionTitle = question.question;
+          this.questionImage = question.image;
           this.questionType = 'text';
           if (question.answers) {
             this.questionOptions = question.answers;

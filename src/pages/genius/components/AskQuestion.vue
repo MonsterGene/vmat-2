@@ -15,7 +15,7 @@
               <img v-if="image"
                 v-bind:src="image"
                 v-bind:alt="'Could not display ' + image"
-                style="height: 360px; width: 100%"
+                style="height: 320px; width: 100%"
               />
             </v-flex>
             <!-- question -->
