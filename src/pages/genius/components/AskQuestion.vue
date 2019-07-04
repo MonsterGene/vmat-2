@@ -11,8 +11,8 @@
         <v-flex lg12 xs12 sm12 md12>
           <v-list>
             <!-- image -->
-            <v-flex lg12 xs12 sm12 md12 mt-0 pb-0>
-              <img v-if="image"
+            <v-flex lg12 xs12 sm12 md12 mt-0 pb-0 v-if="image">
+              <img
                 v-bind:src="image"
                 v-bind:alt="'Could not display ' + image"
                 style="height: 320px; width: 100%"
