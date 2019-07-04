@@ -10,6 +10,15 @@
       <v-layout row wrap>
         <v-flex lg12 xs12 sm12 md12>
           <v-list>
+            <!-- image -->
+            <v-flex lg12 xs12 sm12 md12 mt-0 pb-0>
+              <img v-if="image"
+                v-bind:src="image"
+                v-bind:alt="'Could not display ' + image"
+                style="height: 360px; width: 100%"
+              />
+            </v-flex>
+            <!-- question -->
             <v-flex lg12 xs12 sm12 md12 mt-0 pb-0>
               <v-tooltip right>
                 <v-icon
@@ -22,12 +31,6 @@
               </v-tooltip>
               <time-counter :start="startCounter" :stop="stopCounter"></time-counter>
               <h3>[ {{ container }} ]: {{ title }}</h3>
-            </v-flex>
-            <v-flex lg12 xs12 sm12 md12 mt-0 pb-0>
-              <v-img v-if="image"
-                v-bind:src="computeLogo"
-                max-height="200"
-              ></v-img>
             </v-flex>
             <!-- input -->
             <v-flex lg12 xs12 sm12 md12 pt-0 pb-0 v-if="type === 'text'">
