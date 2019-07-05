@@ -257,6 +257,7 @@ export default {
         if (question.question) {
           this.questionContainer = question.container;
           this.questionTitle = question.question;
+          this.questionImage = question.image;
           this.questionType = 'text';
           if (question.answers) {
             this.questionOptions = question.answers;
