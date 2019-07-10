@@ -25,9 +25,9 @@
         <!-- 回到顶部按钮 -->
         <app-fab></app-fab>
         <!-- 主题设置 -->
-        <v-btn small fab dark falt fixed top="top" right="right" class="setting-fab" :color="$vuetify.theme.primary" @click="openThemeSettings">
+        <!-- <v-btn small fab dark falt fixed top="top" right="right" class="setting-fab" :color="$vuetify.theme.primary" @click="openThemeSettings">
           <v-icon>settings</v-icon>
-        </v-btn>
+        </v-btn> -->
         <v-navigation-drawer
           class="setting-drawer"
           temporary
