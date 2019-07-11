@@ -3,18 +3,19 @@
     id="appDrawer"
     :mini-variant.sync="mini"
     fixed
+    absolute
+    temporary
     app
     :dark="$vuetify.dark"
     v-model="drawer"
-    :stateless="true"
-    width="190"
+    width="260"
     :style="{background: $vuetify.dark && $vuetify.theme.sideMenu || undefined}"
     >
     <!-- 顶部logo title -->
     <v-toolbar :color="$vuetify.theme.sideNav">
       <img v-bind:src="computeLogo" height="36" alt="Vue Material Admin Template">
       <v-toolbar-title class="ml-0 pl-3">
-        <span class="hidden-sm-and-down" style="color: #fff">Genius</span>
+        <span class="hidden-sm-and-down" style="color: #fff">Genius Solution</span>
       </v-toolbar-title>
     </v-toolbar>
     <!-- 菜单栏 -->

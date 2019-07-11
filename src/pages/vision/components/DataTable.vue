@@ -85,7 +85,7 @@
                               <v-list>Str5: {{ props.item.str5 }}</v-list>
                               <v-list>Str6: {{ props.item.str6 }}</v-list>
                             </v-flex>
-                            <v-flex lg12 sm12 xs12>
+                            <v-flex lg12 sm12 xs12 v-show="props.item.result !== 'S'">
                               <h5><v-icon>contact_phone</v-icon> <a @click="getTestLog(props.item)">Test Log TimeStamp: {{ props.item.testtime }}</a></h5>
                             </v-flex>
                           </v-layout>
