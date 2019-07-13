@@ -2,12 +2,12 @@
   <v-app id="gac-logout" class="primary">
     <v-content>
       <v-container fluid fill-height>
-        <v-layout align-center justify-center>
+        <v-layout justify-center>
           <v-flex xs12 sm8 md8 lg8>
             <v-card class="elevation-1 pa-3">
               <v-card-text>
                 <div class="layout column align-center">
-                  <!-- <img src="/static/logo.png" alt="Vue Material Admin" width="120" height="120"> -->
+                  <img src="/static/logo.png" alt="Vue Material Admin" width="120" height="120">
                   <h1 class="flex my-4 primary--text">Thank You!</h1>
                 </div>
               </v-card-text>

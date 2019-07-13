@@ -2,7 +2,7 @@
   <v-app id="gac-login" class="primary">
     <v-content>
       <v-container fluid fill-height>
-        <v-layout align-center justify-center>
+        <v-layout justify-center>
           <v-flex xs12 sm8 md8 lg6>
             <v-card class="elevation-1 pa-3">
               <v-card-text>

@@ -17,7 +17,7 @@ export default [
         color: 'green',
         text: 'Logout successfully.'
       };
-      this.$router.replace('/genius/logout');
+      this.$router.push('/genius/logout');
     }
   },
   {
