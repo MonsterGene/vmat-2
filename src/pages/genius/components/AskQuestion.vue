@@ -30,7 +30,7 @@
                 <span>To Close Question</span>
               </v-tooltip>
               <time-counter :start="startCounter" :stop="stopCounter"></time-counter>
-              <h3>[ {{ container }} ]: {{ title }}</h3>
+              <h3>[ <span class="font-weight-regular red--text">{{ container }}</span> ]: {{ title }}</h3>
             </v-flex>
             <!-- input -->
             <v-flex lg12 xs12 sm12 md12 pt-0 pb-0 v-if="type === 'text'">
