@@ -11,26 +11,53 @@
       <v-divider></v-divider>
 
       <!-- Apollo Like Layout -->
-      <v-flex lg3 md6 sm12 xs12 pa-1 v-if="!screenStyle">
-        <v-card style="background: rgb(143,143,143);">
-          <v-card-text>
-            <div class="layout row align-center justify-space-between">
-                <div class="subheading ml-2">IDLE Containers</div>
+      <v-flex lg4 md4 sm12 xs12 pa-1 v-if="!screenStyle">
+        <v-card>
+          <div class="row align-center justify-space-between">
+            <v-tabs
+              grow
+              v-model="containerTab"
+              :hide-slider="true"
+            >
+              <v-tab style="background: rgb(143,143,143);" href="#tab-idle">
+                <div class="subheading ml-2">IDLE</div>
                 <v-chip color="gray">{{ idle_qty }}</v-chip>
-            </div>
-          </v-card-text>
+              </v-tab>  
+              <v-tab style="background: rgb(240,184,0);" href="#tab-run">
+                <div class="subheading ml-2">RUNNING Containers</div>
+                <v-chip color="gray">{{ run_qty }}</v-chip>
+              </v-tab>
+            </v-tabs>
+          </div>
         </v-card>
-        <v-flex pa-0 mt-1 v-for="container of containerList" :key="container.id" v-show="container.status === 'idle'">
-          <container-slot
-            v-bind:container="container"
-            v-bind:questionContainer="questionContainer"
-            @clickAction="clickAction"
-            @reOpenQuestion="reOpenQuestion"
-            @answerQuestion="answerQuestion"
-          ></container-slot>
-        </v-flex>
+        <v-tabs-items v-model="containerTab">
+          <v-tab-item value="tab-idle">
+          <v-tabs-slider></v-tabs-slider>
+          <v-flex pa-0 mt-1 v-for="container of containerList" :key="container.id" v-show="container.status === 'idle'">
+            <container-slot
+              v-bind:container="container"
+              v-bind:questionContainer="questionContainer"
+              @clickAction="clickAction"
+              @reOpenQuestion="reOpenQuestion"
+              @answerQuestion="answerQuestion"
+            ></container-slot>
+          </v-flex>
+          </v-tab-item>
+          <v-tab-item value="tab-run">
+          <v-tabs-slider color="red"></v-tabs-slider>
+          <v-flex pa-0 mt-1 v-for="container of containerList" :key="container.id" v-show="container.status === 'run'">
+            <container-slot
+              v-bind:container="container"
+              v-bind:questionContainer="questionContainer"
+              @clickAction="clickAction"
+              @reOpenQuestion="reOpenQuestion"
+              @answerQuestion="answerQuestion"
+            ></container-slot>
+          </v-flex>
+          </v-tab-item>
+        </v-tabs-items>
       </v-flex>
-      <v-flex lg3 md6 sm12 xs12 pa-1 v-if="!screenStyle">
+      <!-- <v-flex lg4 md4 sm12 xs12 pa-1 v-if="!screenStyle">
         <v-card style="background: rgb(240,184,0);" v-show="run_qty">
           <v-card-text>
             <div class="layout row align-center justify-space-between">
@@ -48,15 +75,20 @@
             @answerQuestion="answerQuestion"
           ></container-slot>
         </v-flex>
-      </v-flex>
-      <v-flex lg3 md6 sm12 xs12 pa-1 v-if="!screenStyle">
-        <v-card style="background: rgb(79,145,58);" v-show="pass_qty">
-          <v-card-text>
-            <div class="layout row align-center justify-space-between">
+      </v-flex> -->
+      <v-flex lg4 md4 sm12 xs12 pa-1 v-if="!screenStyle">
+        <v-card v-show="pass_qty">
+          <div class="row justify-space-between">
+            <v-tabs
+              :grow="true"
+            >
+              <v-tab style="background: rgb(79,145,58);">
                 <div class="subheading ml-2">PASSED Containers</div>
-                <v-chip color="gray">{{ pass_qty }}</v-chip>
-            </div>
-          </v-card-text>
+            <v-chip color="gray">{{ pass_qty }}</v-chip>
+              </v-tab>
+              <v-tabs-slider></v-tabs-slider>
+            </v-tabs>
+          </div>
         </v-card>
         <v-flex pa-0 mt-1 v-for="container of containerList" :key="container.id" v-show="container.status === 'pass'">
           <container-slot
@@ -68,14 +100,19 @@
           ></container-slot>
         </v-flex>
       </v-flex>
-      <v-flex lg3 md6 sm12 xs12 pa-1 v-if="!screenStyle">
-        <v-card style="background: rgb(216,31,40);" v-show="fail_qty">
-          <v-card-text>
-            <div class="layout row align-center justify-space-between">
+      <v-flex lg4 md4 sm12 xs12 pa-1 v-if="!screenStyle">
+        <v-card v-show="fail_qty">
+          <div class="row justify-space-between">
+            <v-tabs
+              :grow="true"
+            >
+              <v-tab style="background: rgb(216,31,40);">
                 <div class="subheading ml-2">FAILED Containers</div>
                 <v-chip color="gray">{{ fail_qty }}</v-chip>
-            </div>
-          </v-card-text>
+              </v-tab>
+              <v-tabs-slider></v-tabs-slider>
+            </v-tabs>
+          </div>
         </v-card>
         <v-flex pa-0 mt-1 v-for="container of containerList" :key="container.id" v-show="container.status === 'fail' || container.status === 'stop'">
           <container-slot
@@ -183,6 +220,7 @@ export default {
       currentUrl: '',
       hostname: '',
       websock: null,
+      containerTab: null,
     };
   },
   created () {
@@ -236,7 +274,7 @@ export default {
       const question = data.ask_question;
       // console.log(question);
       if (question) {
-        console.log(data);
+        // console.log(data);
         if (question.question) {
           this.questionContainer = question.container;
           this.questionTitle = question.question;
