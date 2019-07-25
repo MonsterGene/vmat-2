@@ -2,7 +2,7 @@
     <v-hover>
       <v-card tile flat
         slot-scope="{ hover }"
-        :class="`elevation-${hover ? 20 : 5}`"
+        :class="`elevation-${hover ? 10 : 3}`"
         class="mx-auto"
         :color="containerColor"
       >
@@ -18,16 +18,16 @@
               {{ container.display1 }}
             </span><br>
             </div>
-            <div v-show="container.display2">
+            <div v-show="container.display2 && !showLess">
             <v-divider></v-divider>
             <span class="black--text">{{ container.display2 }}</span><br>
             </div>
-            <div v-show="container.display3">
+            <div v-show="container.display3 && !showLess">
             <v-divider></v-divider>
             <span class="black--text">{{ container.display3 }}</span>
             </div>
           </v-flex>
-          <v-flex lg2 sm2 pa-2>
+          <v-flex lg2 sm2 pt-2 pl-1 pr-1>
             <span class="group pa-0">
               <v-tooltip left>
                 <v-icon
@@ -85,6 +85,7 @@
           </v-flex>
         </v-layout>
       </v-card-title>
+          <v-progress-linear class="ma-0" :value="container.progress" height="4" v-show="container.status !== 'idle' && container.status !== 'pass'"></v-progress-linear>
       <!-- ask question -->
       <ask-question
         v-bind:title="questionTitle2"
@@ -101,7 +102,6 @@
         :title="snackTitle"
         :open="openSnack"
       ></notify-snackbar>
-      <v-progress-linear class="ma-0" :value="container.progress" height="4" v-show="container.status !== 'idle' && container.status !== 'pass'"></v-progress-linear>
       </v-card>
     </v-hover>
 </template>
@@ -117,7 +117,7 @@ export default {
     NotifySnackbar,
     store,
   },
-  props: ['container', 'questionContainer'],
+  props: ['container', 'questionContainer', 'showLess'],
   data () {
     return {
       actionDisabledFlag: false,

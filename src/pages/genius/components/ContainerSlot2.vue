@@ -2,7 +2,7 @@
   <v-hover>
     <v-card ma-3 tile flat
       slot-scope="{ hover }"
-      :class="`elevation-${hover ? 10 : 5}`"
+      :class="`elevation-${hover ? 10 : 3}`"
       class="mx-auto"
       :color="containerColor"
       :style="containerColor"

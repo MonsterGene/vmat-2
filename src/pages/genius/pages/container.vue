@@ -16,11 +16,12 @@
           <div class="row align-center justify-space-between">
             <v-tabs
               grow
+              :center-active="true"
               v-model="containerTab"
               :hide-slider="true"
             >
               <v-tab style="background: rgb(143,143,143);" href="#tab-idle">
-                <div class="subheading ml-2">IDLE</div>
+                <div class="subheading ml-2">IDLE </div>
                 <v-chip color="gray">{{ idle_qty }}</v-chip>
               </v-tab>  
               <v-tab style="background: rgb(240,184,0);" href="#tab-run">
@@ -82,9 +83,9 @@
             <v-tabs
               :grow="true"
             >
-              <v-tab style="background: rgb(79,145,58);">
-                <div class="subheading ml-2">PASSED Containers</div>
-            <v-chip color="gray">{{ pass_qty }}</v-chip>
+              <v-tab style="background: rgb(79,145,58);" @click="showPassLess = !showPassLess">
+                <div class="subheading ml-2 text-lg-start">PASSED Containers</div>
+                <v-chip color="gray">{{ pass_qty }}</v-chip>
               </v-tab>
               <v-tabs-slider></v-tabs-slider>
             </v-tabs>
@@ -94,6 +95,7 @@
           <container-slot
             v-bind:container="container"
             v-bind:questionContainer="questionContainer"
+            v-bind:showLess="showPassLess"
             @clickAction="clickAction"
             @reOpenQuestion="reOpenQuestion"
             @answerQuestion="answerQuestion"
@@ -106,7 +108,7 @@
             <v-tabs
               :grow="true"
             >
-              <v-tab style="background: rgb(216,31,40);">
+              <v-tab style="background: rgb(216,31,40);" @click="showFailLess = !showFailLess">
                 <div class="subheading ml-2">FAILED Containers</div>
                 <v-chip color="gray">{{ fail_qty }}</v-chip>
               </v-tab>
@@ -118,6 +120,7 @@
           <container-slot
             v-bind:container="container"
             v-bind:questionContainer="questionContainer"
+            v-bind:showLess="showFailLess"
             @clickAction="clickAction"
             @reOpenQuestion="reOpenQuestion"
             @answerQuestion="answerQuestion"
@@ -221,6 +224,8 @@ export default {
       hostname: '',
       websock: null,
       containerTab: null,
+      showPassLess: false,
+      showFailLess: false,
     };
   },
   created () {

@@ -3,7 +3,7 @@
     <v-hover>
       <v-card
         slot-scope="{ hover }"
-        :class="`elevation-${hover ? 20 : 5}`"
+        :class="`elevation-${hover ? 10 : 3}`"
         class="mx-auto"
       >
         <v-card-text>
