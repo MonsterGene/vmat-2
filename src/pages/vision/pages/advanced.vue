@@ -548,7 +548,7 @@ export default {
     if (params.startDate) { this.startDate = params.startDate }
     if (params.endDate) { this.endDate = params.endDate }
   }, 
-  destroyed () {
+  beforeDestroy () {
     this.summary = null;
     this.firstList = [];
     this.testList = [];
@@ -575,6 +575,7 @@ export default {
     this.board_pass_all_dataSource = [];
     this.dataSource = [];
     this.all_dataSource = [];
+    this.responseData = {};
   },
   mounted () {
     if (this.machine || this.uuttype || this.area || this.sernum) {

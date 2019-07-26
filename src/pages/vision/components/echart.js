@@ -87,7 +87,7 @@ export default {
     // resize delay
     widthChangeDelay: {
       type: Number,
-      default: 450
+      default: 100
     }
   },
   data: () => ({
@@ -192,11 +192,12 @@ export default {
       }
       this.chartInstance = ECharts.init(this.$refs.canvas, 'material');
       this.chartInstance.setOption(_object.merge(this.option, this.$data._defaultOption));
-      window.addEventListener('optimizedResize', (e) => {
-        setTimeout(_ => {
-          this.chartInstance.resize();
-        }, this.widthChangeDelay);
-      });      
+      this.chartInstance.resize();
+      // window.addEventListener('optimizedResize', (e) => {
+      //   setTimeout(_ => {
+      //     this.chartInstance.resize();
+      //   }, this.widthChangeDelay);
+      // });      
     },
 
     resize () {
