@@ -30,7 +30,7 @@
             ">
               <v-card
                 slot-scope="{ hover }"
-                :class="`elevation-${hover ? 20 : 1}`"
+                :class="`elevation-${hover ? 10 : 3}`"
                 style="height: 95%; margin-top: -10px;"
               >
                 <v-card-text class="">
