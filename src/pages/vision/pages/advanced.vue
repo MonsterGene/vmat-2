@@ -547,7 +547,35 @@ export default {
     if (params.test) { this.test = params.test }
     if (params.startDate) { this.startDate = params.startDate }
     if (params.endDate) { this.endDate = params.endDate }
-  },  
+  }, 
+  destroyed () {
+      this.summary = null;
+      this.firstList = [];
+      this.testList = [];
+      this.boardList = [];
+      this.first_fail_list = [];
+      this.test_fail_list = [];
+      this.board_fail_list = [];
+      this.by_area_dataSource = [];
+      this.by_machine_dataSource = [];
+      this.by_uuttype_dataSource = [];
+      this.by_area_dataSource_detail = [];
+      this.by_machine_dataSource_detail = [];
+      this.by_container_dataSource_detail = [];
+      this.by_uuttype_dataSource_detail = [];
+      this.by_area_dataSource_detail_a = [];
+      this.by_machine_dataSource_detail_a = [];
+      this.by_container_dataSource_detail_a = [];
+      this.by_uuttype_dataSource_detail_a = [];
+      this.first_fail_all_dataSource = [];
+      this.test_fail_all_dataSource = [];
+      this.board_fail_all_dataSource = [];
+      this.first_pass_all_dataSource = [];
+      this.test_pass_all_dataSource = [];
+      this.board_pass_all_dataSource = [];
+      this.dataSource = [];
+      this.all_dataSource = [];
+  },
   mounted () {
     if (this.machine || this.uuttype || this.area || this.sernum) {
       this.loading = true;
