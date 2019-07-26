@@ -1,13 +1,13 @@
 <template>
   <v-container grid-list-xl fluid pa-3>
     <v-layout row wrap>
-      <tool-bar
+      <tool-bar v-show="showToolBar"
         v-bind:openScreenStyle="openScreenStyle"
         v-bind:openChangeMode="openChangeMode"
         @changeScreenStyle="changeScreenStyle" 
         @changeMode="changeMode"
       ></tool-bar>
-      <notify-marquee></notify-marquee>
+      <notify-marquee v-show="showToolBar"></notify-marquee>
       <v-divider></v-divider>
 
       <!-- Apollo Like Layout -->
@@ -34,6 +34,7 @@
         <v-tabs-items v-model="containerTab">
           <v-tab-item value="tab-idle">
           <v-tabs-slider></v-tabs-slider>
+          <v-tabs-slider></v-tabs-slider>
           <v-flex pa-0 mt-1 v-for="container of containerList" :key="container.id" v-show="container.status === 'idle'">
             <container-slot
               v-bind:container="container"
@@ -45,6 +46,7 @@
           </v-flex>
           </v-tab-item>
           <v-tab-item value="tab-run">
+          <v-tabs-slider color="red"></v-tabs-slider>
           <v-tabs-slider color="red"></v-tabs-slider>
           <v-flex pa-0 mt-1 v-for="container of containerList" :key="container.id" v-show="container.status === 'run'">
             <container-slot
@@ -182,6 +184,7 @@ import { getContainerPage } from '../api/getRenderPage';
 import {
   getStyle,
 } from '../api/getStyle';
+import store from '../../vision/store';
 const WebSocketClient = require('websocket').client;
 
 export default {
@@ -191,6 +194,7 @@ export default {
     ContainerSlot,
     ContainerSlot2,
     NotifyMarquee,
+    store,
   },
   data () {
     return {
@@ -227,6 +231,11 @@ export default {
       showPassLess: false,
       showFailLess: false,
     };
+  },
+  computed: {
+    showToolBar () {
+      return store.state.showToolBar;
+    }
   },
   created () {
     this.username = this.$cookies.get('username');

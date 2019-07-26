@@ -20,6 +20,9 @@
         >
       </v-text-field>
       <v-spacer></v-spacer>     
+      <v-btn icon @click="showToolBar()">
+        <v-icon>{{ alignIcon }}</v-icon>
+      </v-btn>
       <v-btn icon @click="handleFullScreen()">
         <v-icon>fullscreen</v-icon>
       </v-btn>
@@ -74,6 +77,7 @@ export default {
       }
     ],
     userInput: '',
+    alignIcon: 'vertical_align_top',
   }),
   computed: {
     toolbarColor () {
@@ -92,6 +96,14 @@ export default {
       this.$router.push('/vision/basic');
       store.commit('changeSernum', this.userInput);
       // this.userInput = '';
+    },
+    showToolBar () {
+      store.commit('changeShowToolBar');
+      if (store.state.showToolBar) {
+        this.alignIcon = 'vertical_align_top';
+      } else {
+        this.alignIcon = 'vertical_align_bottom';
+      }
     },
   }
 };

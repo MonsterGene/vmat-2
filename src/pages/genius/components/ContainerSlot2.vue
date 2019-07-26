@@ -9,7 +9,7 @@
     >
     <v-card-title text-color="white">
       <v-layout row wrap>
-        <v-flex lg10 sm10 pa-1>
+        <v-flex lg10 sm10 pa-0 pl-1>
           <span><a :href="'#' + container.url"><h4 class="font-weight-regular">{{ container.name }}</h4></a></span>
 
           <span class="black--text">{{ container.test_time }}</span><br>

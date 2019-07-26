@@ -8,7 +8,7 @@
       >
       <v-card-title>
         <v-layout row wrap>
-          <v-flex lg10 sm10 pa-2>
+          <v-flex lg10 sm10 pt-0 pb-0 pl-2>
             <span><a :href="'#' + container.url"><h4 class="font-weight-light">{{ container.name }}</h4></a></span>
 
             <span class="black--text">{{ container.test_time }}</span><br>
@@ -27,7 +27,7 @@
             <span class="black--text">{{ container.display3 }}</span>
             </div>
           </v-flex>
-          <v-flex lg2 sm2 pt-2 pl-1 pr-1>
+          <v-flex lg2 sm2 pt-1 pl-2 pr-1>
             <span class="group pa-0">
               <v-tooltip left>
                 <v-icon
