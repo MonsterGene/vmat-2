@@ -53,13 +53,13 @@ export default {
               // 36  46 青蓝色
               // 37  47 白色
               if (element.startsWith('ERROR')) {
-                this.term.write('[01;31m[K' + element + '\r\n[m[K');
+                this.term.write('\u001b[01;31m\u001b[K' + element + '\r\n\u001b[m\u001b[K');
               }
               else if (element.startsWith('DEBUG')) {
-                this.term.write('[00;38m[K' + element + '\r\n[m[K');
+                this.term.write('\u001b[00;38m\u001b[K' + element + '\r\n\u001b[m\u001b[K');
               }
               else if (element.startsWith('INFO')) {
-                this.term.write('[00;33m[K' + element + '\r\n[m[K');
+                this.term.write('\u001b[00;33m\u001b[K' + element + '\r\n\u001b[m\u001b[K');
               }
               else {
                 this.term.write(element + '\r\n');
