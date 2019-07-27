@@ -230,7 +230,6 @@ export default {
       containerTab: null,
       showPassLess: false,
       showFailLess: false,
-      firstOpen: true,
     };
   },
   computed: {
@@ -375,10 +374,13 @@ export default {
           this.fail_qty += 1;
         }
       }
-      // if first time open windows, and idle_qty == 0, run_qty != 0, will show run tab
-      if (this.firstOpen && this.idle_qty === 0 && this.run_qty !== 0) {
+      // if idle_qty == 0, run_qty != 0, will show run tab
+      if (this.idle_qty === 0 && this.run_qty !== 0) {
         this.containerTab = 'tab-run';
-        this.firstOpen = false;
+      }
+      // if idle_qty != 0, run_qty == 0, will show idle tab
+      if (this.idle_qty !== 0 && this.run_qty === 0) {
+        this.containerTab = 'tab-idle';
       }
     },
     getContainerList () {
