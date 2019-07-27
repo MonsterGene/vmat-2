@@ -548,7 +548,11 @@ export default {
     if (params.startDate) { this.startDate = params.startDate }
     if (params.endDate) { this.endDate = params.endDate }
   }, 
+  destroyed () {
+    console.log('It is destroyed');
+  },
   beforeDestroy () {
+    console.log('It is beforeDestroy');
     this.summary = null;
     this.firstList = [];
     this.testList = [];

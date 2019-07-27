@@ -39,9 +39,34 @@ export default {
   watch: {
     'testLog': {
       handler: function (newLog) {
-        // console.log(newLog['testLog'].replace(re, ''));
         if (newLog['testLogController'] === this.controller) {
-          this.term.write(newLog['testLog'].replace(this.re, '\r\n'));
+          newLog['testLog'].split(this.re).forEach(element => {
+            if (element) {
+              // https://www.cnblogs.com/yunlongaimeng/p/9934360.html
+              // F    B
+              // 30  40 黑色
+              // 31  41 红色
+              // 32  42 绿色
+              // 33  43 黄色
+              // 34  44 蓝色
+              // 35  45 紫红色
+              // 36  46 青蓝色
+              // 37  47 白色
+              if (element.startsWith('ERROR')) {
+                this.term.write('[01;31m[K' + element + '\r\n[m[K');
+              }
+              else if (element.startsWith('DEBUG')) {
+                this.term.write('[00;38m[K' + element + '\r\n[m[K');
+              }
+              else if (element.startsWith('INFO')) {
+                this.term.write('[00;33m[K' + element + '\r\n[m[K');
+              }
+              else {
+                this.term.write(element + '\r\n');
+              }
+            }
+          });
+          // this.term.write(newLog['testLog'].replace(this.re, '\r\n'));
           this.term.scrollToBottom();
         }
       },

@@ -40,12 +40,12 @@
       </v-flex>
 
       <v-flex :class="'lg' + 12 / controllerQty + ' md12 sm12 xs12'" pa-1 v-for="controller of controllerPool" :key="controller">
-        <connection-slot v-if="controller === 'STEP'"
+        <connection-slot-step v-if="controller === 'STEP'"
           v-bind:steps="steps"
           v-bind:controller="controller"
           v-bind:container="container.name"
           @requestSteps="requestSteps"
-        ></connection-slot>
+        ></connection-slot-step>
         <connection-slot-profile v-else-if="controller === 'PROFILE'"
           v-bind:profileData="profileData"
           v-bind:controllerQty="controllerQty"
@@ -114,7 +114,7 @@
 import ToolBar from '../components/ToolBar';
 import AskQuestion from '../components/AskQuestion';
 import NotifyMarquee from '../components/NotifyMarquee';
-import ConnectionSlot from '../components/ConnectionSlot';
+import ConnectionSlotStep from '../components/ConnectionSlotStep';
 import ConnectionSlotXterm from '../components/ConnectionSlotXterm';
 import ConnectionSlotXtermInfo from '../components/ConnectionSlotXtermInfo';
 import ConnectionSlotXtermSeq from '../components/ConnectionSlotXtermSeq';
@@ -128,7 +128,7 @@ export default {
     ToolBar,
     AskQuestion,
     NotifyMarquee,
-    ConnectionSlot,
+    ConnectionSlotStep,
     ConnectionSlotXterm,
     ConnectionSlotXtermInfo,
     ConnectionSlotXtermSeq,
