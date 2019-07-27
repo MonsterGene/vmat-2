@@ -556,6 +556,8 @@ export default {
     this.first_fail_list = [];
     this.test_fail_list = [];
     this.board_fail_list = [];
+    this.dataSource = [];
+    this.all_dataSource = [];
     this.by_area_dataSource = [];
     this.by_machine_dataSource = [];
     this.by_uuttype_dataSource = [];
@@ -573,8 +575,6 @@ export default {
     this.first_pass_all_dataSource = [];
     this.test_pass_all_dataSource = [];
     this.board_pass_all_dataSource = [];
-    this.dataSource = [];
-    this.all_dataSource = [];
     this.responseData = {};
   },
   mounted () {

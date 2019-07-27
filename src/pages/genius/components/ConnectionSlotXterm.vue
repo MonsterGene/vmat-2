@@ -115,24 +115,18 @@ export default {
     this.requestInitLog();
     // this.term.toggleFullScreen();
     this.term.on('data', function (data) {
-      // console.log('data xterm=>', JSON.stringify(data));
       that.userInput = data;
       that.submitUserCommand();
     });
     this.term.on('keydown', arrayBuffer => {
-      // console.log('keydown===', arrayBuffer);
-      // console.log('keydown===', arrayBuffer.key);
-      // console.log('keydown===', arrayBuffer.ctrlKey);
       if (arrayBuffer.key === 'F1' && arrayBuffer.ctrlKey) {
         this.term.toggleFullScreen();
         this.term.fit();
       }
-      // xterm.write(arrayBuffer);
     });
   },
   destroyed () {
     this.term.dispose();
-    this.term.destroy();
   },
   methods: {
     openCommandPromp () {

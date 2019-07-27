@@ -40,16 +40,11 @@
       </v-flex>
 
       <v-flex :class="'lg' + 12 / controllerQty + ' md12 sm12 xs12'" pa-1 v-for="controller of controllerPool" :key="controller">
-        <connection-slot
-          v-if="controller === 'SEQ_LOG' || controller === 'STEP' || controller === 'INFO'"
+        <connection-slot v-if="controller === 'STEP'"
           v-bind:steps="steps"
-          v-bind:testLog="testLog"
-          v-bind:cleanTestLog="cleanTestLog"
           v-bind:controller="controller"
           v-bind:container="container.name"
-          @requestInitLog="requestInitLog"
           @requestSteps="requestSteps"
-          @submitUserCommand="submitUserCommand"
         ></connection-slot>
         <connection-slot-profile v-else-if="controller === 'PROFILE'"
           v-bind:profileData="profileData"
@@ -58,6 +53,18 @@
           v-bind:container="container.name"
           @requestProfile="requestProfile"
         ></connection-slot-profile>
+        <connection-slot-xterm-info v-else-if="controller === 'INFO'"
+          v-bind:controllerQty="controllerQty"
+          v-bind:controller="controller"
+          v-bind:container="container.name"
+        ></connection-slot-xterm-info>
+        <connection-slot-xterm-seq v-else-if="controller === 'SEQ_LOG'"
+          v-bind:controllerQty="controllerQty"
+          v-bind:testLog="testLog"
+          v-bind:controller="controller"
+          v-bind:container="container.name"
+          @requestInitLog="requestInitLog"
+        ></connection-slot-xterm-seq>
         <connection-slot-xterm v-else
           v-bind:controllerQty="controllerQty"
           v-bind:testLog="testLog"
@@ -109,6 +116,8 @@ import AskQuestion from '../components/AskQuestion';
 import NotifyMarquee from '../components/NotifyMarquee';
 import ConnectionSlot from '../components/ConnectionSlot';
 import ConnectionSlotXterm from '../components/ConnectionSlotXterm';
+import ConnectionSlotXtermInfo from '../components/ConnectionSlotXtermInfo';
+import ConnectionSlotXtermSeq from '../components/ConnectionSlotXtermSeq';
 import ConnectionSlotProfile from '../components/ConnectionSlotProfile';
 import NotifySnackbar from '../components/NotifySnackbar';
 
@@ -121,6 +130,8 @@ export default {
     NotifyMarquee,
     ConnectionSlot,
     ConnectionSlotXterm,
+    ConnectionSlotXtermInfo,
+    ConnectionSlotXtermSeq,
     ConnectionSlotProfile,
     NotifySnackbar,
   },

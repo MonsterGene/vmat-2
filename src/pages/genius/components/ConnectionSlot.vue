@@ -4,16 +4,6 @@
       <h4 style="margin-top: -11px;"><v-icon>menu</v-icon>{{ controller }}</h4>
     </v-card-title>
     <v-divider></v-divider>
-    
-    <v-card-text v-if="controller === 'SEQ_LOG'">
-      <textarea :id="controller"
-        class="test-log-area"
-        :rows="logRows"
-        autofocus
-        readonly
-        v-model="logs"
-      ></textarea>
-    </v-card-text>
 
     <!-- For STEP windows only -->
     <v-card-text v-if="controller === 'STEP'">
@@ -46,27 +36,7 @@
       </v-layout>
       </div>
     </v-card-text>
-
-    <!-- For INFO windows only -->
-    <v-card-text v-if="controller === 'INFO'">
-      <textarea
-        :rows="logRows"
-        class="test-log-area"
-        readonly
-        v-model.lazy="containerInfo"
-      ></textarea>
-    </v-card-text>
-
     <v-divider></v-divider>
-    <v-card-actions style="height: 40px;">
-      <v-btn
-        style="padding: 1; min-width: 0;"
-        color="error" 
-        :href="'#/genius/logs/' + connection_name" 
-        target="_blank"
-        v-if="controller !== 'STEP' && controller !== 'INFO'"
-      >LOG</v-btn>
-    </v-card-actions>
   </v-card>
 </template>
 
@@ -76,12 +46,10 @@ import { getContainerInfo } from '../api/getContainerInfo';
 export default {
   components: {
   },
-  props: ['controller', 'container', 'testLog', 'cleanTestLog', 'steps'],
+  props: ['controller', 'container', 'steps'],
   data () {
     return {
       containerInfo: '',
-      logs: '',
-      logRows: 25,
     };
   },
   computed: {
@@ -89,84 +57,18 @@ export default {
       return this.container + ':' + this.controller;
     },
   },
-  watch: {
-    'testLog': {
-      handler: function (newLog) {
-        if (newLog['testLogController'] === this.controller) {
-          this.logs += newLog['testLog'];
-          // console.log(this.logs);
-          const logLength = this.logs.length;
-          if (logLength > 6000) {  // Limit test log length
-            this.logs = this.logs.substring(logLength - 6000, logLength);
-          }
-          // Make sure the scroll is update to date.
-          const container = this.$el.querySelector('#' + this.controller);
-          container.scrollTop = container.scrollHeight + 10;
-        }
-      },
-      deep: true,
-    },
-    'cleanTestLog' () {
-      this.logs = '';
-    },
-    // 'steps' () {
-    //   console.log(this.steps);
-    // }
-  },
   created () {
-    if (this.controller === 'INFO') {
-      // here need to get INFO controller info from backend.
-      this.getInformation();
-    } else if (this.controller === 'STEP') {
-      this.requestSteps();
-    } else {
-      this.requestInitLog();
-    }
-    // dynamically change logs Rows
-    // const height = document.documentElement.scrollHeight;
-    // if (height < 700) {
-    //   this.logRows = 22;
-    // }
+    this.requestSteps();
   },
   methods: {
-    requestInitLog () {
-      // when controller window is open, request initial test log
-      this.$emit('requestInitLog', this.controller);
-    },
     requestSteps () {
       this.$emit('requestSteps', this.controller);
     },
-    getInformation () {
-      getContainerInfo(this.container)
-        .then(response => {
-          // console.log(response.data);
-          this.containerInfo = response.data.payload.data;
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    }
   }
 };
 </script>
 
 <style lang='stylus' scoped>
-.test-log-area {
-  color: rgb(225, 225, 225);
-  background-color: black;
-  resize: none;
-  overflow: auto;
-  width: 102%;
-  margin-top: -15px;
-  margin-bottom: -20px;
-  margin-left: -14px;
-  padding-left: 5px;
-  padding-right: 5px;
-  // overflow-y: scroll; 
-  max-height: 600px;
-  min-height: 600px;
-}
-
 .steps-area {
   // color: rgb(225, 225, 225);
   // background-color: black;
