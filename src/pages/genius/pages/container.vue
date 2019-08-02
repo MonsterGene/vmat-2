@@ -35,7 +35,7 @@
           <v-tab-item value="tab-idle">
           <v-tabs-slider></v-tabs-slider>
           <v-tabs-slider></v-tabs-slider>
-          <v-flex pa-0 mt-1 v-for="container of containerList" :key="container.id" v-show="container.status === 'idle'">
+          <v-flex pa-0 mt-1 v-for="(container, key1) of containerList" :key="key1" v-show="container.status === 'idle'">
             <container-slot
               v-bind:container="container"
               v-bind:questionContainer="questionContainer"
@@ -48,7 +48,7 @@
           <v-tab-item value="tab-run">
           <v-tabs-slider color="red"></v-tabs-slider>
           <v-tabs-slider color="red"></v-tabs-slider>
-          <v-flex pa-0 mt-1 v-for="container of containerList" :key="container.id" v-show="container.status === 'run'">
+          <v-flex pa-0 mt-1 v-for="(container, key1) of containerList" :key="key1" v-show="container.status === 'run'">
             <container-slot
               v-bind:container="container"
               v-bind:questionContainer="questionContainer"
@@ -60,25 +60,6 @@
           </v-tab-item>
         </v-tabs-items>
       </v-flex>
-      <!-- <v-flex lg4 md4 sm12 xs12 pa-1 v-if="!screenStyle">
-        <v-card style="background: rgb(240,184,0);" v-show="run_qty">
-          <v-card-text>
-            <div class="layout row align-center justify-space-between">
-                <div class="subheading ml-2">RUNNING Containers</div>
-                <v-chip color="gray">{{ run_qty }}</v-chip>
-            </div>
-          </v-card-text>
-        </v-card>
-        <v-flex pa-0 mt-1 v-for="container of containerList" :key="container.id" v-show="container.status === 'run'">
-          <container-slot
-            v-bind:container="container"
-            v-bind:questionContainer="questionContainer"
-            @clickAction="clickAction"
-            @reOpenQuestion="reOpenQuestion"
-            @answerQuestion="answerQuestion"
-          ></container-slot>
-        </v-flex>
-      </v-flex> -->
       <v-flex lg4 md4 sm12 xs12 pa-1 v-if="!screenStyle">
         <v-card v-show="pass_qty">
           <div class="row justify-space-between">
@@ -93,7 +74,7 @@
             </v-tabs>
           </div>
         </v-card>
-        <v-flex pa-0 mt-1 v-for="container of containerList" :key="container.id" v-show="container.status === 'pass'">
+        <v-flex pa-0 mt-1 v-for="(container, key1) of containerList" :key="key1" v-show="container.status === 'pass'">
           <container-slot
             v-bind:container="container"
             v-bind:questionContainer="questionContainer"
@@ -118,7 +99,7 @@
             </v-tabs>
           </div>
         </v-card>
-        <v-flex pa-0 mt-1 v-for="container of containerList" :key="container.id" v-show="container.status === 'fail' || container.status === 'stop'">
+        <v-flex pa-0 mt-1 v-for="(container, key1) of containerList" :key="key1" v-show="container.status === 'fail' || container.status === 'stop'">
           <container-slot
             v-bind:container="container"
             v-bind:questionContainer="questionContainer"
@@ -131,7 +112,7 @@
       </v-flex>
 
       <!-- Autotest Like Layout -->
-      <v-flex lg2 md4 sm6 v-for="container of containerList" :key="container.id" 
+      <v-flex lg2 md4 sm6 v-for="(container, key1) of containerList" :key="key1" 
         style="padding-right: 2px; padding-left: 2px; padding-bottom: 3px; padding-top: 3px;">
         <container-slot2 
           v-if="screenStyle"
@@ -217,7 +198,7 @@ export default {
       mode: 'PROD',
       openChangeMode: true,
       // container data
-      containerList: [],
+      containerList: {},
       // container status qty
       idle_qty: 0,
       run_qty: 0,
@@ -265,6 +246,7 @@ export default {
       console.log('Connection lost', e);
       window.getApp.$emit('WEB_SOCKET_RECONNECT');
       setTimeout(() => {
+        this.getContainerList();
         this.initWebSocket();
       }, 3000);
     },
@@ -278,9 +260,14 @@ export default {
       const data = JSON.parse(e.data);
       // console.log(data);
       // Parser containers list
-      const containerList = data.payload;
-      if (containerList) {
-        this.containerList = containerList;
+      const container_data = data.payload;
+      if (container_data) {
+        console.log(container_data);
+        let entries = Object.entries(container_data);
+        entries.forEach(([key, value]) => {
+          this.containerList[key] = value;
+        });
+        // this.containerList = container_data;
         this.calculateUnitQty();  // calc all status qty
         // console.log(this.containerList);
       }
@@ -360,7 +347,7 @@ export default {
       this.run_qty = 0;
       this.pass_qty = 0;
       this.fail_qty = 0;
-      for (const container of this.containerList) {
+      for (const container of Object.values(this.containerList)) {
         if (container.status === 'idle') {
           this.idle_qty += 1;
         }
@@ -388,6 +375,7 @@ export default {
         .then(response => {
           if (response.data.status) {
             const containerList = response.data.payload.data;
+            // console.log(containerList);
             if (containerList) {
               this.containerList = containerList;
               this.calculateUnitQty();  // calc all status qty
