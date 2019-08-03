@@ -6,7 +6,7 @@
       v-bind:openChangeMode="openChangeMode"
     ></tool-bar>
     <notify-marquee></notify-marquee>
-        <station-slot v-for="station of stationList" :key="station.id"
+        <station-slot v-for="(station, key1) of stationList" :key="key1" 
           v-bind:station="station"
         ></station-slot>
         <!-- <h2><p>Could not find Station List</p></h2> -->
@@ -66,6 +66,7 @@ export default {
       console.log('Connection lost', e);
       window.getApp.$emit('WEB_SOCKET_RECONNECT');
       setTimeout(() => {
+        this.getStationList();
         this.initWebSocket();
       }, 3000);
     },
@@ -78,10 +79,15 @@ export default {
     websocketonmessage (e) {
       const data = JSON.parse(e.data);
       // console.log(data);
-      const stationList = data.payload;
-      if (stationList) {
-        this.stationList = stationList;
-      // console.log(this.stationList);
+      const station_data = data.payload;
+      if (station_data) {
+        // this.stationList = stationList;
+        // console.log(station_data);
+        let entries = Object.entries(station_data);
+        entries.forEach(([key, value]) => {
+          this.stationList[key] = value;
+        });
+        // console.log(this.stationList);
       } else {
         this.stationList = [];
       }

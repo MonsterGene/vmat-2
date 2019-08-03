@@ -262,7 +262,7 @@ export default {
       // Parser containers list
       const container_data = data.payload;
       if (container_data) {
-        console.log(container_data);
+        // console.log(container_data);
         let entries = Object.entries(container_data);
         entries.forEach(([key, value]) => {
           this.containerList[key] = value;
