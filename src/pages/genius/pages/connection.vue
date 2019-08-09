@@ -81,6 +81,7 @@
         v-bind:type="questionType"
         v-bind:options="questionOptions"
         v-bind:image="questionImage"
+        v-bind:visible="questionVisible"
         v-bind:open="openQuestion"
         v-bind:container="questionContainer"
         @closeQuestion="closeQuestion"
@@ -146,6 +147,7 @@ export default {
       questionContainer: '',
       questionOptions: [],
       questionType: 'select',  // or select
+      questionVisible: true,  // or false
       // Stop Dialogs
       openDialogs: false,
       titleDialogs: '',
@@ -269,6 +271,7 @@ export default {
           this.questionContainer = question.container;
           this.questionTitle = question.question;
           this.questionImage = question.image;
+          this.questionVisible = question.visible;
           this.questionType = 'text';
           if (question.answers) {
             this.questionOptions = question.answers;

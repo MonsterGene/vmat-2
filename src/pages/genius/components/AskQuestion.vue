@@ -34,13 +34,29 @@
             </v-flex>
             <!-- input -->
             <v-flex lg12 xs12 sm12 md12 pt-0 pb-0 v-if="type === 'text'">
-              <v-text-field 
+              <v-text-field v-if="visible === 'YES'"
                 style="font-size:22px;"
                 label="Type Your Input Here."
                 autofocus
                 outline
                 clearable
                 type="text"
+                v-model="userInput"
+                v-on:keyup.enter="onEnter"
+              >
+                <v-btn slot="append-outer" large color="primary" style="top: -16px" @click="submitUserInput">
+                  <v-icon left>send</v-icon>
+                  Submit
+                </v-btn>
+              </v-text-field>
+              <!-- It is for invisible -->
+              <v-text-field v-if="visible === 'NO'"
+                style="font-size:22px;"
+                label="Type Your Input Here."
+                autofocus
+                outline
+                clearable
+                type="password"
                 v-model="userInput"
                 v-on:keyup.enter="onEnter"
               >
@@ -80,7 +96,7 @@ export default {
   components: {
     TimeCounter,
   },
-  props: ['title', 'open', 'type', 'options', 'image', 'container'],
+  props: ['title', 'open', 'type', 'options', 'image', 'container', 'visible'],
   data () {
     return {
       userInput: '',
