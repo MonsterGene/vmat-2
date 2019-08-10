@@ -166,7 +166,7 @@ export default {
       // console.log(this.userInput);
       this.submitUserCommand();
     },
-    showSendCmd() {
+    showSendCmd () {
       this.sendOpen = !this.sendOpen;
       if (this.sendOpen) {
         this.showSendName = 'Hide Send';
