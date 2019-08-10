@@ -83,7 +83,11 @@ export default {
       ],
       re: /-`.*|\r`-/g,
       re1: /-`/g,
-      re2: /\r`-/g,
+      re2: /\r\n`-/g,
+      re3: /\n\r`-/g,
+      re4: /\r`-/g,
+      re5: /\n`-/g,
+      re6: /`-/g,
       sendOpen: false,
       showSendName: 'Show Send',
     };
@@ -100,7 +104,13 @@ export default {
         if (newLog['testLogController'] === this.controller) {
           if (this.sendOpen) {
             // console.log(newLog['testLog'].replace(this.re1, '\u001b[01;31m\u001b[K').replace(this.re2, '\u001b[m\u001b[K'));
-            this.term.write(newLog['testLog'].replace(this.re1, '\u001b[01;31m\u001b[K').replace(this.re2, '\\r\u001b[m\u001b[K'));
+            this.term.write(newLog['testLog']
+            .replace(this.re1, '\u001b[01;31m\u001b[K')
+            .replace(this.re2, '\\r\u001b[m\u001b[K')
+            .replace(this.re3, '\\n\u001b[m\u001b[K')
+            .replace(this.re4, '\\r\\n\u001b[m\u001b[K')
+            .replace(this.re5, '\\n\\r\u001b[m\u001b[K')
+            .replace(this.re6, '\u001b[m\u001b[K'));
           } else {
             this.term.write(newLog['testLog'].replace(this.re, ''));
           }
