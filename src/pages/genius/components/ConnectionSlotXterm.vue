@@ -38,6 +38,12 @@
           </v-list-tile>
         </v-list>
       </v-menu>
+      <v-btn v-show="commandPromp"
+        color="green"
+        @click="showSendCmd()"
+      >
+        {{ showSendName }}
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -75,6 +81,11 @@ export default {
           name: 'CLOSE CONN'
         },
       ],
+      re: /-`.*|\r`-/g,
+      re1: /-`/g,
+      re2: /\r`-/g,
+      sendOpen: false,
+      showSendName: 'Show Send',
     };
   },
   computed: {
@@ -87,7 +98,12 @@ export default {
       handler: function (newLog) {
         // console.log(newLog['testLog']);
         if (newLog['testLogController'] === this.controller) {
-          this.term.write(newLog['testLog']);
+          if (this.sendOpen) {
+            // console.log(newLog['testLog'].replace(this.re1, '\u001b[01;31m\u001b[K').replace(this.re2, '\u001b[m\u001b[K'));
+            this.term.write(newLog['testLog'].replace(this.re1, '\u001b[01;31m\u001b[K').replace(this.re2, '\\r\u001b[m\u001b[K'));
+          } else {
+            this.term.write(newLog['testLog'].replace(this.re, ''));
+          }
           this.term.scrollToBottom();
         }
       },
@@ -149,6 +165,16 @@ export default {
       this.userInput = ascii.value;
       // console.log(this.userInput);
       this.submitUserCommand();
+    },
+    showSendCmd() {
+      this.sendOpen = !this.sendOpen;
+      if (this.sendOpen) {
+        this.showSendName = 'Hide Send';
+      } else {
+        this.showSendName = 'Show Send';
+      }
+      this.term.clear();
+      this.requestInitLog();
     }
   },
 };
