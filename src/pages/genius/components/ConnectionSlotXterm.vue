@@ -81,9 +81,9 @@ export default {
           name: 'CLOSE CONN'
         },
       ],
-      re: /-`.*`-/g,
-      re1: /-`/g,
-      re2: /`-/g,
+      re: /!`([^`]+)`!/g,
+      re1: /!`/g,
+      re2: /`!/g,
       sendOpen: false,
       showSendName: 'Show Send',
     };
@@ -96,7 +96,7 @@ export default {
   watch: {
     'testLog': {
       handler: function (newLog) {
-        console.log(newLog['testLog']);
+        console.log(newLog['testLog'].match(this.re));
         if (newLog['testLogController'] === this.controller) {
           if (this.sendOpen) {
             // console.log(newLog['testLog'].replace(this.re1, '\u001b[01;31m\u001b[K').replace(this.re2, '\u001b[m\u001b[K'));

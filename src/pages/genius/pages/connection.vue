@@ -211,7 +211,7 @@ export default {
       // this.controllerPool.push('PROFILE');
       this.controllerPool.push('SEQ_LOG');
       this.controllerPool.push('STEP');
-      // this.controllerPool.push('POWER');
+      // this.controllerPool.push('UUT');
 
     }, 1000);
   },
