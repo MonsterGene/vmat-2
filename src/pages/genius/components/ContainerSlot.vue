@@ -186,11 +186,6 @@ export default {
       else if (this.container.mode === 'DEBUG') { return 'bug_report' } 
       else { return 'stars' }
     },
-    actionDisabled () {
-      if (this.container.user === 'disabled' && this.container.status === 'idle') { return true }
-      else if (this.actionDisabledFlag) { return true }
-      else { return false }
-    }
   },
   methods: {
     clickAction (action) {
