@@ -177,9 +177,9 @@ export default {
       if (this.container.status === 'idle') {
         if (this.container.user === 'disabled') {
           if (this.container.step_name) {
-            return 'Unblock';
-          } else {
             return 'Block';
+          } else {
+            return 'Unblock';
           }
         }
         return 'Start Test';
