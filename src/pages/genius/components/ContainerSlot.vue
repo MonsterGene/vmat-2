@@ -32,7 +32,7 @@
               <v-tooltip left>
                 <v-icon
                   @click="clickAction(action)"
-                  :disabled="actionDisabled"
+                  :disabled="actionDisabledFlag"
                   slot="activator"
                   color="primary"
                   dark
@@ -152,13 +152,31 @@ export default {
       else { return '' }
     },
     action () {
-      if (this.container.status === 'idle') { return 'Start Test' }
+      if (this.container.status === 'idle') {
+        if (this.container.user === 'disabled') {
+          if (this.container.step_name) {
+            return 'Unblock';
+          } else {
+            return 'Block';
+          }
+        }
+        return 'Start Test';
+      }
       else if (this.container.status === 'run') { return 'Stop Test' }
       else if (this.container.status === 'stop' || this.container.status === 'fail' || this.container.status === 'pass') { return 'Deposit Test' }
       else { return 'Start Test' }
     }, 
     actionIcon () {
-      if (this.container.status === 'idle') { return 'play_arrow' }
+      if (this.container.status === 'idle') {
+        if (this.container.user === 'disabled') {
+          if (this.container.step_name) {
+            return 'link_off';
+          } else {
+            return 'link';
+          }
+        }
+        return 'play_arrow';
+      }
       else if (this.container.status === 'run') { return 'highlight_off' }
       else if (this.container.status === 'stop' || this.container.status === 'fail' || this.container.status === 'pass') { return 'delete_forever' }
       else { return 'play_arrow' }
