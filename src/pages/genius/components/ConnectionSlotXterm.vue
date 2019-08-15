@@ -81,9 +81,9 @@ export default {
           name: 'CLOSE CONN'
         },
       ],
-      re: /!`([^`]+)`!/g,
-      re1: /!`/g,
-      re2: /`!/g,
+      re: /``([^`]+)`/g,
+      re1: /``/g,
+      re2: /`/g,
       sendOpen: false,
       showSendName: 'Show Send',
     };
