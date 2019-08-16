@@ -91,7 +91,8 @@
         v-bind:title="questionTitle2"
         v-bind:type="questionType2"
         v-bind:options="questionOptions2"
-        v-bind:image="''"
+        v-bind:image="questionImage2"
+        v-bind:visible="questionVisible2"
         v-bind:open="openQuestion2"
         v-bind:container="questionContainer2"
         @closeQuestion="closeQuestion2"
@@ -142,7 +143,9 @@ export default {
       } else { return [] }
     },
     questionImage2 () { 
-      // console.log(this.container.symptom);
+      return this.container.question_image;
+    },
+    questionVisible2 () { 
       return this.container.symptom;
     },
     questionContainer2 () { return this.container.name },
