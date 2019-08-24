@@ -103,7 +103,7 @@
                   <v-card-title class="headline">{{ sernum }}: {{ message }}</v-card-title>
                   <v-card-text>
                     <h5 v-for="log of testLogs" :key="log.name">
-                      <a :href="log.url">{{ log.name }} ({{log.size}})</a>
+                      <a :href="log.url" target="_blank">{{ log.name }} ({{log.size}})</a>
                     </h5>
                     </v-card-text>
                   <v-card-actions>
