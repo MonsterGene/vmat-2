@@ -31,7 +31,7 @@ export default {
     getMarquee () {
       getNotifyMarquee()
         .then(response => {
-          const content = response.data.notification;
+          const content = response.data.payload.data.notification;
           if (content) {
             this.content = content;
             this.speed = 100;

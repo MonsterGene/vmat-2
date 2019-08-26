@@ -42,20 +42,6 @@ const genius_router = [
     )
   },
   {
-    path: '/genius/logs/:connection',
-    meta: {
-      breadcrumb: false,
-      theme: 'purple',
-      requireAuth: true,
-    },
-    name: 'genius/logs',
-    component: () => import(
-      /* webpackChunkName: "routes" */
-      /* webpackMode: "lazy-once" */
-      `@/pages/genius/pages/logs.vue`
-    )
-  },
-  {
     path: '/genius',
     meta: {
       breadcrumb: false,

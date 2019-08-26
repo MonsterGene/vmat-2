@@ -107,7 +107,7 @@ export default {
     getCurrentServerName () {
       getServerName()
         .then(response => {
-          this.serverName = response.data.name;
+          this.serverName = response.data.payload.data;
           document.title = this.serverName + ' | Genius';
           // console.log(this.serverName);
         })
@@ -135,9 +135,9 @@ export default {
         .then(response => {
           // console.log(response.data);
           if (response.data.status) {
-            this.details.push(response.data.cpu_usage);
-            this.details.push(response.data.ram_usage);
-            this.details.push(response.data.hdd_usage);
+            this.details.push(response.data.payload.data.cpu_usage);
+            this.details.push(response.data.payload.data.ram_usage);
+            this.details.push(response.data.payload.data.hdd_usage);
             this.details.push('------');
           }
         })

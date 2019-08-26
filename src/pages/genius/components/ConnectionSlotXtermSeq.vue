@@ -12,7 +12,7 @@
       <v-btn
         style="padding: 1; min-width: 0;"
         color="error" 
-        :href="'#/genius/logs/' + connection_name" 
+        :href="logPath"
         target="_blank"
       >LOG</v-btn>
 
@@ -21,11 +21,13 @@
 </template>
 <script>
 import Terminal from '../api/xTerm';
+import { getCurrentLog } from '../api/getCurrentLog';
 
 export default {
   props: ['controller', 'container', 'testLog', 'controllerQty'],
   data () {
     return {
+      logPath: '',
       term: null,
       terminalContainer: null,
       re: /\r\n|\n\r|\n|\r/g,
@@ -94,6 +96,7 @@ export default {
     this.term.blur();
     this.term.scrollToBottom();
     this.requestInitLog();
+    this.getLog();
   },
   destroyed () {
     this.term.dispose();
@@ -103,6 +106,15 @@ export default {
     requestInitLog () {
       // when controller window is open, request initial test log
       this.$emit('requestInitLog', this.controller);
+    },
+    getLog () {
+      getCurrentLog(this.connection_name)
+        .then(response => {
+          this.logPath = response.data.payload.data;
+        })
+        .catch(e => {
+          console.log(e);
+        });
     },
   },
 };

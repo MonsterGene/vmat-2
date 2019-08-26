@@ -198,7 +198,7 @@ export default {
     getNotification () {
       getNotifyMarquee()
         .then(response => {
-          this.currentNotification = response.data.notification;
+          this.currentNotification = response.data.payload.data.notification;
           // console.log('Notification: ' + this.currentNotification);
         })
         .catch(e => {
