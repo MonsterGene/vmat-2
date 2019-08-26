@@ -5,7 +5,7 @@ function getIpAddress () {
   }
   // console.log(hostname);
   // hostname = '10.167.219.247';
-  return hostname + ':8000';
+  return hostname + ':8000/api';
 }
 
 export {

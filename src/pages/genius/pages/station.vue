@@ -51,7 +51,7 @@ export default {
     initWebSocket () {
       this.currentUrl = window.location.hash.substring(1);
       this.hostname = getIpAddress();
-      const wsUrl = 'ws://' + this.hostname + this.currentUrl;
+      const wsUrl = 'ws://' + this.hostname.replace('api', 'ws') + this.currentUrl;
       this.websock = new WebSocket(wsUrl);
       this.websock.onmessage = this.websocketonmessage;
       // this.websock.onopen = this.websocketonopen;

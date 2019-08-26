@@ -55,6 +55,7 @@ export default {
   props: ['controller', 'container', 'testLog', 'controllerQty'],
   data () {
     return {
+      logPath: '',
       term: null,
       commandPromp: false,
       userInput: '',
@@ -181,6 +182,7 @@ export default {
     getLog () {
       getCurrentLog(this.connection_name)
         .then(response => {
+          // console.log(response.data);
           this.logPath = response.data.payload.data;
         })
         .catch(e => {

@@ -23,7 +23,7 @@ export default {
     return {
       term: null,
       terminalContainer: null,
-      containerInfo: '',
+      containerInfo: [],
     };
   },
   computed: {
@@ -61,9 +61,11 @@ export default {
     getInformation () {
       getContainerInfo(this.container)
         .then(response => {
-          // console.log(response.data);
+          console.log(response.data);
           this.containerInfo = response.data.payload.data;
-          this.term.write(this.containerInfo);
+          this.containerInfo.forEach(element => {
+            this.term.write(element + '\r\n');
+          });
           this.term.scrollToBottom();
         })
         .catch(e => {
