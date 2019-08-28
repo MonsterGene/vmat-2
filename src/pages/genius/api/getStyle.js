@@ -13,12 +13,12 @@ function setStyle (username, style) {
 
 function lockContainer (username, container_name) {
   const ipAddress = getIpAddress();
-  return axios.post('http://' + ipAddress + '/lock-container/', { 'username': username, 'container_name': container_name });
+  return axios.post('https://' + ipAddress + '/lock-container/', { 'username': username, 'container_name': container_name });
 }
 
 function unlockContainer (username, container_name) {
   const ipAddress = getIpAddress();
-  return axios.post('http://' + ipAddress + '/unlock-container/', { 'username': username, 'container_name': container_name });
+  return axios.post('https://' + ipAddress + '/unlock-container/', { 'username': username, 'container_name': container_name });
 }
 
 export {

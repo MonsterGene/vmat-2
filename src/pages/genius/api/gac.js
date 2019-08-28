@@ -4,14 +4,14 @@ import { getIpAddress } from './basic';
 
 function validateUsernameApi (username) {
   const ipAddress = getIpAddress();
-  return axios.post('http://' + ipAddress + '/validate-gac-username/', 
+  return axios.post('https://' + ipAddress + '/validate-gac-username/', 
     { 'username': username },
   );
 }
 
 function validatePasswordApi (username, password) {
   const ipAddress = getIpAddress();
-  return axios.post('http://' + ipAddress + '/get-gac-authentication2/', 
+  return axios.post('https://' + ipAddress + '/get-gac-authentication2/', 
     { 'username': username, 'password': password },
   );
 }

@@ -3,7 +3,7 @@ import { getIpAddress } from './basic';
 
 function getMachineStatus () {
   const ipAddress = getIpAddress();
-  return axios.get('http://' + ipAddress + '/get-machine-status/?format=json');
+  return axios.get('https://' + ipAddress + '/get-machine-status/?format=json');
 }
 
 export {

@@ -3,12 +3,12 @@ import { getIpAddress } from './basic';
 
 function getStationPage () {
   const ipAddress = getIpAddress();
-  return axios.get('http://' + ipAddress + '/get-station-page/');
+  return axios.get('https://' + ipAddress + '/get-station-page/');
 }
 
 function getContainerPage (station_name) {
   const ipAddress = getIpAddress();
-  return axios.get('http://' + ipAddress + '/get-container-page/?station_name=' + station_name);
+  return axios.get('https://' + ipAddress + '/get-container-page/?station_name=' + station_name);
 }
 
 export {

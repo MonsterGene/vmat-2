@@ -233,7 +233,7 @@ export default {
   }, 
   methods: {
     initWebSocket () {
-      const wsUrl = 'ws://' + this.hostname.replace('api', 'ws') + this.currentUrl;
+      const wsUrl = 'wss://' + this.hostname.replace('api', 'ws') + this.currentUrl;
       this.websock = new WebSocket(wsUrl);
       this.websock.onmessage = this.websocketonmessage;
       // this.websock.onopen = this.websocketonopen;

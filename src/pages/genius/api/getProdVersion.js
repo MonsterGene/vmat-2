@@ -3,7 +3,7 @@ import { getIpAddress } from './basic';
 
 function getProdVersion () {
   const ipAddress = getIpAddress();
-  return axios.get('http://' + ipAddress + '/get-prod-version/?format=json');
+  return axios.get('https://' + ipAddress + '/get-prod-version/?format=json');
 }
 
 export {
