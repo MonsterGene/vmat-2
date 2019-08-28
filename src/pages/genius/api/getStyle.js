@@ -3,12 +3,12 @@ import { getIpAddress } from './basic';
 
 function getStyle () {
   const ipAddress = getIpAddress();
-  return axios.get('http://' + ipAddress + '/get-container-style/');
+  return axios.get('https://' + ipAddress + '/get-container-style/');
 }
 
 function setStyle (username, style) {
   const ipAddress = getIpAddress();
-  return axios.post('http://' + ipAddress + '/set-container-style/', { 'username': username, 'style': style });
+  return axios.post('https://' + ipAddress + '/set-container-style/', { 'username': username, 'style': style });
 }
 
 function lockContainer (username, container_name) {
