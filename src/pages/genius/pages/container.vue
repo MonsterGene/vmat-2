@@ -260,7 +260,7 @@ export default {
     },
     websocketonmessage (e) {
       const data = JSON.parse(e.data);
-      console.log(data);
+      // console.log(data);
       // Parser containers list
       const container_data = data.payload;
       if (container_data) {
