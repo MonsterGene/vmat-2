@@ -3,17 +3,17 @@ import { getIpAddress } from './basic';
 
 function getNotifyMarquee () {
   const ipAddress = getIpAddress();
-  return axios.get('https://' + ipAddress + '/get-notification/');
+  return axios.get(ipAddress + '/get-notification/');
 }
 
 function setNotifyMarquee (username, notify) {
   const ipAddress = getIpAddress();
-  return axios.post('https://' + ipAddress + '/set-notification/', { 'notification': notify });
+  return axios.post(ipAddress + '/set-notification/', { 'notification': notify });
 }
 
 function getHistory () {
   const ipAddress = getIpAddress();
-  return axios.get('https://' + ipAddress + '/get-history/');
+  return axios.get(ipAddress + '/get-history/');
 }
 
 export {

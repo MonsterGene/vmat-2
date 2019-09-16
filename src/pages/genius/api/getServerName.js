@@ -3,7 +3,7 @@ import { getIpAddress } from './basic';
 
 function getServerName () {
   const ipAddress = getIpAddress();
-  return axios.get('https://' + ipAddress + '/get-server-name/?format=json');
+  return axios.get(ipAddress + '/get-server-name/?format=json');
 }
 
 export {
