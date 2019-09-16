@@ -506,6 +506,7 @@ export default {
             this.alert_message = response.data.payload.message;
           }
           else {
+            this.alert_color = 'success';
             this.responseData = response.data.payload.data;
             this.time_stamp = this.responseData.time_stamp;
             this.firstDataSummary = this.responseData.first_data.yield;
@@ -516,14 +517,14 @@ export default {
             this.failureAnalysisByArea = this.responseData.first_data.analysis.area;
             this.failureAnalysisByUuttype = this.responseData.first_data.analysis.uuttype;
             this.failureAnalysisByMachine = this.responseData.first_data.analysis.machine;
-
+            //
             this.yieldAnalysis = this.responseData.first_data.analysis.overall;
             this.yieldAnalysisByArea = this.responseData.first_data.analysis.by_area['PCBST'];
             this.yieldAnalysisByUuttype = this.responseData.first_data.analysis.by_uuttype['800-105698-01'];
             this.yieldAnalysisByMachine = this.responseData.first_data.analysis.by_machine['focwnbu1'];
             this.yieldAnalysisByContainer = this.responseData.first_data.analysis.by_container['focwnbu1'];
-            console.log(this.yieldAnalysisByArea);
-            this.alert_message = response.data.payload.message;
+            // console.log(this.yieldAnalysisByArea);
+            this.alert_message = response.data.payload.message + ',' + response.data.payload.time;
           }
           this.model.result = '';
           this.model.mode = '';
