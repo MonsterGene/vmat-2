@@ -6,6 +6,7 @@ const vision_menu = [
     items: [
       { title: 'Basic', path: 'basic' },
       { title: 'Advanced', path: 'advanced' },
+      { title: 'Advanced 2.0', path: 'advanced2' },
     ]
   },
 ];

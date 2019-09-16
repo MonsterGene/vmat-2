@@ -2,7 +2,7 @@
   <v-widget :title="title">
     <div slot="widget-content">
       <v-layout row wrap>   
-        <v-flex xl12>
+        <v-flex xl12 pa-0>
           <v-card>
             <v-toolbar card color="white">
               <v-text-field
