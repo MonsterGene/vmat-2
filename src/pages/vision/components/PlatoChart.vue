@@ -9,12 +9,12 @@
         ['grid.right', '1%'],
         ['grid.bottom', '1%'],
         ['legend.show', true],
-        ['color', [color.red.base, color.pink.base, color.indigo.base]],
+        ['color', [color.red.base, color.indigo.base]],
         ['toolbox.show', true],
         ['xAxis.axisLabel.show', true],
         ['xAxis.axisLabel.rotate', 20],
         ['yAxis.axisLabel.show', true],
-        ['yAxis', [{'position': 'left'}, {'name': 'Yield', 'position': 'right', 'min': 0, 'max': 100, 'axisLabel': {formatter : '{value}%'}}]],
+        ['yAxis', [{'position': 'left'}, {'name': '%', 'position': 'right', 'min': 0, 'max': 100, 'axisLabel': {formatter : '{value}%'}}]],
         
         ['series[0].type', 'line'],
         ['series[0].yAxisIndex', 1],
@@ -25,9 +25,6 @@
         ['series[1].type', 'bar'],
         ['series[1].label.show', true],
         ['series[1].label.position', 'top'],
-        ['series[2].type', 'bar'],
-        ['series[2].label.show', true],
-        ['series[2].label.position', 'top'],
       ]"
       height="350px"
       width="100%"
