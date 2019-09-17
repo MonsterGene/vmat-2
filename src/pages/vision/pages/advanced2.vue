@@ -188,14 +188,14 @@
             <v-card-text>
               <div class="layout row ma-0 align-center justify-space-between">
                 <div class="text-box">
-                  <div class="subheading" @click="freshDataSummary('first_data')">First Yield</div>
+                  <div class="subheading" @click="freshDataSummary('first_data')"><a>First Yield</a></div>
                   <span class="red--text">{{ firstDataSummary }}</span>
                 </div>
                 <div class="details">
                   <v-layout row>
                   <v-tooltip top>
-                    <v-btn flat icon color="error" slot="activator">
-                      <v-icon>trending_down</v-icon>
+                    <v-btn flat icon color="error" slot="activator" @click="downloadDataExcel('first')">
+                      <v-icon>cloud_download</v-icon>
                     </v-btn>
                     <span>Download Raw First Data</span>
                   </v-tooltip>
@@ -211,14 +211,14 @@
             <v-card-text>
               <div class="layout row ma-0 align-center justify-space-between">
                 <div class="text-box">
-                  <div class="subheading" @click="freshDataSummary('test_data')">Test Yield</div>
+                  <div class="subheading" @click="freshDataSummary('test_data')"><a>Test Yield</a></div>
                   <span class="red--text">{{ testDataSummary }}</span>
                 </div>
                 <div class="details">
                   <v-layout row>
                   <v-tooltip top>
-                    <v-btn flat icon color="error" slot="activator">
-                      <v-icon>trending_down</v-icon>
+                    <v-btn flat icon color="error" slot="activator" @click="downloadDataExcel('test')">
+                      <v-icon>cloud_download</v-icon>
                     </v-btn>
                     <span>Download Raw Test Data</span>
                   </v-tooltip>
@@ -234,14 +234,14 @@
             <v-card-text>
               <div class="layout row ma-0 align-center justify-space-between">
                 <div class="text-box">
-                  <div class="subheading" @click="freshDataSummary('board_data')">Board Yield</div>
+                  <div class="subheading" @click="freshDataSummary('board_data')"><a>Board Yield</a></div>
                   <span class="red--text">{{ boardDataSummary }}</span>
                 </div>
                 <div class="details">
                   <v-layout row>
                   <v-tooltip top>
-                    <v-btn flat icon color="error" slot="activator" @click="updateAllFailTable('Board Fail')">
-                      <v-icon>trending_down</v-icon>
+                    <v-btn flat icon color="error" slot="activator" @click="downloadDataExcel('board')">
+                      <v-icon>cloud_download</v-icon>
                     </v-btn>
                     <span>Download Raw Board Data</span>
                   </v-tooltip>
@@ -335,7 +335,7 @@ import VWidget from '@/components/VWidget';
 import YieldChart from '../components/YieldChart';
 import PlatoChart from '../components/PlatoChart';
 import FailPieChart from '../components/FailPieChart';
-import DataTable from '../components/DataTable';
+import DataTable from '../components/DataTable2';
 
 export default {
   components: {
@@ -440,18 +440,6 @@ export default {
     console.log('It is beforeDestroy');
   },
   mounted () {
-    // this.$refs.yieldThroughput.chartInstance.on('click', evt => {
-    //   const name = evt.name;
-    //   this.model.start_date = name + ' 00:00:00';
-    //   this.model.end_date = name + ' 23:59:59';
-    //   if (!this.debug_box) { this.model.mode = 'PROD' } else { this.model.mode = 'PROD,DEBUG' }
-    //   if (this.pass_box) { this.model.result += 'P' }
-    //   if (this.fail_box) { this.model.result += ' F' }
-    //   if (this.start_box) { this.model.result += ' S' }
-    //   if (this.abort_box) { this.model.result += ' A' }
-    //   this.dataSearch = '';
-    // });
-    //
     this.$refs.yieldThroughput.chartInstance.on('click', evt => {
       const name = evt.name;
       // console.log(name);
@@ -468,8 +456,8 @@ export default {
       this.failureAnalysisByArea = this.responseData[this.dataSelect].daily[this.indexSelect].analysis.area;
       this.failureAnalysisByUuttype = this.responseData[this.dataSelect].daily[this.indexSelect].analysis.uuttype;
       this.failureAnalysisByMachine = this.responseData[this.dataSelect].daily[this.indexSelect].analysis.machine;
-      
       this.yieldAnalysis = this.responseData[this.dataSelect].daily[this.indexSelect].analysis.overall;
+      this.getDataDetailsMethod(name);
     });
     // for by area chart / by machine chart
     this.$refs.failureAnalysisByArea.chartInstance.on('click', evt => {
@@ -496,7 +484,7 @@ export default {
       const name = evt.name;
       this.uuttypeSelect = name;
       if (this.indexSelect === 1000) {
-        this.yieldAnalysisByUuttype = this.responseData[this.dataSelect].daily[this.indexSelect].analysis.by_uuttype[name];
+        this.yieldAnalysisByUuttype = this.responseData[this.dataSelect].analysis.by_uuttype[name];
       } else {
         this.yieldAnalysisByUuttype = this.responseData[this.dataSelect].daily[this.indexSelect].analysis.by_uuttype[name];
       }
@@ -597,19 +585,22 @@ export default {
       this.yieldAnalysis = this.responseData[this.dataSelect].analysis.overall;
     },
     //
-    getDataDetailsMethod () {
-      this.dialog = true;
-      // console.log(params);
-      getDataDetails()
+    getDataDetailsMethod (dateStamp) {
+      // this.dialog = true;
+      let data_type = 'first';
+      if (this.dataSelect === 'first_data') { data_type = 'first' }
+      if (this.dataSelect === 'test_data') { data_type = 'test' }
+      if (this.dataSelect === 'board_data') { data_type = 'board' }
+      getDataDetails(this.time_stamp, dateStamp, data_type)
         .then(response => {
-          this.alert = true;
           if (!response.data['status']) {
+            this.alert = true;
             this.alert_color = 'warning';
-            this.alert_message = response.data['msg'];
+            this.alert_message = response.data.payload.message;
           }
           else {
-            this.alert_message = response.data['cost_time'];
-
+            this.tableSource = response.data.payload.data;
+            // console.log(this.tableSource);
           }
           this.dialog = false;  // for loading window
           this.model.result = '';
@@ -625,6 +616,38 @@ export default {
           this.model.mode = '';
         });
     },
+    downloadDataExcel (date_type) {
+      let dataType = date_type;
+      // console.log(dataType);
+      // console.log(this.time_stamp);
+      if (!this.time_stamp) { return false }
+      this.dialog = true;
+      getDataExcel(this.time_stamp, dataType)
+        .then(response => {
+          if (!response.data['status']) {
+            this.alert = true;
+            this.alert_color = 'warning';
+            this.alert_message = response.data.payload.message;
+          }
+          else {
+            let url = response.data.payload.data.url;
+            console.log(url);
+            window.location.href = url;
+          }
+          this.dialog = false;  // for loading window
+          this.model.result = '';
+          this.model.mode = '';
+        })
+        .catch(e => {
+          console.log(e);
+          this.alert = true;
+          this.alert_color = 'red';
+          this.alert_message = 'Service Error, Please Contact Genius Team.';
+          this.dialog = false;
+          this.model.result = '';
+          this.model.mode = '';
+        });
+    }
   },
 
 };

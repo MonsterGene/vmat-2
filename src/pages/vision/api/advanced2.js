@@ -12,7 +12,7 @@ function getDataSummary (params) {
 function getDataDetails (time_stamp, date_stamp, data_type) {
   const ipAddress = getIpAddress();
   return axios.post(ipAddress + '/get-data-details/',
-    { 'time_stamp': time_stamp.data_type, 'date_stamp': date_stamp, 'data_type': data_type });
+    { 'time_stamp': time_stamp, 'date_stamp': date_stamp, 'data_type': data_type });
 }
 
 function getDataExcel (time_stamp, data_type) {
@@ -21,8 +21,9 @@ function getDataExcel (time_stamp, data_type) {
     { 'time_stamp': time_stamp, 'data_type': data_type });
 }
 
+
 export {
   getDataSummary,
   getDataDetails,
-  getDataExcel
+  getDataExcel,
 };
