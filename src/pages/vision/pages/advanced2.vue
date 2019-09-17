@@ -188,7 +188,7 @@
             <v-card-text>
               <div class="layout row ma-0 align-center justify-space-between">
                 <div class="text-box">
-                  <div class="subheading">First Yield</div>
+                  <div class="subheading" @click="freshDataSummary('first_data')">First Yield</div>
                   <span class="red--text">{{ firstDataSummary }}</span>
                 </div>
                 <div class="details">
@@ -211,7 +211,7 @@
             <v-card-text>
               <div class="layout row ma-0 align-center justify-space-between">
                 <div class="text-box">
-                  <div class="subheading">Test Yield</div>
+                  <div class="subheading" @click="freshDataSummary('test_data')">Test Yield</div>
                   <span class="red--text">{{ testDataSummary }}</span>
                 </div>
                 <div class="details">
@@ -234,7 +234,7 @@
             <v-card-text>
               <div class="layout row ma-0 align-center justify-space-between">
                 <div class="text-box">
-                  <div class="subheading">Board Yield</div>
+                  <div class="subheading" @click="freshDataSummary('board_data')">Board Yield</div>
                   <span class="red--text">{{ boardDataSummary }}</span>
                 </div>
                 <div class="details">
@@ -255,17 +255,17 @@
         <!-- first data -->
         <v-layout row wrap>
           <v-flex lg6 md6 sm12 xs12 pr-1>
-            <yield-chart title="First Yield/Throughput" :chart-data="yieldThroughput" ref="yieldThroughput">
+          <yield-chart :title="dataCategory + ' Yield/Throughput'" :chart-data="yieldThroughput" ref="yieldThroughput">
             </yield-chart>
           </v-flex>
           <v-flex lg6 md6 sm12 xs12 pl-0>
-            <plato-chart title="First Analysis" :chart-data="yieldAnalysis" ref="yieldAnalysis">
+            <plato-chart :title="dataCategory + ' Analysis ' + timeCategory" :chart-data="yieldAnalysis" ref="yieldAnalysis">
             </plato-chart>
           </v-flex>
 
         <v-flex lg6 sm12 xs12 pr-1>
           <fail-pie-chart 
-            title="First By Area" 
+            :title="dataCategory + ' By Area ' + timeCategory" 
             name="Daily" 
             :chart-data="failureAnalysisByArea" 
             ref="failureAnalysisByArea"
@@ -273,13 +273,13 @@
           </fail-pie-chart>             
         </v-flex>
         <v-flex lg6 sm12 xs12 pl-0>
-          <plato-chart title="First Analysis" :chart-data="yieldAnalysisByArea" ref="yieldAnalysisByArea">
+          <plato-chart :title="dataCategory + ' Analysis ' + areaSelect" :chart-data="yieldAnalysisByArea" ref="yieldAnalysisByArea">
           </plato-chart>
         </v-flex>
 
         <v-flex lg6 sm12 xs12 pr-1>
           <fail-pie-chart 
-            title="First By UUTTYPE" 
+            :title="dataCategory + ' By UUTTYPE ' + timeCategory" 
             name="Daily" 
             :chart-data="failureAnalysisByUuttype"
             ref="failureAnalysisByUuttype"
@@ -288,13 +288,13 @@
         </v-flex>
 
         <v-flex lg6 sm12 xs12 pl-0>
-          <plato-chart title="First Analysis" :chart-data="yieldAnalysisByUuttype" ref="yieldAnalysisByUuttype">
+          <plato-chart :title="dataCategory + ' Analysis ' + uuttypeSelect" :chart-data="yieldAnalysisByUuttype" ref="yieldAnalysisByUuttype">
           </plato-chart>
         </v-flex>
 
         <v-flex lg6 sm12 xs12 pr-1>
           <fail-pie-chart 
-            title="First By Machine" 
+            :title="dataCategory + ' By Machine ' + timeCategory" 
             name="Daily" 
             :chart-data="failureAnalysisByMachine"
             ref="failureAnalysisByMachine"
@@ -303,12 +303,12 @@
         </v-flex>
 
         <v-flex lg6 sm12 xs12 pl-0>
-          <plato-chart title="First Analysis" :chart-data="yieldAnalysisByMachine" ref="yieldAnalysisByMachine">
+          <plato-chart :title="dataCategory + ' Analysis ' + machineSelect" :chart-data="yieldAnalysisByMachine" ref="yieldAnalysisByMachine">
           </plato-chart>
         </v-flex>
 
         <v-flex lg12 sm12 xs12>
-          <plato-chart title="First Analysis" :chart-data="yieldAnalysisByContainer" ref="yieldAnalysisByContainer">
+          <plato-chart :title="dataCategory + ' Analysis ' + machineSelect" :chart-data="yieldAnalysisByContainer" ref="yieldAnalysisByContainer">
           </plato-chart>
         </v-flex>
         </v-layout>
@@ -401,6 +401,15 @@ export default {
       yieldAnalysisByUuttype: [],
       yieldAnalysisByMachine: [],
       yieldAnalysisByContainer: [],
+
+      dataSelect: 'first_data',  // first_data,test_data,board_data
+      indexSelect: 100,  // 
+      dataCategory: 'First',  // First, Test, Board
+      timeCategory: 'Overall',  // Overall, 20190909
+      //
+      areaSelect: '',
+      machineSelect: '',
+      uuttypeSelect: '',
       
       tableSource: [],
       dataSearch: '',
@@ -431,30 +440,66 @@ export default {
     console.log('It is beforeDestroy');
   },
   mounted () {
-    this.$refs.yieldThroughput.chartInstance.on('click', evt => {
-      const name = evt.name;
-      this.model.start_date = name + ' 00:00:00';
-      this.model.end_date = name + ' 23:59:59';
-      if (!this.debug_box) { this.model.mode = 'PROD' } else { this.model.mode = 'PROD,DEBUG' }
-      if (this.pass_box) { this.model.result += 'P' }
-      if (this.fail_box) { this.model.result += ' F' }
-      if (this.start_box) { this.model.result += ' S' }
-      if (this.abort_box) { this.model.result += ' A' }
-      this.dataSearch = '';
-    });
+    // this.$refs.yieldThroughput.chartInstance.on('click', evt => {
+    //   const name = evt.name;
+    //   this.model.start_date = name + ' 00:00:00';
+    //   this.model.end_date = name + ' 23:59:59';
+    //   if (!this.debug_box) { this.model.mode = 'PROD' } else { this.model.mode = 'PROD,DEBUG' }
+    //   if (this.pass_box) { this.model.result += 'P' }
+    //   if (this.fail_box) { this.model.result += ' F' }
+    //   if (this.start_box) { this.model.result += ' S' }
+    //   if (this.abort_box) { this.model.result += ' A' }
+    //   this.dataSearch = '';
+    // });
     //
     this.$refs.yieldThroughput.chartInstance.on('click', evt => {
-      this.dataSearch = evt.name;
+      const name = evt.name;
+      // console.log(name);
+      // console.log(this.responseData[this.dataSelect].daily);
+      let indexSelect = 0;
+      this.responseData[this.dataSelect].daily.forEach(function (element, index, self) {
+        if (element.name === name) {
+          indexSelect = index;
+        }
+      });
+      this.indexSelect = indexSelect;
+      // console.log(this.indexSelect);
+      this.timeCategory = name;
+      this.failureAnalysisByArea = this.responseData[this.dataSelect].daily[this.indexSelect].analysis.area;
+      this.failureAnalysisByUuttype = this.responseData[this.dataSelect].daily[this.indexSelect].analysis.uuttype;
+      this.failureAnalysisByMachine = this.responseData[this.dataSelect].daily[this.indexSelect].analysis.machine;
+      
+      this.yieldAnalysis = this.responseData[this.dataSelect].daily[this.indexSelect].analysis.overall;
     });
     // for by area chart / by machine chart
     this.$refs.failureAnalysisByArea.chartInstance.on('click', evt => {
       const name = evt.name;
+      this.areaSelect = name;
+      if (this.indexSelect === 1000) {
+        this.yieldAnalysisByArea = this.responseData[this.dataSelect].analysis.by_area[name];
+      } else {
+        this.yieldAnalysisByArea = this.responseData[this.dataSelect].daily[this.indexSelect].analysis.by_area[name];
+      }
     });
     this.$refs.failureAnalysisByMachine.chartInstance.on('click', evt => {
       const name = evt.name;
+      this.machineSelect = name;
+      if (this.indexSelect === 1000) { 
+        this.yieldAnalysisByMachine = this.responseData[this.dataSelect].analysis.by_machine[name];
+        this.yieldAnalysisByContainer = this.responseData[this.dataSelect].analysis.by_container[name];
+      } else {
+        this.yieldAnalysisByMachine = this.responseData[this.dataSelect].daily[this.indexSelect].analysis.by_machine[name];
+        this.yieldAnalysisByContainer = this.responseData[this.dataSelect].daily[this.indexSelect].analysis.by_container[name];
+      }
     });
     this.$refs.failureAnalysisByUuttype.chartInstance.on('click', evt => {
       const name = evt.name;
+      this.uuttypeSelect = name;
+      if (this.indexSelect === 1000) {
+        this.yieldAnalysisByUuttype = this.responseData[this.dataSelect].daily[this.indexSelect].analysis.by_uuttype[name];
+      } else {
+        this.yieldAnalysisByUuttype = this.responseData[this.dataSelect].daily[this.indexSelect].analysis.by_uuttype[name];
+      }
     });
   },
   methods: {
@@ -499,7 +544,7 @@ export default {
       // console.log(params);
       getDataSummary(params)
         .then(response => {
-          console.log(response.data);
+          // console.log(response.data);
           this.alert = true;
           if (!response.data.status) {
             this.alert_color = 'warning';
@@ -512,18 +557,7 @@ export default {
             this.firstDataSummary = this.responseData.first_data.yield;
             this.testDataSummary = this.responseData.test_data.yield;
             this.boardDataSummary = this.responseData.board_data.yield;
-            //
-            this.yieldThroughput = this.responseData.first_data.daily;
-            this.failureAnalysisByArea = this.responseData.first_data.analysis.area;
-            this.failureAnalysisByUuttype = this.responseData.first_data.analysis.uuttype;
-            this.failureAnalysisByMachine = this.responseData.first_data.analysis.machine;
-            //
-            this.yieldAnalysis = this.responseData.first_data.analysis.overall;
-            this.yieldAnalysisByArea = this.responseData.first_data.analysis.by_area['PCBST'];
-            this.yieldAnalysisByUuttype = this.responseData.first_data.analysis.by_uuttype['800-105698-01'];
-            this.yieldAnalysisByMachine = this.responseData.first_data.analysis.by_machine['focwnbu1'];
-            this.yieldAnalysisByContainer = this.responseData.first_data.analysis.by_container['focwnbu1'];
-            // console.log(this.yieldAnalysisByArea);
+            this.freshDataSummary('first_data');
             this.alert_message = response.data.payload.message + ',' + response.data.payload.time;
           }
           this.model.result = '';
@@ -543,6 +577,24 @@ export default {
           this.model.result = '';
           this.model.mode = '';
         });
+    },
+    freshDataSummary (dataSelect) {
+      this.dataSelect = dataSelect;
+      // console.log(this.dataSelect);
+      if (!this.responseData) {
+        return false;
+      }
+      if (this.dataSelect === 'first_data') { this.dataCategory = 'First' }
+      if (this.dataSelect === 'test_data') { this.dataCategory = 'Test' }
+      if (this.dataSelect === 'board_data') { this.dataCategory = 'Board' }
+      this.timeCategory = 'Overall';
+      this.indexSelect = 1000;
+      this.yieldThroughput = this.responseData[this.dataSelect].daily;
+      this.failureAnalysisByArea = this.responseData[this.dataSelect].analysis.area;
+      this.failureAnalysisByUuttype = this.responseData[this.dataSelect].analysis.uuttype;
+      this.failureAnalysisByMachine = this.responseData[this.dataSelect].analysis.machine;
+      //
+      this.yieldAnalysis = this.responseData[this.dataSelect].analysis.overall;
     },
     //
     getDataDetailsMethod () {
