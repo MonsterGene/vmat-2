@@ -25,17 +25,6 @@ const vision_router = [
         component: () => import(
           /* webpackChunkName: "routes" */
           /* webpackMode: "lazy-once" */
-          `@/pages/vision/pages/advanced.vue`
-        )
-      },
-      {
-        path: 'advanced2',
-        meta: {
-          breadcrumb: false,
-        },
-        component: () => import(
-          /* webpackChunkName: "routes" */
-          /* webpackMode: "lazy-once" */
           `@/pages/vision/pages/advanced2.vue`
         )
       },

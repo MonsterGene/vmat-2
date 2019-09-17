@@ -4,10 +4,10 @@ function getIpAddress () {
     hostname = window.location.hostname;
   }
   // console.log(hostname);
-  hostname = '10.167.219.250';
+  // hostname = '10.167.219.100';
   // hostname = '10.167.219.28';
   // hostname = '10.167.16.49';
-  return 'http://' + hostname + ':8001/vision';
+  return 'https://' + hostname + ':8000/api';
 }
 
 export {

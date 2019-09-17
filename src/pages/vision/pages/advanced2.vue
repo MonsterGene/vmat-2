@@ -442,6 +442,7 @@ export default {
   mounted () {
     this.$refs.yieldThroughput.chartInstance.on('click', evt => {
       const name = evt.name;
+      this.dataSearch = '';
       // console.log(name);
       // console.log(this.responseData[this.dataSelect].daily);
       let indexSelect = 0;
@@ -463,6 +464,7 @@ export default {
     this.$refs.failureAnalysisByArea.chartInstance.on('click', evt => {
       const name = evt.name;
       this.areaSelect = name;
+      this.dataSearch = name;
       if (this.indexSelect === 1000) {
         this.yieldAnalysisByArea = this.responseData[this.dataSelect].analysis.by_area[name];
       } else {
@@ -472,6 +474,7 @@ export default {
     this.$refs.failureAnalysisByMachine.chartInstance.on('click', evt => {
       const name = evt.name;
       this.machineSelect = name;
+      this.dataSearch = name;
       if (this.indexSelect === 1000) { 
         this.yieldAnalysisByMachine = this.responseData[this.dataSelect].analysis.by_machine[name];
         this.yieldAnalysisByContainer = this.responseData[this.dataSelect].analysis.by_container[name];
@@ -483,12 +486,27 @@ export default {
     this.$refs.failureAnalysisByUuttype.chartInstance.on('click', evt => {
       const name = evt.name;
       this.uuttypeSelect = name;
+      this.dataSearch = name;
       if (this.indexSelect === 1000) {
         this.yieldAnalysisByUuttype = this.responseData[this.dataSelect].analysis.by_uuttype[name];
       } else {
         this.yieldAnalysisByUuttype = this.responseData[this.dataSelect].daily[this.indexSelect].analysis.by_uuttype[name];
       }
     });
+    this.$refs.yieldAnalysisByArea.chartInstance.on('click', evt => { 
+      this.dataSearch = evt.name;
+    });
+    this.$refs.yieldAnalysisByUuttype.chartInstance.on('click', evt => { 
+      this.dataSearch = evt.name;
+    });
+    this.$refs.yieldAnalysisByMachine.chartInstance.on('click', evt => { 
+      this.dataSearch = evt.name;
+    });
+    this.$refs.yieldAnalysisByContainer.chartInstance.on('click', evt => { 
+      this.dataSearch = evt.name;
+
+    });
+    
   },
   methods: {
     getCurrentDate (delta = 0) {
@@ -568,6 +586,7 @@ export default {
     },
     freshDataSummary (dataSelect) {
       this.dataSelect = dataSelect;
+      this.dataSearch = '';
       // console.log(this.dataSelect);
       if (!this.responseData) {
         return false;

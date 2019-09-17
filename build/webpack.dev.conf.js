@@ -43,7 +43,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     watchOptions: {
       poll: config.dev.poll,
     },
-    // https: true
+    https: true
   },
   plugins: [
     new webpack.DefinePlugin({

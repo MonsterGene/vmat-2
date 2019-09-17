@@ -86,7 +86,7 @@
 import VWidget from '@/components/VWidget';
 import { getBasic } from '../api/basic';
 import { getGenealogy } from '../api/getParentChildren';
-import DataTable from '../components/DataTable';
+import DataTable from '../components/DataTable2';
 import ParentChildren from '../components/ParentChildren';
 
 import store from '../store';
