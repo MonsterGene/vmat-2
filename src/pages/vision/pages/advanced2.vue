@@ -362,7 +362,7 @@ export default {
       endDate: this.getCurrentDate(),
       uuttype: '',
       area: '',
-      machine: 'focwnbu1',
+      machine: '',
       sernum: '',
       mode: '',
       result: '', 
