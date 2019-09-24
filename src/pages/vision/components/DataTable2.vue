@@ -24,11 +24,11 @@
                 :items="testDataContent"
                 :rows-per-page-items="[10,25,50,{text:'All','value':-1}]"
                 class="elevation-1"
-                item-key="testtime"
+                item-key="recttime"
                 >
                 <template slot="items" slot-scope="props">
                   <tr @click="props.expanded = !props.expanded">
-                    <td>{{ props.item.testtime }}</td>
+                    <td>{{ props.item.recttime.replace('T', ' ').split('.')[0] }}</td>
                     <td>{{ props.item.sernum }}</td>
                     <td>{{ props.item.uuttype }}</td>
                     <td>{{ props.item.area }}</td>
