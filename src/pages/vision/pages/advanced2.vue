@@ -602,6 +602,8 @@ export default {
       this.failureAnalysisByMachine = this.responseData[this.dataSelect].analysis.machine;
       //
       this.yieldAnalysis = this.responseData[this.dataSelect].analysis.overall;
+
+      this.getDataDetailsMethod('overall');
     },
     //
     getDataDetailsMethod (dateStamp) {
