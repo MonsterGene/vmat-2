@@ -385,7 +385,7 @@ export default {
         end_date: '',
         uuttype: '',
         area: '',
-        machine: 'focwnbu1',
+        machine: '',
         sernum: '',
         mode: '',
         result: '', 
@@ -459,6 +459,11 @@ export default {
       this.failureAnalysisByMachine = this.responseData[this.dataSelect].daily[this.indexSelect].analysis.machine;
       this.yieldAnalysis = this.responseData[this.dataSelect].daily[this.indexSelect].analysis.overall;
       this.getDataDetailsMethod(name);
+    });
+    // top fail chart.
+    this.$refs.yieldAnalysis.chartInstance.on('click', evt => {
+      const name = evt.name;
+      this.dataSearch = name;
     });
     // for by area chart / by machine chart
     this.$refs.failureAnalysisByArea.chartInstance.on('click', evt => {
