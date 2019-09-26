@@ -316,7 +316,7 @@
         <v-flex lg12 sm12 xs12 id="test-data-table" pa-0>
           <data-table
             :search="dataSearch"
-            title="Table Title TODO"
+            :title="'Raw Test Data ' + timeCategory"
             :testDataSource="tableSource"
           ></data-table>
         </v-flex>
