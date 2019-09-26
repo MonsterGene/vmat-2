@@ -61,16 +61,9 @@ export default {
     getInformation () {
       getContainerInfo(this.container)
         .then(response => {
-          // console.log(response.data);
           this.containerInfo = response.data.payload.data;
-          this.containerInfo.forEach(element => {
-            if (element.startsWith('gen.prod')) {
-              this.term.write(element + '\r\n');
-              // this.term.registerLinkMatcher(element, this.clickGenLink());
-            } else {
-              this.term.write(element + '\r\n');
-            }
-          });
+          // console.log(this.containerInfo);
+          this.term.write(this.containerInfo);
           this.term.scrollToBottom();
         })
         .catch(e => {
