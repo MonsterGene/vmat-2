@@ -38,7 +38,6 @@
     </v-card-text>
     <v-divider></v-divider>
     <v-card-actions style="height: 40px;">
-      
     </v-card-actions>
   </v-card>
 </template>
