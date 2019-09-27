@@ -7,7 +7,7 @@
 
     <!-- For STEP windows only -->
     <v-card-text v-if="controller === 'STEP'">
-      <div class="steps-area">
+      <div class="steps-area" :style="'max-height:' + connPageHight + 'px;min-height: 420px;'">
       <v-layout row wrap pa-0>
         <v-flex>
         </v-flex>
@@ -37,6 +37,9 @@
       </div>
     </v-card-text>
     <v-divider></v-divider>
+    <v-card-actions style="height: 40px;">
+      
+    </v-card-actions>
   </v-card>
 </template>
 
@@ -46,7 +49,7 @@ import { getContainerInfo } from '../api/getContainerInfo';
 export default {
   components: {
   },
-  props: ['controller', 'container', 'steps'],
+  props: ['controller', 'container', 'steps', 'connPageHight'],
   data () {
     return {
       containerInfo: '',
@@ -82,7 +85,7 @@ export default {
   padding-right: 5px;
   overflow-y: scroll; 
   overflow-x: hidden; 
-  max-height: 600px;
-  min-height: 600px;
+  // max-height: 600px;
+  // min-height: 600px;
 }
 </style>

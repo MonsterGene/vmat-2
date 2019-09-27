@@ -122,7 +122,7 @@ export default {
 
 <style lang='stylus' scoped>
 .console {
-  max-height: 600px;
-  min-height: 600px;
+  // max-height: 600px;
+  // min-height: 600px;
 }
 </style>

@@ -44,6 +44,7 @@
           v-bind:steps="steps"
           v-bind:controller="controller"
           v-bind:container="container.name"
+          v-bind:connPageHight="connPageHight"
           @requestSteps="requestSteps"
         ></connection-slot-step>
         <connection-slot-profile v-else-if="controller === 'PROFILE'"
@@ -174,6 +175,8 @@ export default {
       currentUrl: '',
       hostname: '',
       websock: null,
+      //
+      connPageHight: 800,
     };
   },
   computed: {
@@ -200,6 +203,7 @@ export default {
   },
   created () {
     this.username = this.$cookies.get('username');
+    this.connPageHight = document.body.clientHeight - 285;  // 网页可见区域高
     this.initWebSocket();
   },
   mounted () {
@@ -212,8 +216,8 @@ export default {
       this.controllerPool.push('SEQ_LOG');
       this.controllerPool.push('STEP');
       // this.controllerPool.push('UUT');
-
     }, 1000);
+
   },
   destroyed () {
     this.websock.close();
