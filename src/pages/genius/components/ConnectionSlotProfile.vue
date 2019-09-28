@@ -6,7 +6,7 @@
     <v-divider></v-divider>
     
     <v-card-text>
-      <e-chart class="profile-area"
+      <e-chart class="profile-area" :style="'max-height:' + connPageHight + 'px;min-height:' + connPageHight + 'px;'"
         ref="chart"
         :path-option="[
           ['dataset.source', chartData],
@@ -54,7 +54,7 @@ export default {
     EChart,
     VWidget,
   },
-  props: ['controller', 'container', 'controllerQty', 'profileData'],
+  props: ['controller', 'container', 'controllerQty', 'profileData', 'connPageHight'],
   data () {
     return {
       color: Material,

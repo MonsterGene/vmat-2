@@ -5,7 +5,8 @@
     </v-card-title>
     <v-divider></v-divider>
 
-    <div class="console" :id="'seq-' + container + '-' + controller"></div>
+    <div :id="'seq-' + container + '-' + controller" 
+    :style="'max-height:' + connPageHight + 'px;min-height:' + connPageHight + 'px;'"></div>
 
     <v-divider></v-divider>
     <v-card-actions style="height: 40px;">
@@ -24,7 +25,7 @@ import Terminal from '../api/xTerm';
 import { getCurrentLog } from '../api/getCurrentLog';
 
 export default {
-  props: ['controller', 'container', 'testLog', 'controllerQty'],
+  props: ['controller', 'container', 'testLog', 'controllerQty', 'connPageHight'],
   data () {
     return {
       logPath: '',
@@ -121,8 +122,5 @@ export default {
 </script>
 
 <style lang='stylus' scoped>
-.console {
-  // max-height: 600px;
-  // min-height: 600px;
-}
+
 </style>

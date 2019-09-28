@@ -7,7 +7,7 @@
 
     <!-- For STEP windows only -->
     <v-card-text v-if="controller === 'STEP'">
-      <div class="steps-area" :style="'max-height:' + connPageHight + 'px;min-height: 420px;'">
+      <div class="steps-area" :style="'max-height:' + connPageHight + 'px;min-height:' + connPageHight + 'px;'">
       <v-layout row wrap pa-0>
         <v-flex>
         </v-flex>

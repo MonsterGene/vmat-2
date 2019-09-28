@@ -52,18 +52,21 @@
           v-bind:controllerQty="controllerQty"
           v-bind:controller="controller"
           v-bind:container="container.name"
+          v-bind:connPageHight="connPageHight"
           @requestProfile="requestProfile"
         ></connection-slot-profile>
         <connection-slot-xterm-info v-else-if="controller === 'INFO'"
           v-bind:controllerQty="controllerQty"
           v-bind:controller="controller"
           v-bind:container="container.name"
+          v-bind:connPageHight="connPageHight"
         ></connection-slot-xterm-info>
         <connection-slot-xterm-seq v-else-if="controller === 'SEQ_LOG'"
           v-bind:controllerQty="controllerQty"
           v-bind:testLog="testLog"
           v-bind:controller="controller"
           v-bind:container="container.name"
+          v-bind:connPageHight="connPageHight"
           @requestInitLog="requestInitLog"
         ></connection-slot-xterm-seq>
         <connection-slot-xterm v-else
@@ -71,6 +74,7 @@
           v-bind:testLog="testLog"
           v-bind:controller="controller"
           v-bind:container="container.name"
+          v-bind:connPageHight="connPageHight"
           @requestInitLog="requestInitLog"
           @submitUserCommand="submitUserCommand"
         ></connection-slot-xterm>
@@ -204,6 +208,7 @@ export default {
   created () {
     this.username = this.$cookies.get('username');
     this.connPageHight = document.body.clientHeight - 285;  // 网页可见区域高
+    // console.log(this.connPageHight);
     this.initWebSocket();
   },
   mounted () {
@@ -214,7 +219,7 @@ export default {
     // must add some delay, since wesocket neeeds some time to connect backend.
       // this.controllerPool.push('PROFILE');
       this.controllerPool.push('SEQ_LOG');
-      this.controllerPool.push('STEP');
+      // this.controllerPool.push('STEP');
       // this.controllerPool.push('UUT');
     }, 1000);
 
