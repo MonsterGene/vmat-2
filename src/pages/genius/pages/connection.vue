@@ -180,7 +180,7 @@ export default {
       hostname: '',
       websock: null,
       //
-      connPageHight: 800,
+      connPageHight: 600,
     };
   },
   computed: {
@@ -206,8 +206,8 @@ export default {
     },
   },
   created () {
-    this.username = this.$cookies.get('username');
     this.connPageHight = document.body.clientHeight - 285;  // 网页可见区域高
+    this.username = this.$cookies.get('username');
     // console.log(this.connPageHight);
     this.initWebSocket();
   },
@@ -219,7 +219,7 @@ export default {
     // must add some delay, since wesocket neeeds some time to connect backend.
       // this.controllerPool.push('PROFILE');
       this.controllerPool.push('SEQ_LOG');
-      // this.controllerPool.push('STEP');
+      this.controllerPool.push('STEP');
       // this.controllerPool.push('UUT');
     }, 1000);
 
