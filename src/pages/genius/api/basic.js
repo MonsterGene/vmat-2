@@ -5,10 +5,10 @@ function getIpAddress () {
   }
   // console.log(hostname);
   // hostname = '10.167.219.247';
-  // hostname = '10.167.219.28';
+  // hostname = '10.167.219.100';
   // hostname = '10.167.16.57';
-  // return 'http://' + hostname + ':8000';
-  return 'https://' + hostname + ':8000/api';
+  return 'http://' + hostname + ':8000';
+  // return 'https://' + hostname + ':8000/api';
 }
 
 export {
