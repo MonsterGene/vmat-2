@@ -254,14 +254,20 @@
 
         <!-- first data -->
         <v-layout row wrap>
-          <v-flex lg6 md6 sm12 xs12 pr-1>
-          <yield-chart :title="dataCategory + ' Yield/Throughput'" :chart-data="yieldThroughput" ref="yieldThroughput">
-            </yield-chart>
-          </v-flex>
-          <v-flex lg6 md6 sm12 xs12 pl-0>
-            <plato-chart :title="dataCategory + ' Analysis ' + timeCategory" :chart-data="yieldAnalysis" ref="yieldAnalysis">
-            </plato-chart>
-          </v-flex>
+
+        <v-flex lg6 md6 sm12 xs12 pr-1>
+        <yield-chart :title="dataCategory + ' Yield/Throughput'" :chart-data="yieldThroughput" ref="yieldThroughput">
+          </yield-chart>
+        </v-flex>
+        <v-flex lg6 md6 sm12 xs12 pl-0>
+          <plato-chart :title="dataCategory + ' Analysis ' + timeCategory" :chart-data="yieldAnalysis" ref="yieldAnalysis">
+          </plato-chart>
+        </v-flex>
+
+        <v-flex lg12 md12 sm12 xs12 pr-1 v-show="timeCategory !== 'Overall'">
+        <yield-chart :title="dataCategory + ' Yield/Throughput By Hour ' + timeCategory" :chart-data="yieldThroughputByHour" ref="yieldThroughputByHour">
+          </yield-chart>
+        </v-flex>
 
         <v-flex lg6 sm12 xs12 pr-1>
           <fail-pie-chart 
@@ -392,6 +398,7 @@ export default {
         test: '', 
       },
       yieldThroughput: [],
+      yieldThroughputByHour: [],
       failureAnalysis: [],
       failureAnalysisByArea: [],
       failureAnalysisByUuttype: [],
@@ -460,6 +467,10 @@ export default {
       this.yieldAnalysis = this.responseData[this.dataSelect].daily[this.indexSelect].analysis.overall;
       this.getDataDetailsMethod(name);
     });
+    // this.$refs.yieldThroughputByHour.chartInstance.on('click', evt => {
+    //   const name = evt.name;
+    //   this.dataSearch = name;
+    // });
     // top fail chart.
     this.$refs.yieldAnalysis.chartInstance.on('click', evt => {
       const name = evt.name;
@@ -625,8 +636,9 @@ export default {
             this.alert_message = response.data.payload.message;
           }
           else {
-            this.tableSource = response.data.payload.data;
-            // console.log(this.tableSource);
+            this.tableSource = response.data.payload.data.failure;
+            this.yieldThroughputByHour = response.data.payload.data.by_hour;
+            // console.log(response.data.payload.data);
           }
           this.dialog = false;  // for loading window
           this.model.result = '';
