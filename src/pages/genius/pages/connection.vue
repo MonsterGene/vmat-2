@@ -44,6 +44,7 @@
           v-bind:steps="steps"
           v-bind:controller="controller"
           v-bind:container="container.name"
+          v-bind:controllerQty="controllerQty"
           v-bind:connPageHight="connPageHight"
           @requestSteps="requestSteps"
         ></connection-slot-step>
