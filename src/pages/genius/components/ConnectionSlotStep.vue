@@ -10,7 +10,7 @@
       <div class="steps-area" :style="'max-height:' + connPageHight + 'px;min-height:' + connPageHight + 'px;'">
       <v-layout row wrap pa-0 ma-0>
         <v-flex lg12 md12 sm12 xs12 pa-0 ma-0 v-for="(step1, index1) in steps" :key="index1">
-        <v-layout row wrap pa-0 ma-0>
+        <v-layout row wrap pa-0 ma-0 :align-center="true">
         <v-flex :class="'lg' + 12 / calcLength(step1) + ' md' + 12 / calcLength(step1)" pa-0 v-for="(step2, index2) in step1" :key="index2">
 
         <v-flex lg12 md12 sm12 xs12 pa-0 ma-0 mt-2 v-for="(step, index) in step2" :key="index">
