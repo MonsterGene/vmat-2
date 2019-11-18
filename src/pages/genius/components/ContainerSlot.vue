@@ -81,6 +81,30 @@
                 >lock</v-icon>
                 <span>Locked, by {{ container.lock_by_user }}</span>
               </v-tooltip>
+              <v-tooltip left>
+                <v-icon v-show="container.in_locking"
+                  slot="activator"
+                  color="primary"
+                  dark
+                >screen_lock_landscape</v-icon>
+                <span>In Locking</span>
+              </v-tooltip>
+              <v-tooltip left>
+                <v-icon v-show="container.in_sync_up"
+                  slot="activator"
+                  color="primary"
+                  dark
+                >sync</v-icon>
+                <span>In Sync Up</span>
+              </v-tooltip>
+              <v-tooltip left>
+                <v-icon v-show="container.in_leading"
+                  slot="activator"
+                  color="primary"
+                  dark
+                >ring_volume</v-icon>
+                <span>In Leading</span>
+              </v-tooltip>
             </span>
           </v-flex>
         </v-layout>
@@ -146,7 +170,7 @@ export default {
       return this.container.question_image;
     },
     questionVisible2 () { 
-      return this.container.symptom;
+      return this.container.question_visible;
     },
     questionContainer2 () { return this.container.name },
     containerColor () {
@@ -156,8 +180,8 @@ export default {
     },
     action () {
       if (this.container.status === 'idle') {
-        if (this.container.user === 'disabled') {
-          if (this.container.step_name) {
+        if (this.container.in_disabled === 'disabled') {
+          if (this.container.in_blocked) {
             return 'Unblock';
           } else {
             return 'Block';
@@ -171,8 +195,8 @@ export default {
     }, 
     actionIcon () {
       if (this.container.status === 'idle') {
-        if (this.container.user === 'disabled') {
-          if (this.container.step_name) {
+        if (this.container.in_disabled === 'disabled') {
+          if (this.container.in_blocked) {
             return 'link_off';
           } else {
             return 'link';
