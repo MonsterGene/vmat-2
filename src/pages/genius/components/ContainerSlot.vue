@@ -61,7 +61,7 @@
                 <v-icon v-show="container.status === 'stop'"
                   slot="activator"
                   color="primary"
-                  dark
+                  light
                 >mood_bad</v-icon>
                 <span>Stop by {{ container.stop_by_username }}</span>
               </v-tooltip>
@@ -69,7 +69,7 @@
                 <v-icon v-show="container.status === 'fail'"
                   slot="activator"
                   color="primary"
-                  dark
+                  light
                 >sentiment_very_dissatisfied</v-icon>
                 <span>Failed</span>
               </v-tooltip>
@@ -82,7 +82,7 @@
                 <span>Locked, by {{ container.lock_by_user }}</span>
               </v-tooltip>
               <v-tooltip left>
-                <v-icon v-show="container.in_locking"
+                <v-icon v-show="container.in_locking === 'YES'"
                   slot="activator"
                   color="primary"
                   dark
@@ -90,7 +90,7 @@
                 <span>In Locking</span>
               </v-tooltip>
               <v-tooltip left>
-                <v-icon v-show="container.in_sync_up"
+                <v-icon v-show="container.in_sync_up === 'YES'"
                   slot="activator"
                   color="primary"
                   dark
@@ -98,7 +98,7 @@
                 <span>In Sync Up</span>
               </v-tooltip>
               <v-tooltip left>
-                <v-icon v-show="container.in_leading"
+                <v-icon v-show="container.in_leading === 'YES'"
                   slot="activator"
                   color="primary"
                   dark
