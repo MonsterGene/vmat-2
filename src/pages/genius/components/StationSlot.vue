@@ -3,19 +3,23 @@
     <v-hover>
       <v-card
         slot-scope="{ hover }"
-        :class="`elevation-${hover ? 10 : 3}`"
+        :class="`elevation-${hover ? 6 : 3}`"
         class="mx-auto"
       >
         <v-card-text>
           <div class="layout row ma-0 align-center justify-space-between">
             <div class="text-box">
-              <div class="subheading pb-2"><a :href="'#' + station.url"><h3 class="font-weight-light">{{ station.name }}</h3></a></div>
+              <div class="subheading pb-2">
+                <a :href="'#' + station.url">
+                  <h3 class="font-weight-light purple--text">{{ station.name }}</h3>
+                </a>
+              </div>
             </div>
             <div class="text-xs-center">
-              <v-chip style="background: rgb(143,143,143);" text-color="white">IDLE: {{ station.idle_number }}</v-chip>
-              <v-chip style="background: rgb(240,184,0);" text-color="white">RUN: {{ station.run_number }}</v-chip>
-              <v-chip color="green" text-color="white">PASS: {{ station.pass_number }}</v-chip>
-              <v-chip color="red" text-color="white">FAIL: {{ station.fail_number }}</v-chip>
+              <v-chip style="background: rgb(143,143,143);" draggable text-color="white">IDLE: {{ station.idle_number }}</v-chip>
+              <v-chip style="background: rgb(240,184,0);" draggable text-color="white">RUN: {{ station.run_number }}</v-chip>
+              <v-chip color="green" draggable text-color="white">PASS: {{ station.pass_number }}</v-chip>
+              <v-chip color="red" draggable text-color="white">FAIL: {{ station.fail_number }}</v-chip>
             </div>
           </div>
         </v-card-text>

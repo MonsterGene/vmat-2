@@ -12,26 +12,30 @@
       <v-flex lg12 sm12 pa-1 ma-0>
         <v-card>
             <v-tooltip right>
-              <v-btn style="padding: 1; min-width: 0;"
-                :href="backPath"
-                slot="activator"
-                color="primary"
-                dark
-              ><v-icon>arrow_back</v-icon></v-btn>
+              <template v-slot:activator="{ on }">
+                <v-btn style="padding: 1; min-width: 0;"
+                  :href="backPath"
+                  v-on="on"
+                  color="primary"
+                  dark
+                >
+                <v-icon>arrow_back</v-icon></v-btn>
+              </template>
               <span>Back</span>
             </v-tooltip>
             <v-tooltip right style="margin-left: -15px;">
+              <template v-slot:activator="{ on }">
                 <v-btn
                   @click="clickAction(action, container.name)"
-                  slot="activator"
+                  v-on="on"
                   :color="containerColor"
                   dark
                 >{{ container.name }} <v-icon>{{ actionIcon }}</v-icon></v-btn>
-                <span>{{ action }}</span>
-              </v-tooltip>
+              </template>
+              <span>{{ action }}</span>
+            </v-tooltip>
             <v-divider vertical></v-divider>
             <v-btn v-for="controller of controllerList" :key="controller"
-              flat
               color="error"
               style="margin-left: -10px; padding: 1; min-width: 0;"
               @click="openLogWindow(controller)"
@@ -106,8 +110,8 @@
             <v-card-text><h4>{{ contentDialogs }}</h4></v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="green darken-1" flat @click="openDialogs = false">Cancel</v-btn>
-              <v-btn color="green darken-1" flat @click="openDialogs = false; clickAction('2Stop Test', titleDialogs)">Confirm</v-btn>
+              <v-btn color="green darken-1" text @click="openDialogs = false">Cancel</v-btn>
+              <v-btn color="green darken-1" text @click="openDialogs = false; clickAction('2Stop Test', titleDialogs)">Confirm</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>

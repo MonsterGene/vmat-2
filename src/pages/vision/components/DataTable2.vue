@@ -4,7 +4,7 @@
       <v-layout row wrap>   
         <v-flex xl12 pa-0>
           <v-card>
-            <v-toolbar card color="white">
+            <v-toolbar flat color="white">
               <v-text-field
               flat
               solo
@@ -19,10 +19,10 @@
             <v-card-text class="pa-0">
               <v-data-table
                 :headers="testData.headers"
-                :pagination.sync="testData.pagination"
+                :options.sync="testData.pagination"
                 :search="searchFilter"
                 :items="testDataContent"
-                :rows-per-page-items="[10,25,50,{text:'All','value':-1}]"
+                :items-per-page-options="[10,25,50,{text:'All','value':-1}]"
                 class="elevation-1"
                 item-key="recttime"
                 >

@@ -37,7 +37,7 @@
               <small>50+</small>
             </a>
           </div>
-          <v-btn outline flat color="primary">
+          <v-btn outline text color="primary">
             More
           </v-btn>
         </div>    

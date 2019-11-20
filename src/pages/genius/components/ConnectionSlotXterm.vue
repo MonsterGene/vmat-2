@@ -23,20 +23,22 @@
         @click="openCommandPromp" 
       >CMD</v-btn>
       <v-menu v-show="commandPromp">
-        <v-btn
-          slot="activator"
-          color="error"
-        >
-          ACTION
-        </v-btn>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            v-on="on"
+            color="error"
+          >
+            ACTION
+          </v-btn>
+        </template>
         <v-list>
-          <v-list-tile
+          <v-list-item
             v-for="(ascii, index) in asciis"
             :key="index"
             @click="sendAscii(ascii)"
           >
-            <v-list-tile-title>{{ ascii.name }}</v-list-tile-title>
-          </v-list-tile>
+            <v-list-item-title>{{ ascii.name }}</v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-menu>
       <v-btn v-show="commandPromp"

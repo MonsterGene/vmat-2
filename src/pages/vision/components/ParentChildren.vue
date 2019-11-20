@@ -6,9 +6,9 @@
           
           <v-data-table
             :headers="testData.headers"
-            :pagination.sync="testData.pagination"
+            :options.sync="testData.pagination"
             :items="genealogyInfo"
-            :rows-per-page-items="[10,25,50,{text:'All','value':-1}]"
+            :items-per-page-options="[10,25,50,{text:'All','value':-1}]"
             class="elevation-1"
             item-key="updated_at"
           >

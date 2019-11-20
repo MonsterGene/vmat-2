@@ -3,7 +3,6 @@
     v-model="openQuestion"
     :persistent="true"
     :hide-overlay="true"
-    full-width
     color="primary"
   >
     <v-container grid-list-xl fluid pa-0>
@@ -21,12 +20,14 @@
             <!-- question -->
             <v-flex lg12 xs12 sm12 md12 mt-0 pb-0>
               <v-tooltip right>
-                <v-icon
-                  @click="closeQuestion"
-                  slot="activator"
-                  color="primary"
-                  dark
-                >clear</v-icon>
+                <template v-slot:activator="{ on }">
+                  <v-icon
+                    @click="closeQuestion"
+                    v-on="on"
+                    color="primary"
+                    dark
+                  >clear</v-icon>
+                </template>
                 <span>To Close Question</span>
               </v-tooltip>
               <time-counter :start="startCounter" :stop="stopCounter"></time-counter>

@@ -21,11 +21,11 @@
               :hide-slider="true"
             >
               <v-tab style="background: rgb(143,143,143);" href="#tab-idle">
-                <div class="subheading ml-2">IDLE </div>
+                <div class="subheading ml-2 black--text">IDLE </div>
                 <v-chip color="gray">{{ idle_qty }}</v-chip>
               </v-tab>  
               <v-tab style="background: rgb(240,184,0);" href="#tab-run">
-                <div class="subheading ml-2">RUNNING Containers</div>
+                <div class="subheading ml-2 black--text">RUNNING Containers</div>
                 <v-chip color="gray">{{ run_qty }}</v-chip>
               </v-tab>
             </v-tabs>
@@ -67,7 +67,7 @@
               :grow="true"
             >
               <v-tab style="background: rgb(79,145,58);" @click="showPassLess = !showPassLess">
-                <div class="subheading ml-2 text-lg-start">PASSED Containers</div>
+                <div class="subheading ml-2 text-lg-start black--text">PASSED Containers</div>
                 <v-chip color="gray">{{ pass_qty }}</v-chip>
               </v-tab>
               <v-tabs-slider></v-tabs-slider>
@@ -92,7 +92,7 @@
               :grow="true"
             >
               <v-tab style="background: rgb(216,31,40);" @click="showFailLess = !showFailLess">
-                <div class="subheading ml-2">FAILED Containers</div>
+                <div class="subheading ml-2 black--text">FAILED Containers</div>
                 <v-chip color="gray">{{ fail_qty }}</v-chip>
               </v-tab>
               <v-tabs-slider></v-tabs-slider>
@@ -143,8 +143,8 @@
             <v-card-text><h4>{{ contentDialogs }}</h4></v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="green darken-1" flat @click="openDialogs = false">Cancel</v-btn>
-              <v-btn color="green darken-1" flat @click="openDialogs = false; clickAction('2Stop Test', titleDialogs)">Confirm</v-btn>
+              <v-btn color="green darken-1" text @click="openDialogs = false">Cancel</v-btn>
+              <v-btn color="green darken-1" text @click="openDialogs = false; clickAction('2Stop Test', titleDialogs)">Confirm</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>

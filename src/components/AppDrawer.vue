@@ -24,41 +24,41 @@
         <template v-for="(item, i) in menus">
             <!--group with subitems-->
             <v-list-group v-if="item.items" :key="item.name" :group="item.group" :prepend-icon="item.icon" no-action="no-action">
-              <v-list-tile :active-class="$vuetify.dark && 'primary--text text--lighten-5' || 'primary--text'" slot="activator" ripple="ripple">
-                <v-list-tile-content>
-                  <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
+              <v-list-item :active-class="$vuetify.dark && 'primary--text text--lighten-5' || 'primary--text'" slot="activator" ripple="ripple">
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
               <template v-for="(subItem, i) in item.items">
                 <!--sub group-->
                 <v-list-group v-if="subItem.items" :key="subItem.name" :group="subItem.group" sub-group="sub-group">
-                  <v-list-tile :active-class="$vuetify.dark && 'primary--text text--lighten-5' || 'primary--text'" slot="activator" ripple="ripple">
-                    <v-list-tile-content>
-                      <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile :active-class="$vuetify.dark && 'primary--text text--lighten-5' || 'primary--text'" v-for="(grand, i) in subItem.items" :key="i" :to="genChildTarget(item, grand)" :href="grand.href" ripple="ripple">
-                    <v-list-tile-content>
-                      <v-list-tile-title>{{ grand.title }}</v-list-tile-title>
-                    </v-list-tile-content>
-                  </v-list-tile>
+                  <v-list-item :active-class="$vuetify.dark && 'primary--text text--lighten-5' || 'primary--text'" slot="activator" ripple="ripple">
+                    <v-list-item-content>
+                      <v-list-item-title>{{ subItem.title }}</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item :active-class="$vuetify.dark && 'primary--text text--lighten-5' || 'primary--text'" v-for="(grand, i) in subItem.items" :key="i" :to="genChildTarget(item, grand)" :href="grand.href" ripple="ripple">
+                    <v-list-item-content>
+                      <v-list-item-title>{{ grand.title }}</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
                 </v-list-group>
                 <!--child item-->
-                <v-list-tile v-else :key="i" :active-class="$vuetify.dark && 'primary--text text--lighten-5' || 'primary--text'" :to="genChildTarget(item, subItem)" :href="subItem.href" :disabled="subItem.disabled" :target="subItem.target" ripple="ripple">
-                  <v-list-tile-content>
-                    <v-list-tile-title><span>{{ subItem.title }}</span></v-list-tile-title>
-                  </v-list-tile-content>
+                <v-list-item v-else :key="i" :active-class="$vuetify.dark && 'primary--text text--lighten-5' || 'primary--text'" :to="genChildTarget(item, subItem)" :href="subItem.href" :disabled="subItem.disabled" :target="subItem.target" ripple="ripple">
+                  <v-list-item-content>
+                    <v-list-item-title><span>{{ subItem.title }}</span></v-list-item-title>
+                  </v-list-item-content>
                   <!-- <v-circle class="white--text pa-0 circle-pill" v-if="subItem.badge" color="red" disabled="disabled">{{ subItem.badge }}</v-circle> -->
-                  <v-list-tile-action v-if="subItem.action">
+                  <v-list-item-action v-if="subItem.action">
                     <v-icon :class="[subItem.actionClass || 'success--text']">{{ subItem.action }}</v-icon>
-                  </v-list-tile-action>
-                </v-list-tile>
+                  </v-list-item-action>
+                </v-list-item>
               </template>
             </v-list-group>
             <v-subheader v-else-if="item.header" :key="i">{{ item.header }}</v-subheader>
             <v-divider v-else-if="item.divider" :key="i"></v-divider>
             <!--top-level link-->
-            <v-list-tile
+            <v-list-item
               :active-class="$vuetify.dark && 'primary--text text--lighten-5' || 'primary--text'"
               v-else :to="!item.href ? { name: item.name, path: item.path } : null" :href="item.href"
               ripple="ripple"
@@ -67,18 +67,18 @@
               rel="noopener"
               :key="item.name"
             >
-              <v-list-tile-action v-if="item.icon">
+              <v-list-item-action v-if="item.icon">
                 <v-icon>{{ item.icon }}</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-              </v-list-tile-content>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item-content>
               <!-- <v-circle class="white--text pa-0 chip--x-small" v-if="item.badge" :color="item.color || 'primary'" disabled="disabled">{{ item.badge }}</v-circle> -->
-              <v-list-tile-action v-if="item.subAction">
+              <v-list-item-action v-if="item.subAction">
                 <v-icon class="success--text">{{ item.subAction }}</v-icon>
-              </v-list-tile-action>
+              </v-list-item-action>
               <!-- <v-circle class="caption blue lighten-2 white--text mx-0" v-else-if="item.chip" label="label" small="small">{{ item.chip }}</v-circle> -->
-            </v-list-tile>
+            </v-list-item>
         </template>
       </v-list>        
     </vue-perfect-scrollbar>        

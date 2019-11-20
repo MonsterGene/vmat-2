@@ -1,15 +1,15 @@
 <template>
-  <v-toolbar
+  <v-app-bar
     :color="$vuetify.theme.primary"
     fixed
     dark
     app
     >
-    <v-toolbar-title class="ml-0 pl-3">
-      <v-toolbar-side-icon @click.stop="handleDrawerToggle"></v-toolbar-side-icon>
-    </v-toolbar-title>
+      <v-toolbar-title class="ml-0 pl-1">
+        <v-app-bar-nav-icon @click.stop="handleDrawerToggle"></v-app-bar-nav-icon>
+      </v-toolbar-title>
       <v-text-field
-        flat
+        text
         clearable
         solo-inverted
         prepend-icon="search"
@@ -17,7 +17,7 @@
         class="hidden-sm-and-down"
         v-on:keyup.enter="onEnter"
         v-model="userInput"
-        >
+      >
       </v-text-field>
       <v-spacer></v-spacer>     
       <v-btn icon @click="showToolBar()">
@@ -27,7 +27,7 @@
         <v-icon>fullscreen</v-icon>
       </v-btn>
       <!-- <v-menu offset-y origin="center center" class="elelvation-1" :nudge-bottom="14" transition="scale-transition">
-        <v-btn icon flat slot="activator">
+        <v-btn icon text slot="activator">
         <v-badge color="red" overlap>
           <v-icon medium>notifications</v-icon>
         </v-badge>
@@ -36,24 +36,26 @@
       </v-menu> -->
 
       <v-menu offset-y origin="center center" :nudge-bottom="10" transition="scale-transition">
-        <v-btn icon large flat slot="activator">
-          <v-avatar size="30px">
-            <img src="/static/logo.png" alt="Robin Wu"/>
-          </v-avatar>
-        </v-btn>
+        <template v-slot:activator="{ on }">
+          <v-btn v-on="on" icon large text slot="activator">
+            <v-avatar size="30px">
+              <img src="/static/logo.png" alt="Robin Wu"/>
+            </v-avatar>
+          </v-btn>
+        </template>
         <v-list class="pa-0">
-          <v-list-tile v-for="(item,index) in items" :to="!item.href ? { name: item.name } : null" :href="item.href" @click="item.click" ripple="ripple" :disabled="item.disabled" :target="item.target" rel="noopener" :key="index">
-            <v-list-tile-action v-if="item.icon">
+          <v-list-item v-for="(item,index) in items" :to="!item.href ? { name: item.name } : null" :href="item.href" @click="item.click" ripple="ripple" :disabled="item.disabled" :target="item.target" rel="noopener" :key="index">
+            <v-list-item-action v-if="item.icon">
               <v-icon>{{ item.icon }}</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </v-list>
       </v-menu>
       
-  </v-toolbar>
+  </v-app-bar>
 </template>
 <script>
 import NotificationList from '@/components/widgets/list/NotificationList';

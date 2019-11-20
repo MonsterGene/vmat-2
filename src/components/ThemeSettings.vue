@@ -33,10 +33,10 @@
           <v-divider></v-divider>
           <div class="my-3">
             <v-btn-toggle v-model="darkTheme">
-              <v-btn flat :value="true"><!-- :disabled="!theme.darkSettable" -->
+              <v-btn text :value="true"><!-- :disabled="!theme.darkSettable" -->
                 Dark
               </v-btn>
-              <v-btn flat :value="false">
+              <v-btn text :value="false">
                 Light
               </v-btn>
             </v-btn-toggle>   

@@ -1,5 +1,5 @@
 <template>
-  <MarqueeTips :content="content" :speed="speed" style="font-size: 16px" font="30px sans-serif"></MarqueeTips>
+  <MarqueeTips pa-0 ma-0 :content="content" :speed="speed" style="font-size: 16px" font="30px sans-serif"></MarqueeTips>
 </template>
 
 <script>

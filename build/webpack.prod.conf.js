@@ -69,6 +69,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       template: 'index.html',
       inject: true,
       minify: {
+        caseSensitive: true, // 区分大小写
         removeComments: true,
         collapseWhitespace: true,
         removeAttributeQuotes: true

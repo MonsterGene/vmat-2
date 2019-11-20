@@ -45,55 +45,55 @@
                         <v-menu
                           class="pr-2"
                           ref="setStatDate"
-                          lazy
                           :close-on-content-click="false"
                           v-model="startDateMenu"
                           transition="scale-transition"
                           offset-y
-                          full-width
                           :nudge-bottom="-22"
                           max-width="290px"
                           :return-value.sync="startDate"
                         >
-                          <v-text-field
-                            slot="activator"
-                            label="Start Date"
-                            v-model="startDate"
-                            append-icon="event"
-                            readonly
-                          ></v-text-field>
+                          <template v-slot:activator="{ on }">
+                            <v-text-field
+                              v-on="on"
+                              label="Start Date"
+                              v-model="startDate"
+                              append-icon="event"
+                              readonly
+                            ></v-text-field>
+                          </template>
                           <v-date-picker v-model="startDate" no-title scrollable>
                             <v-spacer></v-spacer>
-                            <v-btn flat color="primary" @click="startDateMenu = false">Cancel</v-btn>
-                            <v-btn flat color="primary" @click="$refs.setStatDate.save(startDate)">OK</v-btn>
+                            <v-btn text color="primary" @click="startDateMenu = false">Cancel</v-btn>
+                            <v-btn text color="primary" @click="$refs.setStatDate.save(startDate)">OK</v-btn>
                           </v-date-picker>
                         </v-menu>
                       </v-flex> 
                       <v-flex sm6 lg6>
                         <v-menu
                           ref="setEndDate"
-                          lazy
                           class="pr-2"
                           :close-on-content-click="false"
                           v-model="endDateMenu"
                           transition="scale-transition"
                           offset-y
-                          full-width
                           :nudge-bottom="-22"
                           min-width="290px"
                           :return-value.sync="endDate"
                         >
-                          <v-text-field
-                            slot="activator"
-                            label="End Date"
-                            v-model="endDate"
-                            append-icon="event"
-                            readonly
-                          ></v-text-field>
+                          <template v-slot:activator="{ on }">
+                            <v-text-field
+                              v-on="on"
+                              label="End Date"
+                              v-model="endDate"
+                              append-icon="event"
+                              readonly
+                            ></v-text-field>
+                          </template>
                           <v-date-picker v-model="endDate" no-title scrollable>
                             <v-spacer></v-spacer>
-                            <v-btn flat color="primary" @click="endDateMenu = false">Cancel</v-btn>
-                            <v-btn flat color="primary" @click="$refs.setEndDate.save(endDate)">OK</v-btn>
+                            <v-btn text color="primary" @click="endDateMenu = false">Cancel</v-btn>
+                            <v-btn text color="primary" @click="$refs.setEndDate.save(endDate)">OK</v-btn>
                           </v-date-picker>
                         </v-menu>
                       </v-flex>
@@ -194,9 +194,13 @@
                 <div class="details">
                   <v-layout row>
                   <v-tooltip top>
-                    <v-btn flat icon color="error" slot="activator" @click="downloadDataExcel('first')">
-                      <v-icon>cloud_download</v-icon>
-                    </v-btn>
+                    <template v-slot:activator="{ on }">
+                      <v-btn text icon color="error" 
+                      v-on="on"
+                      @click="downloadDataExcel('first')">
+                        <v-icon>cloud_download</v-icon>
+                      </v-btn>
+                    </template>
                     <span>Download Raw First Data</span>
                   </v-tooltip>
                   </v-layout>
@@ -217,9 +221,13 @@
                 <div class="details">
                   <v-layout row>
                   <v-tooltip top>
-                    <v-btn flat icon color="error" slot="activator" @click="downloadDataExcel('test')">
-                      <v-icon>cloud_download</v-icon>
-                    </v-btn>
+                    <template v-slot:activator="{ on }">
+                      <v-btn text icon color="error" 
+                      v-on="on"
+                      @click="downloadDataExcel('test')">
+                        <v-icon>cloud_download</v-icon>
+                      </v-btn>
+                    </template>
                     <span>Download Raw Test Data</span>
                   </v-tooltip>
 
@@ -240,9 +248,13 @@
                 <div class="details">
                   <v-layout row>
                   <v-tooltip top>
-                    <v-btn flat icon color="error" slot="activator" @click="downloadDataExcel('board')">
-                      <v-icon>cloud_download</v-icon>
-                    </v-btn>
+                    <template v-slot:activator="{ on }">
+                      <v-btn text icon color="error" 
+                      v-on="on"
+                      @click="downloadDataExcel('board')">
+                        <v-icon>cloud_download</v-icon>
+                      </v-btn>
+                    </template>
                     <span>Download Raw Board Data</span>
                   </v-tooltip>
                   </v-layout>

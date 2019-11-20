@@ -3,38 +3,42 @@
     <a href="#/genius"><span :class="titleColor"><h4>Genius Solution</h4></span></a>
 
     <v-tooltip bottom>
-      <v-btn
-        slot="activator"
-        :color="toolBarColor"
-        :class="titleColor"
-        @click="goManagePage"
-      >
-        {{ genius_version || 'v0.0.0_xxxxxxxx' }}
-        <v-icon v-if="new_version_visible" color="error">error</v-icon>
-      </v-btn>
+      <template v-slot:activator="{ on }">
+        <v-btn
+          v-on="on"
+          :color="toolBarColor"
+          :class="titleColor"
+          @click="goManagePage"
+        >
+          {{ genius_version || 'v0.0.0_xxxxxxxx' }}
+          <v-icon v-if="new_version_visible" color="error">error</v-icon>
+        </v-btn>
+      </template>
       <span>
         <pre v-for="d of details" :key="d">{{ d }}<v-divider></v-divider></pre>
-        </span>
+      </span>
     </v-tooltip>
 
     <v-spacer></v-spacer>
     <span>{{ username }}</span>
     <!-- PROD / DEBUG switcher -->
     <v-menu offset-y v-if="openChangeMode">
-      <v-btn
-        slot="activator"
-        color="error"
-      >
-        {{ mode }}
-      </v-btn>
+      <template v-slot:activator="{ on }">
+        <v-btn
+          v-on="on"
+          color="error"
+        >
+          {{ mode }}
+        </v-btn>
+      </template>
       <v-list>
-        <v-list-tile
+        <v-list-item
           v-for="(mode, index) in modes"
           :key="index"
           @click="changeMode(mode.name)"
         >
-          <v-list-tile-title>{{ mode.name }}</v-list-tile-title>
-        </v-list-tile>
+          <v-list-item-title>{{ mode.name }}</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-menu>
     <!-- Apollo like / Autotest like switcher -->
@@ -60,7 +64,7 @@ export default {
       role: '',
       manageUrl: '#/genius/manage',
       mode: 'PROD',
-      toolBarColor: 'primary',
+      toolBarColor: 'purple',
       titleColor: 'white--text',
       screenStyle: true,
       modes: [
@@ -82,6 +86,7 @@ export default {
     };
   },
   mounted () {
+    this.toggleFullScreen();
     this.username = this.$cookies.get('username');
     this.role = this.$cookies.get('role');
     if (!this.username) {
@@ -99,9 +104,6 @@ export default {
     this.getCurrentServerName();
     this.getCurrentVersion();
     this.getCurrentMachineStatus();
-  },
-  created () {
-    this.toggleFullScreen();
   },
   methods: {
     getCurrentServerName () {
@@ -148,11 +150,11 @@ export default {
     changeMode (m) {
       this.mode = m;
       if (m === 'PROD') {
-        this.toolBarColor = 'primary';
+        this.toolBarColor = 'purple';
         this.titleColor = 'white--text';
         this.$emit('changeMode', 'PROD');
       } else {
-        this.toolBarColor = 'warning';
+        this.toolBarColor = 'yellow';
         this.titleColor = 'black--text';
         this.$emit('changeMode', 'DEBUG');
       }
