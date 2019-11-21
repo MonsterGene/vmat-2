@@ -23,7 +23,7 @@
               </template>
               <span>Back</span>
             </v-tooltip>
-            <v-tooltip right style="margin-left: -15px;">
+            <v-tooltip right>
               <template v-slot:activator="{ on }">
                 <v-btn
                   @click="clickAction(action, container.name)"
@@ -37,7 +37,8 @@
             <v-divider vertical></v-divider>
             <v-btn v-for="controller of controllerList" :key="controller"
               color="error"
-              style="margin-left: -10px; padding: 1; min-width: 0;"
+              text
+              style="padding: 1; min-width: 0;"
               @click="openLogWindow(controller)"
             >{{ controller }}</v-btn>
         </v-card>

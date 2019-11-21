@@ -11,6 +11,7 @@
       <v-text-field
         text
         clearable
+        hide-details
         solo-inverted
         prepend-icon="search"
         label="Search"

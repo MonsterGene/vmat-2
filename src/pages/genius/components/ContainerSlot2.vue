@@ -23,79 +23,107 @@
         <v-flex lg2 sm2 pa-2>
           <span class="group pa-0">
               <v-tooltip left>
-                <v-icon
-                  @click="clickAction(action)"
-                  :disabled="actionDisabledFlag"
-                  slot="activator"
-                  color="primary"
-                  dark
-                >{{ actionIcon }}</v-icon>
+                <template v-slot:activator="{ on }">
+                  <v-icon
+                    v-on="on"
+                    @click="clickAction(action)"
+                    :disabled="actionDisabledFlag"
+                    slot="activator"
+                    color="primary"
+                    dark
+                  >{{ actionIcon }}</v-icon>
+                  
+                </template>
                 <span>{{ action }}</span>
               </v-tooltip>
             <v-spacer></v-spacer>
             <v-tooltip left>
-              <v-icon v-show="(container.name === questionContainer || container.question) && container.status === 'run'"
-                @click="reOpenQuestion"
-                slot="activator"
-                color="primary"
-                dark
-              >live_help</v-icon>
+              <template v-slot:activator="{ on }">
+                <v-icon v-show="(container.name === questionContainer || container.question) && container.status === 'run'"
+                  v-on="on"
+                  @click="reOpenQuestion"
+                  slot="activator"
+                  color="primary"
+                  dark
+                >live_help</v-icon>
+              </template>
               <span>Ask Question</span>
             </v-tooltip>
             <v-tooltip left>
-              <v-icon v-show="container.status !== 'idle'"
-                slot="activator"
-                color="primary"
-                dark
-              >{{ modeIcon }}</v-icon>
+              <template v-slot:activator="{ on }">
+                <v-icon v-show="container.status !== 'idle'"
+                  v-on="on"
+                  slot="activator"
+                  color="primary"
+                  dark
+                >{{ modeIcon }}</v-icon>
+              </template>
               <span>{{ container.mode }}, by {{ container.username }}</span>
             </v-tooltip>
             <v-tooltip left>
-              <v-icon v-show="container.stop_by_username && container.status === 'stop'"
-                slot="activator"
-                color="primary"
-                dark
-              >mood_bad</v-icon>
+              <template v-slot:activator="{ on }">
+                <v-icon v-show="container.stop_by_username && container.status === 'stop'"
+                  v-on="on"
+                  slot="activator"
+                  color="primary"
+                  dark
+                >mood_bad</v-icon>
+              </template>
               <span>Stop by {{ container.stop_by_username }}</span>
             </v-tooltip>
             <v-tooltip left>
-              <v-icon v-show="container.status === 'fail'"
-                slot="activator"
-                color="primary"
-                dark
-              >sentiment_very_dissatisfied</v-icon>
+              <template v-slot:activator="{ on }">
+                <v-icon v-show="container.status === 'fail'"
+                  v-on="on"
+                  slot="activator"
+                  color="primary"
+                  dark
+                >sentiment_very_dissatisfied</v-icon>
+              </template>
               <span>Failed</span>
             </v-tooltip>
             <v-tooltip left>
+              <template v-slot:activator="{ on }">
               <v-icon v-show="container.lock_by_user"
+                v-on="on"
                 slot="activator"
                 color="primary"
                 dark
               >lock</v-icon>
+              </template>
               <span>Locked, by {{ container.lock_by_user }}</span>
             </v-tooltip>
             <v-tooltip left>
+              <template v-slot:activator="{ on }">
                 <v-icon v-show="container.in_locking === 'YES'"
+                  v-on="on"
                   slot="activator"
                   color="primary"
                   dark
                 >screen_lock_landscape</v-icon>
+              </template>
                 <span>In Locking</span>
               </v-tooltip>
               <v-tooltip left>
+              <template v-slot:activator="{ on }">
                 <v-icon v-show="container.in_sync_up === 'YES'"
+                  v-on="on"
                   slot="activator"
                   color="primary"
                   dark
                 >sync</v-icon>
+              </template>
                 <span>In Sync Up</span>
               </v-tooltip>
               <v-tooltip left>
+              <template v-slot:activator="{ on }">
                 <v-icon v-show="container.in_leading === 'YES'"
+                  v-on="on"
                   slot="activator"
                   color="primary"
                   dark
                 >ring_volume</v-icon>
+              </template>
                 <span>In Leading</span>
               </v-tooltip>
           </span>

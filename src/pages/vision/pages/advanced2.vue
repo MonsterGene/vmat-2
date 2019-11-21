@@ -1,5 +1,5 @@
 <template>
-  <div id="test-data-dashboard">
+  <v-container fluid id="test-data-dashboard">
     <v-layout row wrap>
       <v-flex sm12>
         <v-widget title="Advanced 2.0 Test Data Search">
@@ -340,7 +340,7 @@
         </v-flex>
       </v-layout>
     </v-container>
-  </div>
+  </v-container>
 </template>
 
 <script>

@@ -42,9 +42,7 @@
       </v-list>
     </v-menu>
     <!-- Apollo like / Autotest like switcher -->
-    <v-btn icon v-if="openScreenStyle">
-      <v-switch label="" @click.native="changeScreenStyle"></v-switch>
-    </v-btn>
+    <v-switch hide-details v-if="openScreenStyle" @click.native="changeScreenStyle"></v-switch>
   </v-toolbar>
 </template>
 
@@ -86,7 +84,7 @@ export default {
     };
   },
   mounted () {
-    this.toggleFullScreen();
+    // this.toggleFullScreen();
     this.username = this.$cookies.get('username');
     this.role = this.$cookies.get('role');
     if (!this.username) {
@@ -168,7 +166,11 @@ export default {
       let docEl = doc.documentElement;
       let requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
       if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-        requestFullScreen.call(docEl);
+        requestFullScreen.call(docEl).then(() => {
+          console.log('fullscring success');
+        }).catch(err => {
+          console.log({ err });
+        });
       }
     },
     goManagePage () {

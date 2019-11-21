@@ -28,7 +28,7 @@
                 <v-card-text class="">
                   <div class="row mb-0 align-center justify-space-between">
                     <div class="text-box" style="max-height: 13px;">
-                      <div class="text-md-center" style="margin-top: -8px;"><h5 class="font-weight-regular">{{ step.name + ' ' }} {{ step.time || '' }}</h5></div>
+                      <div class="text-md-center" style="margin-top: -8px;"><h5 class="font-weight-regular">{{ (step.name || '') + ' ' }} {{ step.time || '' }}</h5></div>
                     </div>
                 </div>
               </v-card-text>
